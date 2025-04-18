@@ -12,6 +12,7 @@
 
     <modules>
         <module>p2pnexus-cliente</module>
+        <module>p2pnexus-servidor</module>
     </modules>
 
 </project>
