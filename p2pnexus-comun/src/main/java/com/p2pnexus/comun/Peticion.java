@@ -3,19 +3,19 @@ package com.p2pnexus.comun;
 import com.google.gson.JsonObject;
 
 public class Peticion {
-    private String tipo;
+    private TipoPeticion tipo;
     private JsonObject data;
 
-    public Peticion(String type, JsonObject data) {
-        this.tipo = type;
+    public Peticion(TipoPeticion tipo, JsonObject data) {
+        this.tipo = tipo;
         this.data = data;
     }
 
-    public String getTipo() {
+    public TipoPeticion getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoPeticion tipo) {
         this.tipo = tipo;
     }
 

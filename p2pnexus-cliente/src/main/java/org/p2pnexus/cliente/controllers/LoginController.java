@@ -2,6 +2,7 @@ package org.p2pnexus.cliente.controllers;
 
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Peticion;
+import com.p2pnexus.comun.TipoPeticion;
 import javafx.scene.control.Button;
 import org.p2pnexus.cliente.server.Conexion;
 
@@ -18,7 +19,7 @@ public class LoginController {
 
             JsonObject json = new JsonObject();
             json.addProperty("data", "El usuario ha pulsado el botón de inicio de sesión");
-            Conexion.enviarPeticion(new Peticion("TEST",json));
+            Conexion.enviarPeticion(new Peticion(TipoPeticion.TEST,json));
         });
 
         btnRegistro.setOnAction(event -> {

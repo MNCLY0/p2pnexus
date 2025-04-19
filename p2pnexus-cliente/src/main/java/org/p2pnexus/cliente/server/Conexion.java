@@ -30,7 +30,6 @@ public class Conexion {
             CONEXION = socket;
 
         } catch (Exception e) {
-            System.err.println("Error al conectar al servidor: " + e.getMessage());
             throw new ConectarExeption("Error al conectar al servidor", e);
         }
 
