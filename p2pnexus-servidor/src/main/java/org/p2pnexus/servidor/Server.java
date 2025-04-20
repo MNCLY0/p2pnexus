@@ -17,7 +17,8 @@ public class Server extends ServerSocket {
         try {
             Server server = new Server(port);
             System.out.println("Servidor iniciado en el puerto " + port);
-
+            ControladorHibernate.abrirSesion();
+            ControladorHibernate.verificarSesion();
             while (true) {
                 Socket socket = server.accept();
                 // Crear un nuevo hilo para manejar al cliente, el hilo será el encargado de gestionar la conexión
