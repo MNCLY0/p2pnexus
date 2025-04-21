@@ -19,11 +19,9 @@ public class ControladorHibernate {
                 boolean estado = abrirSesion();
                 if (estado)
                 {
-                    System.out.println("El estado de la sesión es: " + estado);
                     break;
                 }
                 try {
-                    System.out.println("El estado de la sesión es: " + estado);
                     System.out.println("Esperando " + tiempoIntento  + " milisegundos para intentar abrir sesión de nuevo.");
 //                    Log.e("Error al abrir sesión. Intentando de nuevo...");
 //                    Log.i("Esperando " + tiempoIntento + " milisegundos para intentar abrir sesión de nuevo.");

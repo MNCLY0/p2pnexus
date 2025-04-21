@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -28,8 +29,8 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextField promptText="introduce tu usuario" />
-                  <TextField promptText="introduce tu contraseña" />
+                  <TextField fx:id="txtUsuario" promptText="introduce tu usuario" />
+                  <PasswordField fx:id="txtPassword" promptText="introduce tu contraseña" />
                   <HBox spacing="10.0">
                      <children>
                         <Button fx:id="btnLogin" mnemonicParsing="false" text="Iniciar sesión" />
