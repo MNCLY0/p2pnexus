@@ -4,7 +4,8 @@ import java.net.URL;
 
 public enum VENTANAS {
     CARGANDO_CONEXION("org/p2pnexus/cliente/fxml/CargandoConexion.fxml"),
-    LOGIN("org/p2pnexus/cliente/fxml/Login.fxml"),;
+    LOGIN("org/p2pnexus/cliente/fxml/Login.fxml"),
+    REGISTRO("org/p2pnexus/cliente/fxml/Registro.fxml");
 
     VENTANAS(String ruta) {
         try {

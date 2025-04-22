@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="root" prefHeight="599.0" prefWidth="783.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.CargandoConexionController">
    <children>
-      <StackPane layoutX="14.0" prefHeight="716.0" prefWidth="727.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="sp" layoutX="14.0" prefHeight="716.0" prefWidth="727.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="476.0" prefWidth="278.0" spacing="15.0" styleClass="context-menu" StackPane.alignment="CENTER">
                <StackPane.margin>

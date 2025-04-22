@@ -2,7 +2,7 @@ package com.p2pnexus.comun;
 
 public enum TipoMensaje {
 
-    // Mensajes de solitud
+    // Mensajes de peticion
     P_TEST,
     P_LOGIN,
     P_REGISTRO,

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.LoginController">
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.RegistroController">
    <children>
       <StackPane fx:id="sp" layoutX="14.0" prefHeight="716.0" prefWidth="727.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -24,7 +24,7 @@
                         <Image url="@../imagenes/logop2pnexus-invertido.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="title-2" text="Inicio de sesión" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <Label styleClass="title-2" text="Crear cuenta" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -33,11 +33,11 @@
                   <PasswordField fx:id="txtPassword" promptText="introduce tu contraseña" />
                   <HBox spacing="10.0">
                      <children>
-                        <Button fx:id="btnLogin" mnemonicParsing="false" text="Iniciar sesión" />
+                        <Button fx:id="btnCrearCuenta" mnemonicParsing="false" text="Confirmar" />
                      </children>
                   </HBox>
-                  <Label text="¿No tienes cuenta? Crea una:" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
-                  <Button fx:id="btnRegistro" mnemonicParsing="false" text="Crear cuenta" />
+                  <Label text="Volver a inicio de sesión:" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
+                  <Button fx:id="btnVolver" mnemonicParsing="false" text="Volver" />
                </children>
                <StackPane.margin>
                   <Insets />
