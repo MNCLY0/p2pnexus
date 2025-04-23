@@ -2,6 +2,7 @@
 # p2pNexus
 
 ![Logo](https://i.imgur.com/TBdOZAT.png)
+![Logo](https://i.imgur.com/t8lPuhq.png)
 
 
 ## Autor
