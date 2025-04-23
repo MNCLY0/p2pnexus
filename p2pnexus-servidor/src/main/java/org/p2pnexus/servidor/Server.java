@@ -1,7 +1,7 @@
 package org.p2pnexus.servidor;
 
-import org.p2pnexus.servidor.Clientes.ManejadorDeClientes;
-import com.p2pnexus.comun.SocketConexion;
+import org.p2pnexus.servidor.clientes.ManejadorDeClientes;
+import com.p2pnexus.comun.comunicacion.SocketConexion;
 
 import java.io.IOException;
 import java.net.ServerSocket;

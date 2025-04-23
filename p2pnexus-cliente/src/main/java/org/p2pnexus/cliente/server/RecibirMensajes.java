@@ -1,28 +1,22 @@
 package org.p2pnexus.cliente.server;
 
+import com.p2pnexus.comun.TipoMensaje;
+import com.p2pnexus.comun.comunicacion.ManejadorDeMensajes;
+import com.p2pnexus.comun.comunicacion.SocketConexion;
+import org.p2pnexus.cliente.server.acciones.ManejarNotificaciones;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class RecibirMensajes implements Runnable {
+public class RecibirMensajes extends ManejadorDeMensajes {
 
-    Socket socket;
-    BufferedReader input = null;
-
-    RecibirMensajes(Socket socket) {
-        this.socket = socket;
+    public RecibirMensajes(SocketConexion socketConexion) {
+        super(socketConexion);
     }
 
     @Override
-    public void run() {
-        try {
-            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }catch (Exception e) {
-            System.err.println("Error al inicializar el BufferedReader: " + e.getMessage());
-            return;
-        }
-        while (true) {
-
-        }
+    public void inicializarManejadores() {
+        manejadoresPeticiones.put(TipoMensaje.NOTIFICACION, new ManejarNotificaciones());
     }
 }

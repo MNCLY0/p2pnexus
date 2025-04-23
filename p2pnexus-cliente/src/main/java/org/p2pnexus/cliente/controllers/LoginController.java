@@ -3,6 +3,7 @@ package org.p2pnexus.cliente.controllers;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -12,7 +13,7 @@ import javafx.scene.layout.StackPane;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
-import org.p2pnexus.cliente.ventanas.TipoNoticificacion;
+import com.p2pnexus.comun.TipoNotificacion;
 import org.p2pnexus.cliente.ventanas.VENTANAS;
 
 public class LoginController {
@@ -32,6 +33,13 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+
+        Platform.runLater(() ->
+        {
+            GestorVentanas.configurarStackPane(sp);
+        });
+
+
         // Inicializar el controlador
         btnLogin.setOnAction(event -> {
             System.out.println("Botón de inicio de sesión presionado");
@@ -41,7 +49,6 @@ public class LoginController {
             json.addProperty("usuario", txtUsuario.getText());
             json.addProperty("pass", txtPassword.getText());
             Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_LOGIN,json));
-            Notificaciones.MostrarNotificacion("AAAA", TipoNoticificacion.ERROR, sp);
         });
 
         btnRegistro.setOnAction(event -> {

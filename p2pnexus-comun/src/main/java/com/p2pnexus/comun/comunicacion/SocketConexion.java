@@ -1,9 +1,11 @@
-package com.p2pnexus.comun;
+package com.p2pnexus.comun.comunicacion;
 
 import com.google.gson.Gson;
+import com.p2pnexus.comun.Mensaje;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 
 public class SocketConexion {
@@ -16,8 +18,8 @@ public class SocketConexion {
 
         // Inicializar los búferes automáticamente
         this.socket = socket;
-        this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+        this.output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
         System.out.println("Búferes inicializados : " + socket.getInetAddress().getHostAddress() + " (" + nombre + ")");
         this.nombre = nombre;
     }

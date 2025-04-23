@@ -11,10 +11,10 @@ import java.io.IOException;
 
 public class GestorVentanas {
 
-    public static VENTANAS ventanaActual = null;
-    public static VENTANAS ventanaAnterior = null;
+    private static VENTANAS ventanaActual = null;
+    private static VENTANAS ventanaAnterior = null;
 
-    public static StackPane ventanaPrincipal;
+    private static StackPane stackPaneActual = null;
 
     public static void transicionarVentana(Scene scene, VENTANAS ventanaDestino)
     {
@@ -43,8 +43,8 @@ public class GestorVentanas {
             stage.setWidth(width);
             stage.setHeight(height);
 
-            // Buscamos el StackPane de la nueva escena, si no lo hay, simplemente se pone en null
-            ventanaPrincipal = (StackPane) scene.lookup("#sp");
+            // Se debe de configurar manualmente el stackPane cuando se cambia de ventana
+            stackPaneActual = null;
 
         } catch (IOException e)
         {
@@ -53,6 +53,17 @@ public class GestorVentanas {
             throw new GestorDeVentanasExeption("Error al cargar la ventana: " + e);
         }
     }
+    // Necesitamos el stackPane para mostrar las notificaciones
+    public static void configurarStackPane(StackPane stackPane)
+    {
+        stackPaneActual = stackPane;
+    }
+
+    public static StackPane getStackPane()
+    {
+        return stackPaneActual;
+    }
+
     public static void retrocederVentana(Scene scene) throws GestorDeVentanasExeption
     {
         if (ventanaAnterior == null) throw new GestorDeVentanasExeption("No hay ventana a la que volver");

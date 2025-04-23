@@ -1,8 +1,7 @@
 package org.p2pnexus.cliente.server;
 
-import com.google.gson.Gson;
 import com.p2pnexus.comun.Mensaje;
-import com.p2pnexus.comun.SocketConexion;
+import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ConectarExeption;
 
 import java.io.BufferedOutputStream;
@@ -16,6 +15,7 @@ public class Conexion {
 
     public static BufferedOutputStream OUT = null;
 
+    public static RecibirMensajes recibirMensajes = null;
 
     public static void iniciarConexion() throws ConectarExeption
     {
@@ -26,6 +26,9 @@ public class Conexion {
             socket.setKeepAlive(true);
 
             CONEXION = new SocketConexion(socket, "Servidor " + socket.getInetAddress().getHostAddress());
+
+            recibirMensajes = new RecibirMensajes(CONEXION);
+            new Thread(recibirMensajes).start();
 
         } catch (Exception e) {
             throw new ConectarExeption("Error al conectar al servidor", e);

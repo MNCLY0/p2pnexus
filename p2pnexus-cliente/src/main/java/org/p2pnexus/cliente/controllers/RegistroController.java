@@ -5,12 +5,14 @@ import com.p2pnexus.comun.Hasheador;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.exepciones.GestorDeVentanasExeption;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 
@@ -28,7 +30,16 @@ public class RegistroController {
     public PasswordField txtPassword;
 
     @FXML
+    public StackPane sp;
+
+    @FXML
     public void initialize() {
+        
+        Platform.runLater(() ->
+        {
+            GestorVentanas.configurarStackPane(sp);
+        });
+
         // Inicializar el controlador
         btnCrearCuenta.setOnAction(event -> {
             System.out.println("Botón de creacion de cuenta presionado");

@@ -2,6 +2,8 @@ package com.p2pnexus.comun;
 
 public enum TipoMensaje {
 
+    NOTIFICACION,
+    
     // Mensajes de peticion
     P_TEST,
     P_LOGIN,

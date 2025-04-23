@@ -21,8 +21,6 @@
         <mapping class="org.p2pnexus.servidor.DAO.PermisoAcceso"/>
         <mapping class="org.p2pnexus.servidor.DAO.SolicitudContacto"/>
         <mapping class="org.p2pnexus.servidor.DAO.Usuario"/>
-
-
-
+        
     </session-factory>
 </hibernate-configuration>
