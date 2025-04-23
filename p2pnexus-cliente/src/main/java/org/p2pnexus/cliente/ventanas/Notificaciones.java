@@ -30,22 +30,22 @@ public class Notificaciones {
     // Usamos una lista observable para mantener el estado de las notificaciones activas
     private static final ObservableList<Notification> notificacionesActivas = FXCollections.observableArrayList();
 
+
     public static void MostrarNotificacion(String mensaje, TipoNotificacion tipo) {
 
-        StackPane stackPane = GestorVentanas.getStackPane();
-
-        if (stackPane == null) {
+        if (GestorVentanas.getCapaNotificaciones() == null) {
             System.err.println("No hay stackPane disponible para mostrar la notificacion");
             return;
         }
 
         Platform.runLater(() -> {
             Notification notificacion = crearNotificacion(mensaje, tipo);
-            mostrarNotificacion(notificacion, stackPane);
+            notificacion.setPickOnBounds(true);
+            mostrarNotificacion(notificacion);
         });
     }
 
-    private static void mostrarNotificacion(Notification notificacion, StackPane stackPane) {
+    private static void mostrarNotificacion(Notification notificacion) {
         // Configuramos la posición inicial (arriba a la derecha)
         StackPane.setAlignment(notificacion, Pos.TOP_RIGHT);
 
@@ -60,24 +60,24 @@ public class Notificaciones {
 
         // Añadimos la nueva notificación a la lista y al panel
         notificacionesActivas.add(notificacion);
-        stackPane.getChildren().add(notificacion);
+        GestorVentanas.getCapaNotificaciones().getChildren().add(notificacion);
 
         // Animación de entrada
         notificacion.setOpacity(0);
         Animations.fadeIn(notificacion, DURACION).play();
 
         // Configuramos el evento de clic para cerrar la notificación
-        notificacion.setOnMouseClicked(event -> cerrarNotificacion(notificacion, stackPane));
+        notificacion.setOnMouseClicked(event -> cerrarNotificacion(notificacion));
 
         // Configuramos el cierre automático
         Timeline timeline = new Timeline(new KeyFrame(TIEMPO_MOSTRADO,
-                e -> cerrarNotificacion(notificacion, stackPane)));
+                e -> cerrarNotificacion(notificacion)));
         timeline.play();
     }
 
-    private static void cerrarNotificacion(Notification notificacion, StackPane stackPane) {
+    private static void cerrarNotificacion(Notification notificacion) {
         // Si ya se ha eliminado, no hacemos nada
-        if (!stackPane.getChildren().contains(notificacion)) {
+        if (!GestorVentanas.getCapaNotificaciones().getChildren().contains(notificacion)) {
             return;
         }
 
@@ -85,17 +85,17 @@ public class Notificaciones {
         var animacionSalida = Animations.fadeOut(notificacion, DURACION);
         animacionSalida.setOnFinished(event -> {
             // Eliminamos la notificación
-            stackPane.getChildren().remove(notificacion);
+            GestorVentanas.getCapaNotificaciones().getChildren().remove(notificacion);
             int indiceEliminado = notificacionesActivas.indexOf(notificacion);
             notificacionesActivas.remove(notificacion);
 
             // Reposicionamos las notificaciones que estaban debajo
-            reposicionarNotificaciones(indiceEliminado, stackPane);
+            reposicionarNotificaciones(indiceEliminado);
         });
         animacionSalida.play();
     }
 
-    private static void reposicionarNotificaciones(int indiceEliminado, StackPane stackPane) {
+    private static void reposicionarNotificaciones(int indiceEliminado) {
         // Solo reposicionamos las notificaciones que estaban debajo de la eliminada
         try {
             for (int i = indiceEliminado; i < notificacionesActivas.size(); i++) {

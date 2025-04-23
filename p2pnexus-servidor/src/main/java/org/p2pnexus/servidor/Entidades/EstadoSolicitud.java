@@ -1,4 +1,4 @@
-package org.p2pnexus.servidor.DAO;
+package org.p2pnexus.servidor.Entidades;
 
 public enum EstadoSolicitud {
     PENDIENTE,

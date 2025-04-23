@@ -1,10 +1,10 @@
 package com.p2pnexus.comun.comunicacion;
 
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.JsonAdapter;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
-import com.p2pnexus.comun.exepciones.ManejarPeticionesExeption;
+import com.p2pnexus.comun.TipoNotificacion;
+import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +66,8 @@ public abstract class ManejadorDeMensajes implements Runnable {
 
     void manejarPeticion(Mensaje mensaje)
     {
+        ResultadoMensaje resultado = null;
+
         if (mensaje == null) {
             System.err.println("Mensaje nulo recibido");
             return;
@@ -73,29 +75,33 @@ public abstract class ManejadorDeMensajes implements Runnable {
         TipoMensaje tipoMensaje = mensaje.getTipo();
         IAccionMensaje manejador = manejadoresPeticiones.get(tipoMensaje);
         try {
-            manejador.manejarDatos(mensaje.getData(), socketConexion);
-        }catch (ManejarPeticionesExeption e) {
-            System.err.println("Error al manejar la petición: " + e.getMessage());
+            resultado = manejador.manejarDatos(mensaje.getData(), socketConexion);
+        }catch (ManejarPeticionesExeptionError e) {
+            System.err.println("El mensaje ha devuelto un error: " + e.getMessage());
             if (notificable)
             {
-                intentarNotificar(e.getMessage());
+                intentarNotificar(e.getMessage(), TipoNotificacion.ERROR);
             }
         }
         catch (Exception e) {
             if (notificable)
             {
-                intentarNotificar("Error al manejar la petición");
+                intentarNotificar("Error al manejar la petición", TipoNotificacion.ERROR);
             }
         }
+
+        if (resultado != null) {
+            intentarNotificar(resultado.getMensaje(), resultado.getTipo());}
+
     }
 
-    void intentarNotificar(String mensaje)
+    void intentarNotificar(String mensaje, TipoNotificacion tipoNotificacion)
     {
         JsonObject json = new JsonObject();
-        json.addProperty("tipo", "error");
+        json.addProperty("tipo", tipoNotificacion.name());
         json.addProperty("mensaje", mensaje);
-        Mensaje mensajeError = new Mensaje(TipoMensaje.NOTIFICACION,json);
-        socketConexion.enviarMensaje(mensajeError);
+        Mensaje mensajeNoti = new Mensaje(TipoMensaje.NOTIFICACION,json);
+        socketConexion.enviarMensaje(mensajeNoti);
     }
 
 }

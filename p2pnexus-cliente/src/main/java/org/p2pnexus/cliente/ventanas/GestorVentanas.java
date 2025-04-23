@@ -14,60 +14,69 @@ public class GestorVentanas {
     private static VENTANAS ventanaActual = null;
     private static VENTANAS ventanaAnterior = null;
 
-    private static StackPane stackPaneActual = null;
+    private static StackPane contenedorPrincipal = null;
+    private static StackPane capaContenido = null;
+    private static StackPane capaNotificaciones = null;
 
-    public static void transicionarVentana(Scene scene, VENTANAS ventanaDestino)
-    {
+    private static boolean inicializado = false;
+
+
+    public static void inicializar(StackPane stackPane) {
+        if (inicializado) {
+            return;
+        }
+        contenedorPrincipal = stackPane;
+
+        // Crear capas separadas para contenido y notificaciones
+        capaContenido = new StackPane();
+        capaNotificaciones = new StackPane();
+
+        // Configurar propiedades de las capas
+        capaContenido.prefWidthProperty().bind(contenedorPrincipal.widthProperty());
+        capaContenido.prefHeightProperty().bind(contenedorPrincipal.heightProperty());
+
+        capaNotificaciones.prefWidthProperty().bind(contenedorPrincipal.widthProperty());
+        capaNotificaciones.prefHeightProperty().bind(contenedorPrincipal.heightProperty());
+
+        // Hacer que la capa de notificaciones sea transparente a los eventos del ratón
+        capaNotificaciones.setPickOnBounds(false);
+
+        contenedorPrincipal.getChildren().addAll(capaContenido, capaNotificaciones);
+
+        inicializado = true;
+    }
+
+    public static void transicionarVentana(VENTANAS ventanaDestino) {
+
         try {
-            // Guardamos la ventana actual
-            if (ventanaActual != null)
-            {
-                ventanaAnterior = ventanaActual;
-            }
-            // Cambiamos la ventana actual
+            FXMLLoader fxmlLoader = new FXMLLoader(ventanaDestino.ruta);
+            Parent vistaDestino = fxmlLoader.load();
+
+            // Ahora podemos usar setAll() en la capa de contenido sin afectar las notificaciones
+            capaContenido.getChildren().setAll(vistaDestino);
+
+            ventanaAnterior = ventanaActual;
             ventanaActual = ventanaDestino;
 
-            Stage stage = (Stage) scene.getWindow();
-
-            // Guardamos las dimensiones actuales
-            double width = stage.getWidth();
-            double height = stage.getHeight();
-
-            Parent destino = FXMLLoader.load(ventanaDestino.ruta);
-
-            // Creamos la nueva escena manteniendo las dimensiones
-            Scene nuevaEscena = new Scene(destino);
-            stage.setScene(nuevaEscena);
-
-            // Restauramos las dimensiones
-            stage.setWidth(width);
-            stage.setHeight(height);
-
-            // Se debe de configurar manualmente el stackPane cuando se cambia de ventana
-            stackPaneActual = null;
-
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-            System.out.println("Error al cargar la ventana: " + ventanaDestino.ruta);
-            throw new GestorDeVentanasExeption("Error al cargar la ventana: " + e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
-    // Necesitamos el stackPane para mostrar las notificaciones
-    public static void configurarStackPane(StackPane stackPane)
-    {
-        stackPaneActual = stackPane;
+
+    public static StackPane getCapaNotificaciones() {
+        return capaNotificaciones;
     }
 
-    public static StackPane getStackPane()
+
+    public static StackPane getContenedorPrincipal()
     {
-        return stackPaneActual;
+        return contenedorPrincipal;
     }
 
-    public static void retrocederVentana(Scene scene) throws GestorDeVentanasExeption
+    public static void retrocederVentana() throws GestorDeVentanasExeption
     {
         if (ventanaAnterior == null) throw new GestorDeVentanasExeption("No hay ventana a la que volver");
-        transicionarVentana(scene, ventanaAnterior);
+        transicionarVentana(ventanaAnterior);
     }
 
 }

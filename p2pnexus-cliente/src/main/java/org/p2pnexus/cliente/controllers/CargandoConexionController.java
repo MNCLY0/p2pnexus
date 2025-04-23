@@ -49,6 +49,6 @@ public class CargandoConexionController {
     }
 
     void pasarALogin(){
-        GestorVentanas.transicionarVentana(root.getScene(), VENTANAS.LOGIN);
+        GestorVentanas.transicionarVentana(VENTANAS.LOGIN);
     }
 }

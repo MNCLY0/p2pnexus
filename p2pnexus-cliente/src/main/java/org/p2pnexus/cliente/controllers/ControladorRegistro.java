@@ -8,10 +8,8 @@ import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.exepciones.GestorDeVentanasExeption;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -20,10 +18,9 @@ import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
-public class RegistroController {
+public class ControladorRegistro {
 
-    @FXML
-    public AnchorPane root;
+
     @FXML
     public Button btnCrearCuenta;
     @FXML
@@ -35,16 +32,9 @@ public class RegistroController {
 
     public VBox iconoInfoPassword;
 
-    @FXML
-    public StackPane sp;
 
     @FXML
     public void initialize() {
-        
-        Platform.runLater(() ->
-        {
-            GestorVentanas.configurarStackPane(sp);
-        });
 
         crearInfo();
 
@@ -67,7 +57,7 @@ public class RegistroController {
 
         btnVolver.setOnAction(event -> {
             try {
-                GestorVentanas.retrocederVentana(root.getScene());
+                GestorVentanas.retrocederVentana();
             } catch (GestorDeVentanasExeption e) {
                 System.err.println(e.getMessage());
             }
@@ -93,8 +83,8 @@ public class RegistroController {
             return false;
         }
 
-        if (usuario.length() <= 5) {
-            Notificaciones.MostrarNotificacion("El usuario debe tener al menos 6 caracteres", TipoNotificacion.AVISO);
+        if (usuario.length() < 5) {
+            Notificaciones.MostrarNotificacion("El usuario debe tener al menos 5 caracteres", TipoNotificacion.AVISO);
             return false;
         }
         return true;

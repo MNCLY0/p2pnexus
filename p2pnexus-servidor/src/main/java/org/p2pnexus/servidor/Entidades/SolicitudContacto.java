@@ -1,4 +1,4 @@
-package org.p2pnexus.servidor.DAO;
+package org.p2pnexus.servidor.Entidades;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

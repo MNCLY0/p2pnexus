@@ -1,4 +1,4 @@
-package org.p2pnexus.servidor.DAO;
+package org.p2pnexus.servidor.Entidades;
 
 import jakarta.persistence.*;
 
@@ -11,8 +11,6 @@ public class Usuario {
     private Integer id_usuario;
 
     private String nombre;
-
-    private String email;
 
     private String contrasena;
 
@@ -32,14 +30,6 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getContrasena() {
         return contrasena;
     }
@@ -47,4 +37,6 @@ public class Usuario {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
+
+
 }
