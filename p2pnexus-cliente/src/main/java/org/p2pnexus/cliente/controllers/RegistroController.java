@@ -4,17 +4,21 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Hasheador;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.exepciones.GestorDeVentanasExeption;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
+import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 public class RegistroController {
 
@@ -29,6 +33,8 @@ public class RegistroController {
     @FXML
     public PasswordField txtPassword;
 
+    public VBox iconoInfoPassword;
+
     @FXML
     public StackPane sp;
 
@@ -40,14 +46,23 @@ public class RegistroController {
             GestorVentanas.configurarStackPane(sp);
         });
 
+        crearInfo();
+
         // Inicializar el controlador
         btnCrearCuenta.setOnAction(event -> {
             System.out.println("Botón de creacion de cuenta presionado");
             // Lógica para el botón de inicio de sesión
-            JsonObject json = new JsonObject();
-            json.addProperty("usuario", txtUsuario.getText());
-            json.addProperty("pass", Hasheador.hashear(txtPassword.getText()));
-            Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_REGISTRO,json));
+
+            if (!validarUsuario(txtUsuario.getText().trim())) {
+                return;
+            }
+
+            if (validarPass(txtPassword.getText().trim())) {
+                JsonObject json = new JsonObject();
+                json.addProperty("usuario", txtUsuario.getText().trim());
+                json.addProperty("pass", Hasheador.hashear(txtPassword.getText().trim()));
+                Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_REGISTRO,json));
+            }
         });
 
         btnVolver.setOnAction(event -> {
@@ -57,10 +72,59 @@ public class RegistroController {
                 System.err.println(e.getMessage());
             }
         });
+    }
 
+    public void crearInfo()
+    {
+        // Crear el icono de información
+        FontIcon icono = new FontIcon(Material2AL.INFO);
+        var tooltip = new Tooltip("La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número");
+        tooltip.setShowDelay(javafx.util.Duration.millis(100));
+        tooltip.setHideOnEscape(true);
+        iconoInfoPassword.getChildren().add(icono);
+        Tooltip.install(iconoInfoPassword, tooltip);
 
     }
 
+    public boolean validarUsuario(String usuario)
+    {
+        if (usuario.isEmpty()) {
+            Notificaciones.MostrarNotificacion("El usuario no puede estar vacío", TipoNotificacion.AVISO);
+            return false;
+        }
 
+        if (usuario.length() <= 5) {
+            Notificaciones.MostrarNotificacion("El usuario debe tener al menos 6 caracteres", TipoNotificacion.AVISO);
+            return false;
+        }
+        return true;
+    }
 
+    public boolean validarPass(String pass) {
+        // Validar la contraseña
+        boolean valida = true;
+        String razon = "";
+
+        if (pass.length() < 8) {
+            razon = "La contraseña debe tener al menos 8 caracteres";
+            valida = false;
+        }
+        if (!pass.matches(".*[a-z].*") && valida) {
+            razon = "La contraseña debe tener al menos una letra minúscula";
+            valida = false;
+        }
+        if (!pass.matches(".*[A-Z].*") && valida) {
+            razon = "La contraseña debe tener al menos una letra mayúscula";
+            valida = false;
+        }
+        if (!pass.matches(".*\\d.*") && valida) {
+            razon = "La contraseña debe tener al menos un número";
+            valida = false;
+        }
+
+        if (valida) return valida;
+        // Si no es valida, mostramos en una notificacion de aviso
+        Notificaciones.MostrarNotificacion(razon, TipoNotificacion.AVISO);
+        return false;
+    }
 }

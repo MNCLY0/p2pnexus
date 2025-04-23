@@ -46,8 +46,8 @@ public class LoginController {
             // Lógica para el botón de inicio de sesión
 
             JsonObject json = new JsonObject();
-            json.addProperty("usuario", txtUsuario.getText());
-            json.addProperty("pass", txtPassword.getText());
+            json.addProperty("usuario",txtUsuario.getText().trim());
+            json.addProperty("pass",txtPassword.getText().trim());
             Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_LOGIN,json));
         });
 
