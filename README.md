@@ -1,4 +1,24 @@
-# p2pnexus
 
-[
-https://kordamp.org/ikonli/cheat-sheet-materialdesign2.html](https://kordamp.org/ikonli/cheat-sheet-material2.html)
+# p2pNexus
+
+![Logo](https://i.imgur.com/TBdOZAT.png)
+![Logo](https://i.imgur.com/t8lPuhq.png)
+
+
+## Autor
+
+- [@MNCLY0](https://github.com/MNCLY0)
+
+
+## Licencia
+
+> Este software ha sido desarrollado por **Manuel Ramos** como parte del  
+> **Trabajo de Fin de Grado (Desarrollo de Aplicaciones Multiplataforma - DAM)**.  
+> Año académico: **2025**
+>
+> **Todos los derechos reservados.**  
+> No está permitido su uso, modificación, redistribución ni copia, total o parcial,  
+> sin consentimiento del autor.
+>
+> Cualquier intento de plagio, uso no autorizado o distribución será considerado una infracción grave  
+> de la propiedad intelectual y podrá tener consecuencias académicas y legales.
