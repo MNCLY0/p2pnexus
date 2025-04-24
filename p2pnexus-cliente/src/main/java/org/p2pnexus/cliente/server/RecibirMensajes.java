@@ -3,6 +3,7 @@ package org.p2pnexus.cliente.server;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.comunicacion.ManejadorDeMensajes;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
+import org.p2pnexus.cliente.server.acciones.ManejarLogin;
 import org.p2pnexus.cliente.server.acciones.ManejarNotificaciones;
 
 import java.io.BufferedReader;
@@ -18,5 +19,6 @@ public class RecibirMensajes extends ManejadorDeMensajes {
     @Override
     public void inicializarManejadores() {
         manejadoresPeticiones.put(TipoMensaje.NOTIFICACION, new ManejarNotificaciones());
+        manejadoresPeticiones.put(TipoMensaje.R_LOGIN_OK, new ManejarLogin());
     }
 }

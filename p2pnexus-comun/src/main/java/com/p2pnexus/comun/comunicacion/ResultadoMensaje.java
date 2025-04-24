@@ -1,23 +1,41 @@
 package com.p2pnexus.comun.comunicacion;
 
+import com.google.gson.JsonObject;
+import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
 
 public class ResultadoMensaje {
-    private String mensaje;
-    private TipoNotificacion tipo;
 
-    public ResultadoMensaje(String mensaje, TipoNotificacion tipoNotificacion) {
+    // Mensaje de respuesta
+    Mensaje mensaje;
+
+    // Notificacion
+    private String mensajeNotificacion;
+    private TipoNotificacion tipoNotificacion;
+
+    public ResultadoMensaje(String mensajeNotificacion, TipoNotificacion tipoNotificacion, Mensaje mensaje) {
+        this.mensajeNotificacion = mensajeNotificacion;
+        this.tipoNotificacion = tipoNotificacion;
         this.mensaje = mensaje;
-        this.tipo = tipoNotificacion;
     }
 
-    public String getMensaje() {
+
+    public ResultadoMensaje(String mensaje, TipoNotificacion tipo) {
+        this(mensaje, tipo, null);
+    }
+
+    public Mensaje getMensaje() {
         return mensaje;
     }
 
-    public TipoNotificacion getTipo() {
-        return tipo;
+
+    public String getMensajeNotificacion() {
+        return mensajeNotificacion;
+    }
+
+    public TipoNotificacion getTipoNotificacion() {
+        return tipoNotificacion;
     }
 
 }

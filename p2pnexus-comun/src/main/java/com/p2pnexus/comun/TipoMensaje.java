@@ -11,6 +11,7 @@ public enum TipoMensaje {
     P_SOLICITAR_CLAVE_PUBLICA,
 
     // Mensajes de respuesta
+    R_LOGIN_OK,
     R_TEST,
     R_CONFIRMACION,
     R_ERROR

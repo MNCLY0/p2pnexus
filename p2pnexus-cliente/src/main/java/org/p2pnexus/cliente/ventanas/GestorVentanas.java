@@ -1,18 +1,17 @@
 package org.p2pnexus.cliente.ventanas;
 
 import com.p2pnexus.comun.exepciones.GestorDeVentanasExeption;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class GestorVentanas {
 
-    private static VENTANAS ventanaActual = null;
-    private static VENTANAS ventanaAnterior = null;
+    private static Ventanas ventanaActual = null;
+    private static Ventanas ventanaAnterior = null;
 
     private static StackPane contenedorPrincipal = null;
     private static StackPane capaContenido = null;
@@ -46,21 +45,30 @@ public class GestorVentanas {
         inicializado = true;
     }
 
-    public static void transicionarVentana(VENTANAS ventanaDestino) {
-
+    public static void transicionarVentana(Ventanas ventanaDestino) {
+        System.out.println("Transicionando a ventana: " + ventanaDestino);
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(ventanaDestino.ruta);
-            Parent vistaDestino = fxmlLoader.load();
-
+            Parent vistaDestino = crearVentana(ventanaDestino);
+            if (vistaDestino == null) {
+                System.err.println("La vista destino es nula para " + ventanaDestino);
+                return;
+            }
             // Ahora podemos usar setAll() en la capa de contenido sin afectar las notificaciones
-            capaContenido.getChildren().setAll(vistaDestino);
-
-            ventanaAnterior = ventanaActual;
-            ventanaActual = ventanaDestino;
+            Platform.runLater(() -> {
+                capaContenido.getChildren().setAll(vistaDestino);
+                ventanaAnterior = ventanaActual;
+                ventanaActual = ventanaDestino;
+            });
 
         } catch (IOException e) {
+            System.err.println("Error al cargar la ventana: " + e);
             throw new RuntimeException(e);
         }
+    }
+
+    public static Parent crearVentana(Ventanas ventanaDestino) throws IOException {
+            FXMLLoader fxmlLoader = new FXMLLoader(ventanaDestino.ruta);
+            return fxmlLoader.load();
     }
 
     public static StackPane getCapaNotificaciones() {

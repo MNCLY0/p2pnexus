@@ -75,7 +75,7 @@ public abstract class ManejadorDeMensajes implements Runnable {
         TipoMensaje tipoMensaje = mensaje.getTipo();
         IAccionMensaje manejador = manejadoresPeticiones.get(tipoMensaje);
         try {
-            resultado = manejador.manejarDatos(mensaje.getData(), socketConexion);
+            resultado = manejador.manejarDatos(mensaje, socketConexion);
         }catch (ManejarPeticionesExeptionError e) {
             System.err.println("El mensaje ha devuelto un error: " + e.getMessage());
             if (notificable)
@@ -91,7 +91,21 @@ public abstract class ManejadorDeMensajes implements Runnable {
         }
 
         if (resultado != null) {
-            intentarNotificar(resultado.getMensaje(), resultado.getTipo());}
+
+            if (resultado.getTipoNotificacion() != null)
+            {
+                // Comprobamos si el resultado pide que se notifique al usuario
+                intentarNotificar(resultado.getMensajeNotificacion(), resultado.getTipoNotificacion());
+            }
+            if(resultado.getMensaje() != null)
+            {
+                // Si el resultado tiene un tipo de mensaje (como puede ser el resultado de un login o algo asi)
+                // se lo enviamos al socket
+                Mensaje mensajeResultado = resultado.getMensaje();
+                socketConexion.enviarMensaje(mensajeResultado);
+            }
+
+        }
 
     }
 

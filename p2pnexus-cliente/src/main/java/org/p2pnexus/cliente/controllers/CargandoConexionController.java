@@ -1,13 +1,11 @@
 package org.p2pnexus.cliente.controllers;
 
 import com.p2pnexus.comun.exepciones.ConectarExeption;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
-import org.p2pnexus.cliente.ventanas.VENTANAS;
+import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class CargandoConexionController {
 
@@ -27,7 +25,7 @@ public class CargandoConexionController {
             {
                 try {
                     // Intentamos conectar al servidor
-                    Conexion.iniciarConexion();
+                    Conexion.iniciarConexion(true);
                     conectado = true;
                     System.out.println("Conexión establecida con el servidor.");
                 } catch (ConectarExeption e) {
@@ -49,6 +47,6 @@ public class CargandoConexionController {
     }
 
     void pasarALogin(){
-        GestorVentanas.transicionarVentana(VENTANAS.LOGIN);
+        GestorVentanas.transicionarVentana(Ventanas.LOGIN);
     }
 }

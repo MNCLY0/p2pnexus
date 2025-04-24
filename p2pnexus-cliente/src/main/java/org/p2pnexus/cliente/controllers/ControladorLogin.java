@@ -4,18 +4,15 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Hasheador;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 import com.p2pnexus.comun.TipoNotificacion;
-import org.p2pnexus.cliente.ventanas.VENTANAS;
+import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class ControladorLogin {
 
@@ -52,7 +49,7 @@ public class ControladorLogin {
 
         btnRegistro.setOnAction(event -> {
             System.out.println("Intentando pasar a registro");
-            GestorVentanas.transicionarVentana(VENTANAS.REGISTRO);
+            GestorVentanas.transicionarVentana(Ventanas.REGISTRO);
         });
 
 

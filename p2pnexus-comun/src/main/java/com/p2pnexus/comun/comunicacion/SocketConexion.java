@@ -25,6 +25,7 @@ public class SocketConexion {
     }
 
     public void enviarMensaje(Mensaje mensaje) {
+        System.out.println("Enviando mensaje: " + mensaje.getTipo() + " " + mensaje.getData());
         Gson gson = new Gson();
         String json = gson.toJson(mensaje);
         output.println(json);

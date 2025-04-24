@@ -5,7 +5,9 @@ import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ConectarExeption;
 
 import java.io.BufferedOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Random;
 
 public class Conexion {
 
@@ -17,10 +19,25 @@ public class Conexion {
 
     public static RecibirMensajes recibirMensajes = null;
 
-    public static void iniciarConexion() throws ConectarExeption
+    public static String ipGenerada = null;
+
+    public static void iniciarConexion(boolean test) throws ConectarExeption
     {
         try {
-            Socket socket = new Socket(HOST, PUERTO);
+
+            Socket socket = new Socket();
+
+            if (test && ipGenerada == null) {
+                Random rand = new Random();
+                ipGenerada = "127.0.0." + rand.nextInt(0,255);
+                System.out.println("Ip generada: " + socket.getLocalAddress().getHostAddress());
+            }else
+            {
+              ipGenerada = socket.getLocalAddress().getHostAddress();
+            }
+            socket.bind(new InetSocketAddress(ipGenerada, 0));
+            socket.connect(new InetSocketAddress(HOST, PUERTO));
+
             System.out.println("Conectado al servidor en " + HOST + ":" + PUERTO);
             // Hacemos que el socket siempre mantenga la conexión activa (nos encargaremos de cerrarla cuando sea necesario)
             socket.setKeepAlive(true);
@@ -35,6 +52,13 @@ public class Conexion {
         }
 
     }
+
+    public static void iniciarConexion() throws ConectarExeption
+    {
+        iniciarConexion(false);
+    }
+
+
 
     public static void main(String[] args) {
 
