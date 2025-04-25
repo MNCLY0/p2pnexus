@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.controllers.componentes;
+package org.p2pnexus.cliente.controllers.componentes.tabMenu;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.p2pnexus.cliente.ventanas.Ventanas;

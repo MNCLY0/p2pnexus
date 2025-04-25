@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="280.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorMenuPrincipal">
+<HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorMenuPrincipal">
    <children>
       <GridPane prefHeight="600.0" prefWidth="488.0" styleClass="bg-inset">
          <columnConstraints>
@@ -18,7 +18,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <VBox fx:id="vboxSecciones" alignment="CENTER" prefWidth="234.0" />
+            <VBox fx:id="vboxSecciones" prefWidth="234.0" />
          </children>
       </GridPane>
    </children>

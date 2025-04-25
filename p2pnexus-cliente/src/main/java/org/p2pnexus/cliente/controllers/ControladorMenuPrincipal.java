@@ -1,11 +1,14 @@
 package org.p2pnexus.cliente.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2MZ;
 import org.kordamp.ikonli.material2.Material2RoundAL;
-import org.p2pnexus.cliente.controllers.componentes.TabMenu;
+import org.p2pnexus.cliente.controllers.componentes.tabMenu.ControladorTabMenu;
+import org.p2pnexus.cliente.controllers.componentes.tabMenu.TabMenu;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
@@ -28,11 +31,16 @@ public class ControladorMenuPrincipal {
     public void initialize() {
         for (TabMenu tab : tabs) {
             try {
-                vboxSecciones.getChildren().add(GestorVentanas.crearVentana(Ventanas.TAB_MENU));
+                FXMLLoader loader = GestorVentanas.crearFXMLoader(Ventanas.TAB_MENU);
+                Parent root = loader.load();
+                ControladorTabMenu controladorTabMenu = loader.getController();
+                controladorTabMenu.establecerDatos(tab.getNombre(), tab.getIcono());
+                vboxSecciones.getChildren().add(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
+
+
 }

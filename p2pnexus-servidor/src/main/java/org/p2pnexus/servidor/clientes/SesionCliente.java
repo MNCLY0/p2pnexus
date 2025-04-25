@@ -33,6 +33,7 @@ public class SesionCliente {
     public void desconectar(String motivo) {
         try {
             cliente.enviarMensaje(FabricaMensajes.crearNotificacion("Desconectando del servidor " + motivo, TipoNotificacion.ERROR));
+            cliente.enviarMensaje(new Mensaje(TipoMensaje.P_CERRAR_SESION_CLIENTE));
             // TODO implementar el cierre de la conexión, no podemos cerrar el socket porque el cliente debe seguir conectado
         } catch (Exception e) {
             System.err.println("Error al cerrar la conexión del cliente: " + e.getMessage());

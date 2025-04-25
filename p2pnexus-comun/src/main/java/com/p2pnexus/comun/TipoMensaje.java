@@ -9,6 +9,7 @@ public enum TipoMensaje {
     P_LOGIN,
     P_REGISTRO,
     P_SOLICITAR_CLAVE_PUBLICA,
+    P_CERRAR_SESION_CLIENTE,
 
     // Mensajes de respuesta
     R_LOGIN_OK,
