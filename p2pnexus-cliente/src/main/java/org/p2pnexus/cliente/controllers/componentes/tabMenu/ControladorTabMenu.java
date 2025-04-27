@@ -24,16 +24,18 @@ public class ControladorTabMenu {
 
     int iconoSize = 16;
 
-    public void establecerDatos(String nombre, FontIcon icono)
+    public void establecerDatos(TabMenu tabMenu)
     {
-        nombreTitulo.setText(nombre);
+        nombreTitulo.setText(tabMenu.getNombre());
         // La unica manera que he encontrado de hacer que el icono se ajuste al tamaño del contenedor es usando un binding
         // el problema es que lanza erroes por consola, pero vamos que funciona bien
-        icono.iconSizeProperty().bind(Bindings.createIntegerBinding(() -> (int) (contenedorIcono.getHeight() * 0.5), contenedorIcono.heightProperty()));
-        contenedorIcono.getChildren().add(icono);
+        tabMenu.getIcono().iconSizeProperty().bind(Bindings.createIntegerBinding(() -> (int) (contenedorIcono.getHeight() * 0.5), contenedorIcono.heightProperty()));
+        contenedorIcono.getChildren().add(tabMenu.getIcono());
 
         contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> aplicarEfectoHover(true));
         contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_EXITED, e -> aplicarEfectoHover(false));
+
+        contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> tabMenu.getAccion().moverTab());
 
     }
 

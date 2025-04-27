@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorMenuPrincipal">
+<HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorMenuPrincipal">
    <children>
       <GridPane prefHeight="600.0" prefWidth="488.0" styleClass="bg-inset">
          <columnConstraints>
@@ -14,12 +15,13 @@
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="45.0" />
-            <RowConstraints maxHeight="275.0" minHeight="10.0" prefHeight="272.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="469.0" minHeight="10.0" prefHeight="459.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="259.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <VBox fx:id="vboxSecciones" prefWidth="234.0" />
          </children>
       </GridPane>
+      <TabPane fx:id="tabPanePrincipal" prefHeight="200.0" prefWidth="200.0" styleClass="tabpane-principal" stylesheets="@estilos/estilos.css" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS" />
    </children>
 </HBox>
