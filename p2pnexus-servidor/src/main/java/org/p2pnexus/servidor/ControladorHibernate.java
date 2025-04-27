@@ -12,7 +12,7 @@ public class ControladorHibernate {
 
     public static void hiloAbrirSesion(Double tiempoIntento) {
 
-        new Thread(() -> {
+        Thread hiloConexion = new Thread(() -> {
             while (true)
             {
 //                Log.i("Intentando abrir sesión...");
@@ -30,7 +30,11 @@ public class ControladorHibernate {
 //                    Log.e("Error en hilo de apertura de sesión: " + e.getMessage());
                 }
             }
-        }).start();
+        });
+
+        // hacemos que el hilo sea un daemon para que se cierre cuando se cierra la aplicacion
+        hiloConexion.setDaemon(true);
+        hiloConexion.start();
     }
 
     public static boolean abrirSesion() {

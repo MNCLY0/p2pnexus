@@ -17,7 +17,7 @@ public class CargandoConexionController {
 
     void conectar()
     {
-        new Thread(() -> {
+        Thread hiloConexion = new Thread(() -> {
             // Intentamos conectar al servidor
             System.out.println("Iniciando conexión con el servidor...");
             boolean conectado = false;
@@ -42,8 +42,11 @@ public class CargandoConexionController {
             //Cerramos el thread cuando se conecta
             //Pasamos a la ventana de login
             Platform.runLater(this::pasarALogin);
-            Thread.currentThread().interrupt();
-        }).start();
+        });
+        // Hacemos el hilo daemon para que se cierre cuando se cierra la aplicacion
+        hiloConexion.setDaemon(true);
+        hiloConexion.start();
+
     }
 
     void pasarALogin(){

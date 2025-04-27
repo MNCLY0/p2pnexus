@@ -1,5 +1,6 @@
 package org.p2pnexus.cliente.controllers.componentes.tabMenu;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 
@@ -21,6 +23,8 @@ public class ControladorTabMenu {
 
     @FXML
     public HBox contenedorPrincipal;
+
+    public boolean seleccionado = false;
 
     int iconoSize = 16;
 
@@ -41,13 +45,25 @@ public class ControladorTabMenu {
 
     private void aplicarEfectoHover(boolean aplicar)
     {
-        if(aplicar)
-        {
-            contenedorPrincipal.getStyleClass().add("bg-neutral-muted");
-        }
-        else
-        {
+        // Cuando el tab esta seleccionado no se le aplica el efecto hover
+        if (seleccionado) return;
+
+        cambiarEstilo(aplicar);
+    }
+
+    public void cambiarEstilo(boolean activo) {
+        if (activo) {
+            if (!contenedorPrincipal.getStyleClass().contains("bg-neutral-muted")) {
+                contenedorPrincipal.getStyleClass().add("bg-neutral-muted");
+            }
+
+        } else {
             contenedorPrincipal.getStyleClass().remove("bg-neutral-muted");
         }
+    }
+
+    public void setSeleccionado(boolean seleccionado) {
+        this.seleccionado = seleccionado;
+        cambiarEstilo(seleccionado);
     }
 }

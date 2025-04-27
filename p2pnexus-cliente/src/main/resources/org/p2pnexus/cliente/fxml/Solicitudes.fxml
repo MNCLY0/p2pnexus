@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="tabpane-secundario" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="tabpane-secundario" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
     <Tab styleClass="title-2" text="Pendientes">
       <content>
