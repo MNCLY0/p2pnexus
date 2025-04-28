@@ -8,6 +8,7 @@ public enum Ventanas {
     REGISTRO("org/p2pnexus/cliente/fxml/Registro.fxml"),
     MENU_PRINCIPAL("org/p2pnexus/cliente/fxml/MenuPrincipal.fxml"),
     TAB_SOLICITUDES("org/p2pnexus/cliente/fxml/Solicitudes.fxml"),
+    TAB_CHAT("org/p2pnexus/cliente/fxml/Chat.fxml"),
 
     // Componentes (esto me gustaria hacerlo de otra manera, por ahora lo voy a dejar asi)
     TAB_MENU("org/p2pnexus/cliente/fxml/componentes/TabMenu.fxml");

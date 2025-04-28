@@ -36,6 +36,7 @@ public class ControladorTabMenu {
         tabMenu.getIcono().iconSizeProperty().bind(Bindings.createIntegerBinding(() -> (int) (contenedorIcono.getHeight() * 0.5), contenedorIcono.heightProperty()));
         contenedorIcono.getChildren().add(tabMenu.getIcono());
 
+
         contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> aplicarEfectoHover(true));
         contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_EXITED, e -> aplicarEfectoHover(false));
 
@@ -47,7 +48,6 @@ public class ControladorTabMenu {
     {
         // Cuando el tab esta seleccionado no se le aplica el efecto hover
         if (seleccionado) return;
-
         cambiarEstilo(aplicar);
     }
 
@@ -56,7 +56,6 @@ public class ControladorTabMenu {
             if (!contenedorPrincipal.getStyleClass().contains("bg-neutral-muted")) {
                 contenedorPrincipal.getStyleClass().add("bg-neutral-muted");
             }
-
         } else {
             contenedorPrincipal.getStyleClass().remove("bg-neutral-muted");
         }

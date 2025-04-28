@@ -96,7 +96,7 @@ public class ControladorMenuPrincipal {
         tabsMenu = new ArrayList<>(
                 List.of(
                         new TabMenu("Solicitudes", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_SOLICITUDES),
-                        new TabMenu("Registro", new FontIcon(Material2MZ.PERSON), Ventanas.REGISTRO)
+                        new TabMenu("Chat", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_CHAT)
 //                        new TabMenu("Espacios", new FontIcon(Material2RoundAL.CREATE_NEW_FOLDER), null, null)
                 )
         );
