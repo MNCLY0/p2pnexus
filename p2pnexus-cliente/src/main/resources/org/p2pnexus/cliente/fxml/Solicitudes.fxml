@@ -34,13 +34,13 @@
                         </VBox>
                         <HBox spacing="10.0">
                            <children>
-                              <TextField fx:id="campo_busqueda" />
-                              <Button fx:id="boton_buscar" mnemonicParsing="false" onAction="#solicitarBusqueda" text="Buscar" />
+                              <TextField fx:id="campobuscar" />
+                              <Button fx:id="botonbuscar" mnemonicParsing="false" onAction="#solicitarBusqueda" text="Buscar" />
                            </children>
                         </HBox>
                         <Separator prefWidth="200.0" />
                         <Label styleClass="title-4" text="Resultados:" />
-                        <VBox fx:id="vbox_resultados" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox fx:id="vboxResultados" prefHeight="200.0" prefWidth="100.0" />
                      </children>
                   </VBox>
                </children></AnchorPane>

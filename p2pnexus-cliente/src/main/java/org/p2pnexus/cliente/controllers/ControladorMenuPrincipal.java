@@ -1,6 +1,5 @@
 package org.p2pnexus.cliente.controllers;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,17 +8,14 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2MZ;
-import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.p2pnexus.cliente.controllers.componentes.tabMenu.ControladorTabMenu;
 import org.p2pnexus.cliente.controllers.componentes.tabMenu.TabMenu;
-import org.p2pnexus.cliente.controllers.componentes.tabMenu.tabacciones.AccionTab;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ControladorMenuPrincipal {
     @FXML

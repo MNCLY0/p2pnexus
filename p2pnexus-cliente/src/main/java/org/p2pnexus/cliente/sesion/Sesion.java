@@ -10,7 +10,6 @@ public class Sesion {
 
     public static void iniciarSesion(Usuario usuario){
         Sesion.usuario = usuario;
-        GestorVentanas.transicionarVentana(Ventanas.MENU_PRINCIPAL);
     }
 
     public static void cerrarSesion(){

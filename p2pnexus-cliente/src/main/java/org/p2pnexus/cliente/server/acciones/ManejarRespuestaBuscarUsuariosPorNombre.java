@@ -12,7 +12,6 @@ public class ManejarRespuestaBuscarUsuariosPorNombre implements IAccionMensaje {
 
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-
         ControladorSolicitudes.controladorSolicitudesActual.agregarResultado(mensaje.getData());
         return null;
     }
