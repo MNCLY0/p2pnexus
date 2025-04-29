@@ -20,6 +20,9 @@ public class App extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("fxml/Main.fxml"));
             primaryStage.setTitle("p2pnexus");
             primaryStage.setScene(new Scene(root));
+            // Limitamos el tamaño mínimo de la ventana
+            primaryStage.setMinWidth(1200);
+            primaryStage.setMinHeight(800);
             primaryStage.show();
         }catch (Exception e){
             e.printStackTrace();

@@ -31,20 +31,7 @@ public class ControladorLogin {
 
         // Inicializar el controlador
         btnLogin.setOnAction(event -> {
-
-            // Validamos campos para que no esten vacíos
-            if (txtUsuario.getText().trim().isEmpty() || txtPassword.getText().trim().isEmpty()) {
-                Notificaciones.MostrarNotificacion("Usuario o contraseña vacíos.", TipoNotificacion.ERROR);
-                return;
-            }
-
-            System.out.println("Botón de inicio de sesión presionado");
-            // Lógica para el botón de inicio de sesión
-            JsonObject json = new JsonObject();
-            json.addProperty("usuario",txtUsuario.getText().trim());
-            json.addProperty("pass", Hasheador.hashear(txtPassword.getText().trim()));
-            Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_LOGIN,json));
-
+            intentarLogin();
         });
 
         btnRegistro.setOnAction(event -> {
@@ -52,7 +39,23 @@ public class ControladorLogin {
             GestorVentanas.transicionarVentana(Ventanas.REGISTRO);
         });
 
+    }
 
+    @FXML
+    public void intentarLogin(){
+        // Validamos campos para que no esten vacíos
+        if (txtUsuario.getText().trim().isEmpty() || txtPassword.getText().trim().isEmpty()) {
+            Notificaciones.MostrarNotificacion("Usuario o contraseña vacíos.", TipoNotificacion.ERROR);
+            return;
+        }
+
+        System.out.println("Intenti de nicio de sesión");
+
+        // Lógica para el botón de inicio de sesión
+        JsonObject json = new JsonObject();
+        json.addProperty("usuario",txtUsuario.getText().trim());
+        json.addProperty("pass", Hasheador.hashear(txtPassword.getText().trim()));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_LOGIN,json));
     }
 
 

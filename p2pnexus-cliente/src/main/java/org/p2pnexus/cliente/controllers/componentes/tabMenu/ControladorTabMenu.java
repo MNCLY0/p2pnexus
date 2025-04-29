@@ -36,7 +36,6 @@ public class ControladorTabMenu {
         tabMenu.getIcono().iconSizeProperty().bind(Bindings.createIntegerBinding(() -> (int) (contenedorIcono.getHeight() * 0.5), contenedorIcono.heightProperty()));
         contenedorIcono.getChildren().add(tabMenu.getIcono());
 
-
         contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> aplicarEfectoHover(true));
         contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_EXITED, e -> aplicarEfectoHover(false));
 

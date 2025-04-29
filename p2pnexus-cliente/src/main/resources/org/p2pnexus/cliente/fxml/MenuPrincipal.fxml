@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorMenuPrincipal">
+<HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorMenuPrincipal">
    <children>
-      <GridPane prefHeight="600.0" prefWidth="488.0" styleClass="bg-inset">
+      <GridPane prefHeight="600.0" prefWidth="300.0" styleClass="bg-inset">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
          </columnConstraints>
