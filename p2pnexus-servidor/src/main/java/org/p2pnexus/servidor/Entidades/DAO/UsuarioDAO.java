@@ -6,6 +6,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.p2pnexus.servidor.Entidades.Usuario;
 
+import java.util.ArrayList;
+
 public class UsuarioDAO {
 
     private final SessionFactory sessionFactory;
@@ -46,7 +48,19 @@ public class UsuarioDAO {
         }
     }
 
+    // Este metodo permite buscar una lista de usuarios por su nombre, buscando coincidencias parciales (para que la busqueda sea mas flexible)
+    public ArrayList<Usuario> buscarUsuariosPorNombre(String nombre) {
+        try (Session session = sessionFactory.openSession()) {
+            return (ArrayList<Usuario>) session.createQuery("FROM Usuario WHERE nombre LIKE :nombre", Usuario.class)
+                    .setParameter("nombre", "%" + nombre + "%")
+                    .setMaxResults(10) // Limitamos a 10 resultados, no queremos que se devuelvan demasiados sería una locura que algunos casos
+                    .list();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar usuarios: " + e.getMessage(), e);
+        }
+    }
 
+    // Este metodo permite buscar un usuario por su nombre
     public Usuario buscarPorNombre(String nombre) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM Usuario WHERE nombre = :nombre", Usuario.class)
@@ -57,6 +71,7 @@ public class UsuarioDAO {
         }
     }
 
+    // Nos devuelve true o false dependiendo si el usuario ya existe o no
     public boolean yaExiste(String nombre) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("SELECT COUNT(u) FROM Usuario u WHERE u.nombre = :nombre", Long.class)
@@ -67,7 +82,8 @@ public class UsuarioDAO {
         }
     }
 
-    public String validarCredenciales(String nombre, String contrasena) {
+    // Este metodo valida las credenciales del usuario
+    public Usuario validarCredenciales(String nombre, String contrasena) {
         Usuario usuario = buscarPorNombre(nombre);
         if (usuario == null) {
             return null;
@@ -75,7 +91,7 @@ public class UsuarioDAO {
         if (!usuario.getContrasena().equals(contrasena)) {
             return null;
         }
-        return usuario.getNombre();
+        return usuario;
     }
 
     public void cerrar() {

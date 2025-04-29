@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.fxml.componentes.TarjetaContacto">
+   <children>
+      <VBox prefHeight="100.0" prefWidth="100.0" styleClass="bg-subtle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0" />
+      <Label layoutX="147.0" layoutY="10.0" styleClass="title-2" text="Nombre usuario" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="147.0" AnchorPane.topAnchor="10.0" />
+      <Button layoutX="439.0" layoutY="34.0" mnemonicParsing="false" text="Enviar solicitud" AnchorPane.bottomAnchor="34.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="34.0" />
+   </children>
+</AnchorPane>

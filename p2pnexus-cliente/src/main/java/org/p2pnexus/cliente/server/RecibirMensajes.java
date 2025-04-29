@@ -6,10 +6,7 @@ import com.p2pnexus.comun.comunicacion.SocketConexion;
 import org.p2pnexus.cliente.server.acciones.ManejarCerrarSesion;
 import org.p2pnexus.cliente.server.acciones.ManejarLogin;
 import org.p2pnexus.cliente.server.acciones.ManejarNotificaciones;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.Socket;
+import org.p2pnexus.cliente.server.acciones.ManejarRespuestaBuscarUsuariosPorNombre;
 
 public class RecibirMensajes extends ManejadorDeMensajes {
 
@@ -21,6 +18,7 @@ public class RecibirMensajes extends ManejadorDeMensajes {
     public void inicializarManejadores() {
         manejadoresPeticiones.put(TipoMensaje.NOTIFICACION, new ManejarNotificaciones());
         manejadoresPeticiones.put(TipoMensaje.R_LOGIN_OK, new ManejarLogin());
-        manejadoresPeticiones.put(TipoMensaje.P_CERRAR_SESION_CLIENTE, new ManejarCerrarSesion());
+        manejadoresPeticiones.put(TipoMensaje.C_CERRAR_SESION_CLIENTE, new ManejarCerrarSesion());
+        manejadoresPeticiones.put(TipoMensaje.R_BUSCAR_USUARIOS_POR_NOMBRE, new ManejarRespuestaBuscarUsuariosPorNombre());
     }
 }

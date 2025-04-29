@@ -55,7 +55,7 @@ public class ControladorLogin {
         JsonObject json = new JsonObject();
         json.addProperty("usuario",txtUsuario.getText().trim());
         json.addProperty("pass", Hasheador.hashear(txtPassword.getText().trim()));
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_LOGIN,json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_LOGIN,json));
     }
 
 

@@ -6,13 +6,24 @@ import com.p2pnexus.comun.comunicacion.IAccionMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
+import org.p2pnexus.cliente.server.entitades.Usuario;
+import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class ManejarLogin implements IAccionMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        GestorVentanas.transicionarVentana(Ventanas.MENU_PRINCIPAL);
+        String nombre = mensaje.getData().get("nombre").getAsString();
+        int id = mensaje.getData().get("id").getAsInt();
+
+        // Guardamos el usuario en la sesion
+        Usuario usuario = new Usuario();
+        usuario.setNombre(nombre);
+        usuario.setId_usuario(id);
+
+        Sesion.iniciarSesion(usuario);
+
         return null;
     }
 }

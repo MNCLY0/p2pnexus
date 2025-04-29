@@ -6,11 +6,8 @@ import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.exepciones.GestorDeVentanasExeption;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
@@ -51,7 +48,7 @@ public class ControladorRegistro {
                 JsonObject json = new JsonObject();
                 json.addProperty("usuario", txtUsuario.getText().trim());
                 json.addProperty("pass", Hasheador.hashear(txtPassword.getText().trim()));
-                Conexion.enviarMensaje(new Mensaje(TipoMensaje.P_REGISTRO,json));
+                Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_REGISTRO,json));
             }
         });
 

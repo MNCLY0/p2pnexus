@@ -1,5 +1,6 @@
 package org.p2pnexus.servidor.Entidades;
 
+import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,8 +9,11 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Necesitamos para poder serializar el objeto en json, sin el expose se serializa todo, y no queremos la contraseña
+    @Expose
     private Integer id_usuario;
 
+    @Expose
     private String nombre;
 
     private String contrasena;

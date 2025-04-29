@@ -4,17 +4,19 @@ public enum TipoMensaje {
 
     NOTIFICACION,
     
-    // Mensajes de peticion
-    P_TEST,
-    P_LOGIN,
-    P_REGISTRO,
-    P_SOLICITAR_CLAVE_PUBLICA,
-    P_CERRAR_SESION_CLIENTE,
+    // Mensajes de consulta
+    C_TEST,
+    C_LOGIN,
+    C_REGISTRO,
+    C_SOLICITAR_CLAVE_PUBLICA,
+    C_CERRAR_SESION_CLIENTE,
+    C_BUSCAR_USUARIOS_POR_NOMBRE,
 
     // Mensajes de respuesta
     R_LOGIN_OK,
     R_TEST,
     R_CONFIRMACION,
-    R_ERROR
+    R_ERROR,
+    R_BUSCAR_USUARIOS_POR_NOMBRE,
 
 }

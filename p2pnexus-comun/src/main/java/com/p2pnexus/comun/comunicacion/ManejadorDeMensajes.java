@@ -86,7 +86,7 @@ public abstract class ManejadorDeMensajes implements Runnable {
         catch (Exception e) {
             if (notificable)
             {
-                intentarNotificar("Error al manejar la petición", TipoNotificacion.ERROR);
+                intentarNotificar(e.getMessage(), TipoNotificacion.ERROR);
             }
         }
 
@@ -116,6 +116,11 @@ public abstract class ManejadorDeMensajes implements Runnable {
         json.addProperty("mensaje", mensaje);
         Mensaje mensajeNoti = new Mensaje(TipoMensaje.NOTIFICACION,json);
         socketConexion.enviarMensaje(mensajeNoti);
+    }
+
+    public IAccionMensaje getManejador(TipoMensaje tipoMensaje)
+    {
+        return manejadoresPeticiones.get(tipoMensaje);
     }
 
 }

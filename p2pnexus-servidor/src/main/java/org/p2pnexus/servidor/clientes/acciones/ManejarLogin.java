@@ -10,6 +10,7 @@ import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import org.p2pnexus.servidor.ControladorHibernate;
 import org.p2pnexus.servidor.Entidades.DAO.UsuarioDAO;
+import org.p2pnexus.servidor.Entidades.Usuario;
 import org.p2pnexus.servidor.clientes.ControladorSesiones;
 
 public class ManejarLogin implements IAccionMensaje {
@@ -22,36 +23,31 @@ public class ManejarLogin implements IAccionMensaje {
         String usuario = datos.get("usuario").getAsString();
         String contrasena = datos.get("pass").getAsString();
 
-        String nombre;
+        Usuario usuarioO;
 
         System.out.println("El usuario intenta iniciar sesión con el usuario: " + usuario + " y la contraseña: " + contrasena);
 
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            nombre = usuarioDAO.validarCredenciales(usuario, contrasena);
-            if (nombre == null) {throw new Exception();}
+            usuarioO = usuarioDAO.validarCredenciales(usuario, contrasena);
+            if (usuarioO == null) {throw new Exception();}
         }catch (Exception e) {
             System.out.println("Error al iniciar sesión: " + e.getMessage());
             return new ResultadoMensaje("Error al iniciar sesión", TipoNotificacion.ERROR);
         }
 
-        iniciarSaludo(socketConexion, nombre);
-
-        return new ResultadoMensaje("Login exitoso, bienvenido " + nombre,
+        return new ResultadoMensaje("Login exitoso, bienvenido " + usuarioO.getNombre(),
                 TipoNotificacion.EXITO,
-                rellenarRespuesta(mensaje.generarRespuesta()));
+                rellenarRespuesta(mensaje.generarRespuesta(), usuarioO));
     }
 
-    void iniciarSaludo(SocketConexion socketConexion, String nombre)
-    {
-        ControladorSesiones.agregarSesion(socketConexion, nombre);
-    }
 
-    Mensaje rellenarRespuesta(Mensaje mensaje)
+    Mensaje rellenarRespuesta(Mensaje mensaje, Usuario usuario)
     {
         mensaje.setTipo(TipoMensaje.R_LOGIN_OK);
         JsonObject data = new JsonObject();
-        data.addProperty("usuario", "test");
+        data.addProperty("usuario", usuario.getNombre());
+        data.addProperty("id", usuario.getId_usuario());
         mensaje.setData(data);
         return mensaje;
     }

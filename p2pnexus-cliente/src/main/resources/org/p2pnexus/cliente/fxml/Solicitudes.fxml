@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="tabpane-secundario" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="564.0" styleClass="tabpane-secundario" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorSolicitudes">
   <tabs>
     <Tab styleClass="title-2" text="Pendientes">
       <content>
@@ -34,12 +34,13 @@
                         </VBox>
                         <HBox spacing="10.0">
                            <children>
-                              <TextField />
-                              <Button mnemonicParsing="false" text="Buscar" />
+                              <TextField fx:id="campo_busqueda" />
+                              <Button fx:id="boton_buscar" mnemonicParsing="false" onAction="#solicitarBusqueda" text="Buscar" />
                            </children>
                         </HBox>
                         <Separator prefWidth="200.0" />
                         <Label styleClass="title-4" text="Resultados:" />
+                        <VBox fx:id="vbox_resultados" prefHeight="200.0" prefWidth="100.0" />
                      </children>
                   </VBox>
                </children></AnchorPane>

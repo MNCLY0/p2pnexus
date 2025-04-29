@@ -25,6 +25,10 @@ public class ResultadoMensaje {
         this(mensaje, tipo, null);
     }
 
+    public ResultadoMensaje(Mensaje mensaje) {
+        this(null, null, mensaje);
+    }
+
     public Mensaje getMensaje() {
         return mensaje;
     }

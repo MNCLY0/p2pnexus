@@ -77,6 +77,7 @@ public class Conexion {
         }
     }
 
+
     public static Mensaje recibirMensaje() {
         if (CONEXION != null) {
             return CONEXION.recibirMensaje();
