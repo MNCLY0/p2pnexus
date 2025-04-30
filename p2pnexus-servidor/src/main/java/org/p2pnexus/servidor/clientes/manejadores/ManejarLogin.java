@@ -10,6 +10,7 @@ import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import org.p2pnexus.servidor.Entidades.DAO.UsuarioDAO;
 import org.p2pnexus.servidor.Entidades.Usuario;
+import org.p2pnexus.servidor.clientes.ControladorSesiones;
 
 public class ManejarLogin implements IManejadorMensaje {
 
@@ -29,6 +30,7 @@ public class ManejarLogin implements IManejadorMensaje {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioO = usuarioDAO.validarCredenciales(usuario, contrasena);
             if (usuarioO == null) {throw new Exception();}
+            ControladorSesiones.agregarSesion(socketConexion, usuario);
         }catch (Exception e) {
             System.out.println("Error al iniciar sesión: " + e.getMessage());
             return new ResultadoMensaje("Error al iniciar sesión", TipoNotificacion.ERROR);
@@ -44,7 +46,7 @@ public class ManejarLogin implements IManejadorMensaje {
     {
         mensaje.setTipo(TipoMensaje.R_LOGIN_OK);
         JsonObject data = new JsonObject();
-        data.addProperty("usuario", usuario.getNombre());
+        data.addProperty("nombre", usuario.getNombre());
         data.addProperty("id", usuario.getId_usuario());
         mensaje.setData(data);
         return mensaje;

@@ -1,9 +1,16 @@
 package org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable;
 
+import com.google.gson.JsonObject;
+import com.p2pnexus.comun.Mensaje;
+import com.p2pnexus.comun.TipoMensaje;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import org.p2pnexus.cliente.controladores.vistas.ControladorSolicitudes;
+import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.Usuario;
+import org.p2pnexus.cliente.sesion.Sesion;
 
 public class ControladorTarjetaContactoSolicitable {
 
@@ -24,6 +31,22 @@ public class ControladorTarjetaContactoSolicitable {
     @FXML
     public void enviarSolicitud()
     {
+        JsonObject json = new JsonObject();
+        json.addProperty("id_usuario_origen", Sesion.getUsuario().getId_usuario());
+        json.addProperty("id_usuario_destino", usuario.getId_usuario());
 
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_CREAR_SOLICITUD,json));
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                Platform.runLater(() -> {
+                    ControladorSolicitudes.controladorSolicitudesActual.campobuscar.clear();
+                    ControladorSolicitudes.controladorSolicitudesActual.vboxResultadosUsuarios.getChildren().clear();
+                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

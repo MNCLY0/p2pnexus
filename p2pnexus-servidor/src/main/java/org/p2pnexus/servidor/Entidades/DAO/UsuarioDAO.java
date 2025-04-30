@@ -8,26 +8,12 @@ import org.p2pnexus.servidor.Entidades.Usuario;
 
 import java.util.ArrayList;
 
-public class UsuarioDAO {
-
-    private final SessionFactory sessionFactory;
-
-    public UsuarioDAO() {
-        try {
-            // Configuración de Hibernate
-            Configuration configuration = new Configuration();
-            configuration.configure();
-            this.sessionFactory = configuration.buildSessionFactory();
-        } catch (Exception e) {
-            throw new RuntimeException("Error al inicializar la sesión de Hibernate: " + e.getMessage(), e);
-        }
-    }
-
+public class UsuarioDAO extends DAO{
 
     public Integer crearUsuario(String nombre, String contrasena) {
         Transaction transaction = null;
 
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
             // Creamos nuevo usuario con los datos proporcionados
@@ -50,7 +36,7 @@ public class UsuarioDAO {
 
     // Este metodo permite buscar una lista de usuarios por su nombre, buscando coincidencias parciales (para que la busqueda sea mas flexible)
     public ArrayList<Usuario> buscarUsuariosPorNombre(String nombre) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = getSessionFactory().openSession()) {
             return (ArrayList<Usuario>) session.createQuery("FROM Usuario WHERE nombre LIKE :nombre", Usuario.class)
                     .setParameter("nombre", "%" + nombre + "%")
                     .setMaxResults(10) // Limitamos a 10 resultados, no queremos que se devuelvan demasiados sería una locura que algunos casos
@@ -62,7 +48,7 @@ public class UsuarioDAO {
 
     // Este metodo permite buscar un usuario por su nombre
     public Usuario buscarPorNombre(String nombre) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = getSessionFactory().openSession()) {
             return session.createQuery("FROM Usuario WHERE nombre = :nombre", Usuario.class)
                     .setParameter("nombre", nombre)
                     .uniqueResult();
@@ -73,7 +59,7 @@ public class UsuarioDAO {
 
     // Nos devuelve true o false dependiendo si el usuario ya existe o no
     public boolean yaExiste(String nombre) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = getSessionFactory().openSession()) {
             return session.createQuery("SELECT COUNT(u) FROM Usuario u WHERE u.nombre = :nombre", Long.class)
                     .setParameter("nombre", nombre)
                     .uniqueResult() > 0;
@@ -94,9 +80,4 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    public void cerrar() {
-        if (sessionFactory != null) {
-            sessionFactory.close();
-        }
-    }
 }

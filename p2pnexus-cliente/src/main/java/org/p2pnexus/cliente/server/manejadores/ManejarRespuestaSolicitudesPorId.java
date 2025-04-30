@@ -7,21 +7,20 @@ import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import org.p2pnexus.cliente.controladores.vistas.ControladorSolicitudes;
-import org.p2pnexus.cliente.server.entitades.Usuario;
+import org.p2pnexus.cliente.server.entitades.SolicitudContacto;
 
 import java.util.List;
 
-public class ManejarRespuestaBuscarUsuariosPorNombre implements IManejadorMensaje {
-
-
+public class ManejarRespuestaSolicitudesPorId implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        List<Usuario> respuesta = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), Usuario.class);
+        List<SolicitudContacto> respuesta = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), SolicitudContacto.class);
         if (respuesta.isEmpty()) {
             return null;
         }
-        ControladorSolicitudes.controladorSolicitudesActual.agregarUsuarios(respuesta);
+
+        ControladorSolicitudes.controladorSolicitudesActual.agregarSolicitudes(respuesta);
+
         return null;
     }
-
 }

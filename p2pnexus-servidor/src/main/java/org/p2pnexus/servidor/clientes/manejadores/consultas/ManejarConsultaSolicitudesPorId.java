@@ -1,8 +1,5 @@
 package org.p2pnexus.servidor.clientes.manejadores.consultas;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
@@ -12,26 +9,23 @@ import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import org.p2pnexus.servidor.Entidades.DAO.SolicitudContactoDAO;
-import org.p2pnexus.servidor.Entidades.DAO.UsuarioDAO;
 import org.p2pnexus.servidor.Entidades.SolicitudContacto;
-import org.p2pnexus.servidor.Entidades.Usuario;
 
 import java.util.ArrayList;
 
-public class ManejarConsultaUsuariosPorNombre implements IManejadorMensaje {
+public class ManejarConsultaSolicitudesPorId implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        String nombreBuscar = mensaje.getData().get("nombre").getAsString();
-        int idUsuarioOrigen = mensaje.getData().get("id_usuario_origen").getAsInt();
+        int idUsuario = mensaje.getData().get("id_usuario").getAsInt();
 
         SolicitudContactoDAO dao = new SolicitudContactoDAO();
-        ArrayList<Usuario> usuarios = dao.buscarUsuariosSolicitables(nombreBuscar, idUsuarioOrigen);
+        ArrayList<SolicitudContacto> solicitudes = dao.obtenerSolicitudesPendientesDeUsuario(idUsuario);
 
-        if (usuarios.isEmpty()) {
-            throw new ManejarPeticionesExeptionError("No se han encontrado usuarios");
+        if (solicitudes.isEmpty()) {
+            throw new ManejarPeticionesExeptionError("No se han encontrado solicitudes");
         }
 
-        Mensaje respuesta = Mensaje.empaquetarListaEnMensaje(usuarios, TipoMensaje.R_BUSCAR_USUARIOS_POR_NOMBRE);
+        Mensaje respuesta = Mensaje.empaquetarListaEnMensaje(solicitudes, TipoMensaje.R_SOLICITUDES_POR_ID);
 
         return new ResultadoMensaje(respuesta);
     }

@@ -17,7 +17,7 @@ public class Conexion {
 
     public static BufferedOutputStream OUT = null;
 
-    public static RecibirMensajes recibirMensajes = null;
+    public static ControlManejadores controlManejadores = null;
 
     public static String ipGenerada = null;
 
@@ -44,8 +44,8 @@ public class Conexion {
 
             CONEXION = new SocketConexion(socket, "Servidor " + socket.getInetAddress().getHostAddress());
 
-            recibirMensajes = new RecibirMensajes(CONEXION);
-            new Thread(recibirMensajes).start();
+            controlManejadores = new ControlManejadores(CONEXION);
+            new Thread(controlManejadores).start();
 
         } catch (Exception e) {
             throw new ConectarExeption("Error al conectar al servidor", e);

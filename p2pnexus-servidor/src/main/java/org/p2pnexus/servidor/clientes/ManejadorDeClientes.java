@@ -8,7 +8,7 @@ public class ManejadorDeClientes implements Runnable {
 
     private final SocketConexion cliente;
     private BufferedReader input;
-    private RecibirMensajes manejadorMensajes;
+    private ControlManejadores manejadorMensajes;
 
     public ManejadorDeClientes(SocketConexion cliente) {
         this.cliente = cliente;
@@ -17,7 +17,7 @@ public class ManejadorDeClientes implements Runnable {
     @Override
     public void run() {
         System.out.println("Cliente conectado: " + cliente.getSocket().getInetAddress().getHostAddress());
-        manejadorMensajes = new RecibirMensajes(cliente);
+        manejadorMensajes = new ControlManejadores(cliente);
         new Thread(manejadorMensajes).start();
     }
 

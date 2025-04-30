@@ -13,6 +13,7 @@ public class Sesion {
     }
 
     public static void cerrarSesion(){
+        Sesion.usuario = null;
         GestorVentanas.transicionarVentana(Ventanas.LOGIN);
     }
 

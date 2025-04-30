@@ -2,6 +2,8 @@ package com.p2pnexus.comun;
 
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
 public class Mensaje {
     private TipoMensaje tipo;
     private JsonObject data;
@@ -54,6 +56,14 @@ public class Mensaje {
         Mensaje respuesta = new Mensaje(this.id);
         respuesta.setEsRespuesta(true);
         return respuesta;
+    }
+
+    public static <T> Mensaje empaquetarListaEnMensaje(List<T> lista, TipoMensaje tipo)
+    {
+        JsonObject json = JsonHerramientas.empaquetarListaEnJsonObject(lista);
+        Mensaje mensaje = new Mensaje(tipo, json);
+        mensaje.setData(json);
+        return mensaje;
     }
 
     public boolean EsRespuesta() {return esRespuesta;}

@@ -5,6 +5,11 @@ import javafx.beans.property.StringProperty;
 
 public class Usuario {
 
+    public Usuario(String nombre, Integer id_usuario) {
+        this.nombre = nombre;
+        this.id_usuario = id_usuario;
+    }
+
     private Integer id_usuario;
 
     private String nombre;
