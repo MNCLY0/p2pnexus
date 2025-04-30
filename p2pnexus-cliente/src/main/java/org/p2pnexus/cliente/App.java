@@ -7,17 +7,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.p2pnexus.cliente.ventanas.Ventanas;
 
-/**
- * Hello world!
- */
 public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
             Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
-            Parent root = FXMLLoader.load(getClass().getResource("fxml/Main.fxml"));
+            Parent root = FXMLLoader.load(Ventanas.MAIN.getRuta());
             primaryStage.setTitle("p2pnexus");
             primaryStage.setScene(new Scene(root));
             // Limitamos el tamaño mínimo de la ventana

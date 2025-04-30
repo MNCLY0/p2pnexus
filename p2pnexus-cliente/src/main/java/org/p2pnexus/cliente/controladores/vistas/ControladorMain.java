@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.controllers;
+package org.p2pnexus.cliente.controladores.vistas;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;

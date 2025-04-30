@@ -71,8 +71,8 @@ public class GestorVentanas {
             return fxmlLoader.load();
     }
 
-    public static FXMLLoader crearFXMLoader(Ventanas ventanaDestino) throws IOException {
-        return new FXMLLoader(ventanaDestino.ruta);
+    public static FXMLLoader crearFXMLoader(IEnumVistaCargable ventanaDestino) throws IOException {
+        return new FXMLLoader(ventanaDestino.getRuta());
     }
 
 

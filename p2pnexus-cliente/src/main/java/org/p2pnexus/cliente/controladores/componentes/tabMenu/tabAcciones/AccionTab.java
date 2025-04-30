@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.controllers.componentes.tabMenu.tabAcciones;
+package org.p2pnexus.cliente.controladores.componentes.tabMenu.tabAcciones;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.Tab;

@@ -1,9 +1,9 @@
-package org.p2pnexus.cliente.controllers.componentes.tabMenu;
+package org.p2pnexus.cliente.controladores.componentes.tabMenu;
 
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import org.kordamp.ikonli.javafx.FontIcon;
-import org.p2pnexus.cliente.controllers.componentes.tabMenu.tabAcciones.AccionTab;
+import org.p2pnexus.cliente.controladores.componentes.tabMenu.tabAcciones.AccionTab;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class TabMenu {

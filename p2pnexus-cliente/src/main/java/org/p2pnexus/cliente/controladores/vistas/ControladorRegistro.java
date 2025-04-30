@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.controllers;
+package org.p2pnexus.cliente.controladores.vistas;
 
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Hasheador;

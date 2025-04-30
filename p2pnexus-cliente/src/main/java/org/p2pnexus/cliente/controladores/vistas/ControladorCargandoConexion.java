@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.controllers;
+package org.p2pnexus.cliente.controladores.vistas;
 
 import com.p2pnexus.comun.exepciones.ConectarExeption;
 import javafx.application.Platform;
@@ -7,7 +7,7 @@ import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
-public class CargandoConexionController {
+public class ControladorCargandoConexion {
 
     public AnchorPane root;
 

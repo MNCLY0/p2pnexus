@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.controllers;
+package org.p2pnexus.cliente.controladores.vistas;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -7,20 +7,21 @@ import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
-import com.p2pnexus.comun.comunicacion.SocketConexion;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContactoSolicitable;
 import org.p2pnexus.cliente.server.Conexion;
-import org.p2pnexus.cliente.server.RecibirMensajes;
 import org.p2pnexus.cliente.server.entitades.Usuario;
+import org.p2pnexus.cliente.ventanas.Componentes;
+import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 public class ControladorSolicitudes {
@@ -88,9 +89,20 @@ public class ControladorSolicitudes {
     public void agregarResultadoAVbox(Usuario usuario)
     {
         Platform.runLater(() -> {;
-            Label label = new Label(usuario.getNombre());
-            label.getStyleClass().add("title");
-            vboxResultados.getChildren().add(label);
+            try {
+                FXMLLoader fxmlLoader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TARJETA_CONTACTO_SOLICITABLE);
+                Parent parent = fxmlLoader.load();
+                ControladorTarjetaContactoSolicitable controlador = fxmlLoader.getController();
+
+                controlador.inicializarConUsuario(usuario);
+
+                vboxResultados.getChildren().add(parent);
+
+            }catch (IOException e)
+            {
+                System.out.println("Error al cargar la tarjeta del usuario " + usuario.getNombre());
+            }
+
         });
 
     }

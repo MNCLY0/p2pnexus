@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorMenuPrincipal">
+<HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal">
    <children>
       <GridPane prefHeight="600.0" prefWidth="300.0" styleClass="bg-inset">
          <columnConstraints>
@@ -22,6 +22,6 @@
             <VBox fx:id="vboxSecciones" prefWidth="234.0" />
          </children>
       </GridPane>
-      <TabPane fx:id="tabPanePrincipal" prefHeight="200.0" prefWidth="200.0" styleClass="tabpane-principal" stylesheets="@estilos/estilos.css" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS" />
+      <TabPane fx:id="tabPanePrincipal" prefHeight="200.0" prefWidth="200.0" styleClass="tabpane-principal" stylesheets="@../../estilos/estilos.css" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS" />
    </children>
 </HBox>

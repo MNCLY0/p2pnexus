@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.controllers;
+package org.p2pnexus.cliente.controladores.vistas;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,8 +8,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2MZ;
-import org.p2pnexus.cliente.controllers.componentes.tabMenu.ControladorTabMenu;
-import org.p2pnexus.cliente.controllers.componentes.tabMenu.TabMenu;
+import org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu;
+import org.p2pnexus.cliente.controladores.componentes.tabMenu.TabMenu;
+import org.p2pnexus.cliente.ventanas.Componentes;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
@@ -59,7 +60,7 @@ public class ControladorMenuPrincipal {
         Parent root = null;
 
         try {
-            FXMLLoader loader = GestorVentanas.crearFXMLoader(Ventanas.TAB_MENU);
+            FXMLLoader loader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TAB_MENU);
             root = loader.load();
             ControladorTabMenu controladorTabMenu = loader.getController();
             controladorTabMenu.establecerDatos(tabMenu);

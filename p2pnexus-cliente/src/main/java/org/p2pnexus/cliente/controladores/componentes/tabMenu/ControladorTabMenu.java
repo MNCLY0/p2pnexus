@@ -1,17 +1,11 @@
-package org.p2pnexus.cliente.controllers.componentes.tabMenu;
+package org.p2pnexus.cliente.controladores.componentes.tabMenu;
 
-import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.util.Duration;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 
 public class ControladorTabMenu {

@@ -5,7 +5,7 @@ import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
-import org.p2pnexus.cliente.controllers.ControladorSolicitudes;
+import org.p2pnexus.cliente.controladores.vistas.ControladorSolicitudes;
 
 public class ManejarRespuestaBuscarUsuariosPorNombre implements IManejadorMensaje {
 

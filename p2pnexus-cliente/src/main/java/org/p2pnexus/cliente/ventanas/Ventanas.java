@@ -2,16 +2,14 @@ package org.p2pnexus.cliente.ventanas;
 
 import java.net.URL;
 
-public enum Ventanas {
-    CARGANDO_CONEXION("org/p2pnexus/cliente/fxml/CargandoConexion.fxml"),
-    LOGIN("org/p2pnexus/cliente/fxml/Login.fxml"),
-    REGISTRO("org/p2pnexus/cliente/fxml/Registro.fxml"),
-    MENU_PRINCIPAL("org/p2pnexus/cliente/fxml/MenuPrincipal.fxml"),
-    TAB_SOLICITUDES("org/p2pnexus/cliente/fxml/Solicitudes.fxml"),
-    TAB_CHAT("org/p2pnexus/cliente/fxml/Chat.fxml"),
-
-    // Componentes (esto me gustaria hacerlo de otra manera, por ahora lo voy a dejar asi)
-    TAB_MENU("org/p2pnexus/cliente/fxml/componentes/TabMenu.fxml");
+public enum Ventanas implements IEnumVistaCargable{
+    MAIN("org/p2pnexus/cliente/fxml/vistas/Main.fxml"),
+    CARGANDO_CONEXION("org/p2pnexus/cliente/fxml/vistas/CargandoConexion.fxml"),
+    LOGIN("org/p2pnexus/cliente/fxml/vistas/Login.fxml"),
+    REGISTRO("org/p2pnexus/cliente/fxml/vistas/Registro.fxml"),
+    MENU_PRINCIPAL("org/p2pnexus/cliente/fxml/vistas/MenuPrincipal.fxml"),
+    TAB_SOLICITUDES("org/p2pnexus/cliente/fxml/vistas/Solicitudes.fxml"),
+    TAB_CHAT("org/p2pnexus/cliente/fxml/vistas/Chat.fxml");
 
     Ventanas(String ruta) {
         try {
@@ -22,4 +20,8 @@ public enum Ventanas {
         }
     }
     URL ruta;
+
+    public URL getRuta() {
+        return ruta;
+    }
 }

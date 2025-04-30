@@ -13,14 +13,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="476.0" prefWidth="278.0" spacing="15.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controllers.ControladorRegistro">
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="476.0" prefWidth="278.0" spacing="15.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorLogin">
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../imagenes/logop2pnexus-invertido.png" />
+            <Image url="@../../imagenes/logop2pnexus-invertido.png" />
          </image>
       </ImageView>
-      <Label styleClass="title-2" text="Crear cuenta" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label styleClass="title-2" text="Inicio de sesión" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -28,7 +28,7 @@
       <GridPane vgap="15.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" />
-            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" />
          </columnConstraints>
          <rowConstraints>
@@ -36,17 +36,16 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TextField fx:id="txtUsuario" prefHeight="30.0" prefWidth="167.0" promptText="introduce tu usuario" GridPane.columnIndex="1" />
-            <PasswordField fx:id="txtPassword" promptText="introduce tu contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <VBox fx:id="iconoInfoPassword" alignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="txtUsuario" onAction="#intentarLogin" promptText="introduce tu usuario" GridPane.columnIndex="1" />
+            <PasswordField fx:id="txtPassword" onAction="#intentarLogin" promptText="introduce tu contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <HBox spacing="10.0">
          <children>
-            <Button fx:id="btnCrearCuenta" mnemonicParsing="false" text="Confirmar" />
+            <Button fx:id="btnLogin" mnemonicParsing="false" text="Iniciar sesión" />
          </children>
       </HBox>
-      <Label text="Volver a inicio de sesión:" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
-      <Button fx:id="btnVolver" mnemonicParsing="false" text="Volver" />
+      <Label text="¿No tienes cuenta? Crea una:" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
+      <Button fx:id="btnRegistro" mnemonicParsing="false" text="Crear cuenta" />
    </children>
 </VBox>
