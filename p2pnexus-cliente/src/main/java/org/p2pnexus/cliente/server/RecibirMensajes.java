@@ -3,10 +3,10 @@ package org.p2pnexus.cliente.server;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.comunicacion.ManejadorDeMensajes;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
-import org.p2pnexus.cliente.server.acciones.ManejarCerrarSesion;
-import org.p2pnexus.cliente.server.acciones.ManejarLogin;
-import org.p2pnexus.cliente.server.acciones.ManejarNotificaciones;
-import org.p2pnexus.cliente.server.acciones.ManejarRespuestaBuscarUsuariosPorNombre;
+import org.p2pnexus.cliente.server.manejadores.ManejarCerrarSesion;
+import org.p2pnexus.cliente.server.manejadores.ManejarLogin;
+import org.p2pnexus.cliente.server.manejadores.ManejarNotificaciones;
+import org.p2pnexus.cliente.server.manejadores.ManejarRespuestaBuscarUsuariosPorNombre;
 
 public class RecibirMensajes extends ManejadorDeMensajes {
 

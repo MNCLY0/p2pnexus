@@ -3,9 +3,9 @@ package org.p2pnexus.servidor.clientes;
 import com.p2pnexus.comun.comunicacion.ManejadorDeMensajes;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.TipoMensaje;
-import org.p2pnexus.servidor.clientes.acciones.ManejarLogin;
-import org.p2pnexus.servidor.clientes.acciones.ManejarRegistro;
-import org.p2pnexus.servidor.clientes.acciones.consultas.ManejarConsultaUsuariosPorNombre;
+import org.p2pnexus.servidor.clientes.manejadores.ManejarLogin;
+import org.p2pnexus.servidor.clientes.manejadores.ManejarRegistro;
+import org.p2pnexus.servidor.clientes.manejadores.consultas.ManejarConsultaUsuariosPorNombre;
 
 public class RecibirMensajes extends ManejadorDeMensajes implements Runnable {
 

@@ -30,7 +30,7 @@ public abstract class ManejadorDeMensajes implements Runnable {
     boolean notificable = false;
 
     SocketConexion socketConexion;
-    public Map<TipoMensaje, IAccionMensaje> manejadoresPeticiones = new HashMap<>();
+    public Map<TipoMensaje, IManejadorMensaje> manejadoresPeticiones = new HashMap<>();
 
     int nullsSeguidos = 3;
     int nullsRecibidos = 0;
@@ -73,7 +73,7 @@ public abstract class ManejadorDeMensajes implements Runnable {
             return;
         }
         TipoMensaje tipoMensaje = mensaje.getTipo();
-        IAccionMensaje manejador = manejadoresPeticiones.get(tipoMensaje);
+        IManejadorMensaje manejador = manejadoresPeticiones.get(tipoMensaje);
         try {
             resultado = manejador.manejarDatos(mensaje, socketConexion);
         }catch (ManejarPeticionesExeptionError e) {
@@ -104,9 +104,7 @@ public abstract class ManejadorDeMensajes implements Runnable {
                 Mensaje mensajeResultado = resultado.getMensaje();
                 socketConexion.enviarMensaje(mensajeResultado);
             }
-
         }
-
     }
 
     void intentarNotificar(String mensaje, TipoNotificacion tipoNotificacion)
@@ -118,7 +116,7 @@ public abstract class ManejadorDeMensajes implements Runnable {
         socketConexion.enviarMensaje(mensajeNoti);
     }
 
-    public IAccionMensaje getManejador(TipoMensaje tipoMensaje)
+    public IManejadorMensaje getManejador(TipoMensaje tipoMensaje)
     {
         return manejadoresPeticiones.get(tipoMensaje);
     }

@@ -1,15 +1,15 @@
-package org.p2pnexus.servidor.clientes.acciones;
+package org.p2pnexus.servidor.clientes.manejadores;
 
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoNotificacion;
-import com.p2pnexus.comun.comunicacion.IAccionMensaje;
+import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import org.p2pnexus.servidor.Entidades.DAO.UsuarioDAO;
 
-public class ManejarRegistro implements IAccionMensaje {
+public class ManejarRegistro implements IManejadorMensaje {
 
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
