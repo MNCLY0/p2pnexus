@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
@@ -17,6 +18,7 @@ import org.p2pnexus.servidor.Entidades.SolicitudContacto;
 import org.p2pnexus.servidor.Entidades.Usuario;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ManejarConsultaUsuariosPorNombre implements IManejadorMensaje {
     @Override
@@ -25,10 +27,10 @@ public class ManejarConsultaUsuariosPorNombre implements IManejadorMensaje {
         int idUsuarioOrigen = mensaje.getData().get("id_usuario_origen").getAsInt();
 
         SolicitudContactoDAO dao = new SolicitudContactoDAO();
-        ArrayList<Usuario> usuarios = dao.buscarUsuariosSolicitables(nombreBuscar, idUsuarioOrigen);
+        List<Usuario> usuarios = dao.buscarUsuariosSolicitables(nombreBuscar, idUsuarioOrigen);
 
         if (usuarios.isEmpty()) {
-            throw new ManejarPeticionesExeptionError("No se han encontrado usuarios");
+            return new ResultadoMensaje("No se ha encontrado ningún usuario", TipoNotificacion.AVISO);
         }
 
         Mensaje respuesta = Mensaje.empaquetarListaEnMensaje(usuarios, TipoMensaje.R_BUSCAR_USUARIOS_POR_NOMBRE);

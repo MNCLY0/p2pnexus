@@ -13,6 +13,9 @@ public enum TipoMensaje {
     C_BUSCAR_USUARIOS_POR_NOMBRE,
     C_SOLICITUDES_POR_ID,
     C_CREAR_SOLICITUD,
+    C_ACEPTAR_SOLICITUD,
+    C_DENEGAR_SOLICITUD,
+    C_LISTA_CONTACTOS,
 
     // Mensajes de respuesta
     R_LOGIN_OK,
@@ -20,6 +23,7 @@ public enum TipoMensaje {
     R_CONFIRMACION,
     R_ERROR,
     R_BUSCAR_USUARIOS_POR_NOMBRE,
-    R_SOLICITUDES_POR_ID
+    R_SOLICITUDES_POR_ID,
+    R_LISTA_CONTACTOS,
 
 }

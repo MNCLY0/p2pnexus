@@ -43,8 +43,8 @@ public class TabMenu {
 
     public Ventanas getVentana() {return ventana;}
 
-    public void setAccion(Tab tab, TabPane tabPane) {
-        this.accion.inicializar(tab, tabPane);
+    public void setAccion(Tab tab, TabPane tabPane, TabMenu tabMenu) {
+        this.accion.inicializar(tab, tabPane,tabMenu);
     }
 }
 

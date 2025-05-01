@@ -1,6 +1,8 @@
 package org.p2pnexus.servidor.Entidades;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ValueGenerationType;
+
 import java.time.LocalDateTime;
 
 @Entity

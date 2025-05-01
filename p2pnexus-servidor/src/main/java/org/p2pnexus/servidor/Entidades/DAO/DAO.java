@@ -4,26 +4,27 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class DAO {
-    private final SessionFactory sessionFactory;
 
-    public DAO() {
+    private static final SessionFactory sessionFactory = buildSessionFactory();
+
+    private static SessionFactory buildSessionFactory() {
         try {
-            // Configuración de Hibernate
             Configuration configuration = new Configuration();
             configuration.configure();
-            this.sessionFactory = configuration.buildSessionFactory();
+            return configuration.buildSessionFactory();
         } catch (Exception e) {
-            throw new RuntimeException("Error al inicializar la sesión de Hibernate: " + e.getMessage(), e);
+            throw new RuntimeException("Error al inicializar SessionFactory: " + e.getMessage(), e);
         }
     }
 
-    public SessionFactory getSessionFactory() {
+    protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
-    public void cerrar() {
+    public static void cerrar() {
         if (sessionFactory != null) {
             sessionFactory.close();
         }
     }
 }
+

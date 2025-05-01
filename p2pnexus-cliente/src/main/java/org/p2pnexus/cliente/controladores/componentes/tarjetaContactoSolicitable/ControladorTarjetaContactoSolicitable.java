@@ -37,16 +37,9 @@ public class ControladorTarjetaContactoSolicitable {
 
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_CREAR_SOLICITUD,json));
 
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-                Platform.runLater(() -> {
-                    ControladorSolicitudes.controladorSolicitudesActual.campobuscar.clear();
-                    ControladorSolicitudes.controladorSolicitudesActual.vboxResultadosUsuarios.getChildren().clear();
-                });
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        ControladorSolicitudes.controladorSolicitudesActual.vboxResultadosUsuarios.getChildren().remove(labelNombre.getParent());
+
+        ControladorSolicitudes.controladorSolicitudesActual.solicitarActualizacionSolicitudes();
+
     }
 }

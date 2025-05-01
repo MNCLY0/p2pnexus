@@ -1,18 +1,28 @@
 package org.p2pnexus.servidor.Entidades.DAO;
 
+import com.google.gson.JsonObject;
+import com.p2pnexus.comun.JsonHerramientas;
+import com.p2pnexus.comun.Mensaje;
+import com.p2pnexus.comun.TipoMensaje;
 import org.hibernate.Session;
 import org.p2pnexus.servidor.Entidades.EstadoSolicitud;
 import org.p2pnexus.servidor.Entidades.SolicitudContacto;
 import org.p2pnexus.servidor.Entidades.Usuario;
+import org.p2pnexus.servidor.clientes.ControladorSesiones;
+import org.p2pnexus.servidor.clientes.SesionCliente;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SolicitudContactoDAO extends DAO{
 
+    // Entendemos como pendientes las solicitudes que no han sido aceptadas ni rechazadas
     public ArrayList<SolicitudContacto> obtenerSolicitudesPendientesDeUsuario(int id_usuario) {
         try(Session session = getSessionFactory().openSession()) {
-            return (ArrayList<SolicitudContacto>) session.createQuery("FROM SolicitudContacto WHERE usuarioDestino.id_usuario = :id_usuario", SolicitudContacto.class)
+            return (ArrayList<SolicitudContacto>) session.createQuery("FROM SolicitudContacto WHERE usuarioDestino.id_usuario = :id_usuario AND estado NOT IN :estado", SolicitudContacto.class)
                     .setParameter("id_usuario", id_usuario)
+                    .setParameterList("estado", new EstadoSolicitud[]{EstadoSolicitud.ACEPTADA, EstadoSolicitud.RECHAZADA})
                     .list();
         }
     }
@@ -56,11 +66,51 @@ public class SolicitudContactoDAO extends DAO{
         return usuariosFiltrados;
     }
 
+    // Solo devuelve true si la solicitud se ha aceptado
+    public boolean actualizarEstadoSolicitud(int idSolicitud, EstadoSolicitud estado) {
+        try (Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+            SolicitudContacto solicitud = session.get(SolicitudContacto.class, idSolicitud);
+            if (solicitud != null) {
+                solicitud.setEstado(estado);
+                session.persist(solicitud);
+                session.getTransaction().commit();
+                if (estado == EstadoSolicitud.ACEPTADA) {
+                    // Si la solicitud es aceptada, se añade el contacto a la lista de contactos de ambos usuarios y se les actualiza la lista de contactos
+                    ContactoDAO contactoDAO = new ContactoDAO();
+                    contactoDAO.crearContacto(solicitud.getUsuarioOrigen().getId_usuario(), solicitud.getUsuarioDestino().getId_usuario());
+                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+                    // Esta parte no me gusta mucho, si me da tiempo hay que refactorizar
+                    // Basicamente lo que estamos haciendo es obtener las sesiones de ambos usuarios y enviarles un mensaje para que actualicen su lista de contactos
+                    List<SesionCliente> sesionClientes = List.of(
+                            ControladorSesiones.getSesion(solicitud.getUsuarioOrigen().getNombre()),
+                            ControladorSesiones.getSesion(solicitud.getUsuarioDestino().getNombre())
+                    ) ;
+                    for (SesionCliente sesionCliente : sesionClientes) {
+                        // Si la sesion es nula, significa que el usuario no esta conectado
+                        if (sesionCliente != null) {
+                            // Actualizamos la lista de contactos del usuario
+                            List<Usuario> contactos = usuarioDAO.listarContactos(sesionCliente.getUsuario().getId_usuario());
+                            sesionCliente.getCliente().enviarMensaje(new Mensaje(TipoMensaje.R_LISTA_CONTACTOS, JsonHerramientas.empaquetarListaEnJsonObject(contactos)));
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al aceptar la solicitud: " + e.getMessage(), e);
+        }
+    }
+
+
+    // Entendemos que una solicitud se puede mandar si no hay una solicitud pendiente o aceptada entre los dos usuarios y estos siguen siendo contcatos
     public boolean puedeMandarSolicitud(int idUsuarioOrigen, int idUsuarioDestino) {
         try (Session session = getSessionFactory().openSession()) {
             session.beginTransaction();
-            // La logica que seguimos para saber si puede mandar la solicitud es que no exista una solicitud pendiente (en ambos sentidos)
-            // o aceptada entre los dos usuarios
+
+            // Buscar si hay una solicitud pendiente o aceptada entre los dos usuarios
             SolicitudContacto solicitud = session.createQuery(
                             "FROM SolicitudContacto " +
                                     "WHERE ((usuarioOrigen.id_usuario = :idUsuarioOrigen AND usuarioDestino.id_usuario = :idUsuarioDestino) " +
@@ -72,9 +122,18 @@ public class SolicitudContactoDAO extends DAO{
                     .setParameter("aceptada", EstadoSolicitud.ACEPTADA)
                     .uniqueResult();
 
-            return solicitud == null;
+            // Si no hay solicitud previa se puede mandar
+            if (solicitud == null) return true;
+
+            // Si la solicitud está pendiente no se puede mandar (hasta que se acepte o se rechace)
+            if (solicitud.getEstado() == EstadoSolicitud.PENDIENTE) return false;
+
+            // Si la solicitud ha sido aceptada comprobar si siguen siendo contactos
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            return !usuarioDAO.sonContactos(idUsuarioOrigen, idUsuarioDestino);
+
         } catch (Exception e) {
-            throw new RuntimeException("Error al verificar la existencia de la solicitud: " + e.getMessage(), e);
+            throw new RuntimeException("Error al verificar la posibilidad de enviar solicitud: " + e.getMessage(), e);
         }
     }
 

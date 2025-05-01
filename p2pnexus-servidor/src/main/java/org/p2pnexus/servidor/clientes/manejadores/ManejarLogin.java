@@ -30,7 +30,7 @@ public class ManejarLogin implements IManejadorMensaje {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioO = usuarioDAO.validarCredenciales(usuario, contrasena);
             if (usuarioO == null) {throw new Exception();}
-            ControladorSesiones.agregarSesion(socketConexion, usuario);
+            ControladorSesiones.agregarSesion(socketConexion, usuarioO);
         }catch (Exception e) {
             System.out.println("Error al iniciar sesión: " + e.getMessage());
             return new ResultadoMensaje("Error al iniciar sesión", TipoNotificacion.ERROR);

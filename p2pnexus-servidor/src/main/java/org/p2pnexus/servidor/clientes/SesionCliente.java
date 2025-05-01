@@ -4,16 +4,17 @@ import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
+import org.p2pnexus.servidor.Entidades.Usuario;
 
 public class SesionCliente {
     SocketConexion cliente;
-    String nombreUsuario;
+    Usuario usuario;
     String ip;
     int puerto;
 
-    public SesionCliente(SocketConexion cliente, String nombreUsuario) {
+    public SesionCliente(SocketConexion cliente, Usuario usuario) {
         this.cliente = cliente;
-        this.nombreUsuario = nombreUsuario;
+        this.usuario = usuario;
         this.ip = cliente.getSocket().getInetAddress().getHostAddress();
         this.puerto = cliente.getSocket().getPort();
     }
@@ -22,8 +23,8 @@ public class SesionCliente {
         return cliente;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     public String getIp() {

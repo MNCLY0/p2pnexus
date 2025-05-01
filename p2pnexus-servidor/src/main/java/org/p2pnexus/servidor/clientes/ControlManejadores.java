@@ -5,9 +5,7 @@ import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.TipoMensaje;
 import org.p2pnexus.servidor.clientes.manejadores.ManejarLogin;
 import org.p2pnexus.servidor.clientes.manejadores.ManejarRegistro;
-import org.p2pnexus.servidor.clientes.manejadores.consultas.ManejarConsultaSolicitudesPorId;
-import org.p2pnexus.servidor.clientes.manejadores.consultas.ManejarConsultaUsuariosPorNombre;
-import org.p2pnexus.servidor.clientes.manejadores.consultas.ManejarNuevaSolicitud;
+import org.p2pnexus.servidor.clientes.manejadores.consultas.*;
 
 public class ControlManejadores extends ManejadorDeMensajes implements Runnable {
 
@@ -23,6 +21,9 @@ public class ControlManejadores extends ManejadorDeMensajes implements Runnable 
         manejadoresPeticiones.put(TipoMensaje.C_BUSCAR_USUARIOS_POR_NOMBRE, new ManejarConsultaUsuariosPorNombre());
         manejadoresPeticiones.put(TipoMensaje.C_SOLICITUDES_POR_ID, new ManejarConsultaSolicitudesPorId());
         manejadoresPeticiones.put(TipoMensaje.C_CREAR_SOLICITUD, new ManejarNuevaSolicitud());
+        manejadoresPeticiones.put(TipoMensaje.C_ACEPTAR_SOLICITUD, new ManejarConsultaAceptarSolicitud());
+        manejadoresPeticiones.put(TipoMensaje.C_DENEGAR_SOLICITUD, new ManejarConsultaRechazarSolicitud());
+        manejadoresPeticiones.put(TipoMensaje.C_LISTA_CONTACTOS, new ManejarConsultaListaContactos());
     }
 
 }

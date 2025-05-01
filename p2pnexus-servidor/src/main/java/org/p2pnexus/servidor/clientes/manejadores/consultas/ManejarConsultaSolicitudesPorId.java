@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
@@ -22,7 +23,7 @@ public class ManejarConsultaSolicitudesPorId implements IManejadorMensaje {
         ArrayList<SolicitudContacto> solicitudes = dao.obtenerSolicitudesPendientesDeUsuario(idUsuario);
 
         if (solicitudes.isEmpty()) {
-            throw new ManejarPeticionesExeptionError("No se han encontrado solicitudes");
+            return new ResultadoMensaje("No se han encontrado solicitudes pendientes", TipoNotificacion.AVISO);
         }
 
         Mensaje respuesta = Mensaje.empaquetarListaEnMensaje(solicitudes, TipoMensaje.R_SOLICITUDES_POR_ID);

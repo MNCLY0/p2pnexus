@@ -9,12 +9,12 @@
    <children>
       <VBox prefHeight="100.0" prefWidth="100.0" styleClass="bg-subtle" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <Label fx:id="labelNombre" layoutX="147.0" layoutY="10.0" styleClass="title-2" text="Nombre usuario" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="147.0" AnchorPane.topAnchor="10.0" />
-      <VBox fx:id="contenedorIconoAceptar" layoutX="430.0" layoutY="35.0" prefHeight="50.0" prefWidth="50.0" AnchorPane.rightAnchor="120.0">
+      <VBox onMouseClicked="#aceptarSolicitud" fx:id="contenedorIconoAceptar" alignment="CENTER" layoutX="430.0" layoutY="35.0" prefHeight="50.0" prefWidth="50.0" AnchorPane.rightAnchor="140.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </VBox>
-      <VBox fx:id="contenedorIconoDenegar" layoutX="491.0" layoutY="35.0" prefHeight="50.0" prefWidth="50.0" AnchorPane.rightAnchor="60.0">
+      <VBox onMouseClicked="#denegarSolicitud" fx:id="contenedorIconoDenegar" alignment="CENTER" layoutX="491.0" layoutY="35.0" prefHeight="50.0" prefWidth="50.0" AnchorPane.rightAnchor="60.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

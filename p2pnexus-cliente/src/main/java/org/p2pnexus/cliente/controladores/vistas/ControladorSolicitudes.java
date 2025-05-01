@@ -23,7 +23,6 @@ import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ControladorSolicitudes {
@@ -50,7 +49,7 @@ public class ControladorSolicitudes {
     }
 
     @FXML
-    public void solicitarBusqueda()
+    public void solicitarBusquedaUsuarios()
     {
         if (campobuscar.getText().isEmpty())
         {
@@ -78,6 +77,7 @@ public class ControladorSolicitudes {
         Platform.runLater(() -> {
             vboxResultadosUsuarios.getChildren().clear();
             for (Usuario usuario : resultadosBusquedaUsuario) {
+                System.out.println("Agregando usuario " + usuario.getNombre());
                 agregarResultadoAVboxUsuarios(usuario);
             }
         });

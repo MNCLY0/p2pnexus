@@ -61,7 +61,7 @@
                         <HBox spacing="10.0">
                            <children>
                               <TextField fx:id="campobuscar" />
-                              <Button fx:id="botonbuscar" mnemonicParsing="false" onAction="#solicitarBusqueda" text="Buscar" />
+                              <Button fx:id="botonbuscar" mnemonicParsing="false" onAction="#solicitarBusquedaUsuarios" text="Buscar" />
                            </children>
                         </HBox>
                         <Separator prefWidth="200.0" />

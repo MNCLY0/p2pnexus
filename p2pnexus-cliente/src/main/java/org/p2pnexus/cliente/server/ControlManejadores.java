@@ -18,5 +18,6 @@ public class ControlManejadores extends ManejadorDeMensajes {
         manejadoresPeticiones.put(TipoMensaje.C_CERRAR_SESION_CLIENTE, new ManejarCerrarSesion());
         manejadoresPeticiones.put(TipoMensaje.R_BUSCAR_USUARIOS_POR_NOMBRE, new ManejarRespuestaBuscarUsuariosPorNombre());
         manejadoresPeticiones.put(TipoMensaje.R_SOLICITUDES_POR_ID, new ManejarRespuestaSolicitudesPorId());
+        manejadoresPeticiones.put(TipoMensaje.R_LISTA_CONTACTOS, new MenejarRespuestaListaContactos());
     }
 }

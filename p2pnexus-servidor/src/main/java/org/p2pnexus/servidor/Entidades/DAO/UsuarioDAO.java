@@ -36,6 +36,7 @@ public class UsuarioDAO extends DAO{
 
     // Este metodo permite buscar una lista de usuarios por su nombre, buscando coincidencias parciales (para que la busqueda sea mas flexible)
     public ArrayList<Usuario> buscarUsuariosPorNombre(String nombre) {
+        if (nombre.equals("%")) throw new RuntimeException("El nombre no es valido");
         try (Session session = getSessionFactory().openSession()) {
             return (ArrayList<Usuario>) session.createQuery("FROM Usuario WHERE nombre LIKE :nombre", Usuario.class)
                     .setParameter("nombre", "%" + nombre + "%")
@@ -80,4 +81,43 @@ public class UsuarioDAO extends DAO{
         return usuario;
     }
 
+    // Listamos todos los contactos de un usuario, como la relacion es bidireccional, no importa si el usuario1 es el que busca o el usuario2
+    // siempre devolvemos el contacto diferente al usuario que busca
+    public ArrayList<Usuario> listarContactos(int id_usuario) {
+        try (Session session = getSessionFactory().openSession()) {
+            return (ArrayList<Usuario>) session.createQuery(
+                            "SELECT u FROM Usuario u WHERE u.id_usuario IN " +
+                                    "(SELECT CASE " +
+                                    "WHEN c.usuario1.id_usuario = :id_usuario THEN c.usuario2.id_usuario " +
+                                    "ELSE c.usuario1.id_usuario END " +
+                                    "FROM Contacto c " +
+                                    "WHERE c.usuario1.id_usuario = :id_usuario OR c.usuario2.id_usuario = :id_usuario)", Usuario.class)
+                    .setParameter("id_usuario", id_usuario)
+                    .list();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al listar contactos: " + e.getMessage(), e);
+        }
+    }
+
+    public boolean sonContactos(int id_usuario1, int id_usuario2) {
+        try (Session session = getSessionFactory().openSession()) {
+            return session.createQuery("SELECT COUNT(c) FROM Contacto c WHERE " +
+                            "(c.usuario1.id_usuario = :id_usuario1 AND c.usuario2.id_usuario = :id_usuario2) OR " +
+                            "(c.usuario1.id_usuario = :id_usuario2 AND c.usuario2.id_usuario = :id_usuario1)", Long.class)
+                    .setParameter("id_usuario1", id_usuario1)
+                    .setParameter("id_usuario2", id_usuario2)
+                    .uniqueResult() > 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al verificar si son contactos: " + e.getMessage(), e);
+        }
+    }
+
+    public Usuario buscarPorId(int id_usuario) {
+        try (Session session = getSessionFactory().openSession()) {
+            return session.get(Usuario.class, id_usuario);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar usuario por ID: " + e.getMessage(), e);
+        }
+
+    }
 }
