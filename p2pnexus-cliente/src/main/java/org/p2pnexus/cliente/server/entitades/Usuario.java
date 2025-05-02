@@ -3,6 +3,7 @@ package org.p2pnexus.cliente.server.entitades;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Usuario {
@@ -32,4 +33,15 @@ public class Usuario {
         this.nombre = nombre;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id_usuario, usuario.id_usuario);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id_usuario);
+    }
 }

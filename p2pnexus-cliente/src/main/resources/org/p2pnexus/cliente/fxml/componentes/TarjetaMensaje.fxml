@@ -3,35 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaMensaje">
+<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="503.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaMensaje">
    <children>
-      <HBox fillHeight="false" layoutX="15.0" layoutY="5.0" prefWidth="473.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-         <children>
-            <VBox alignment="TOP_CENTER">
-               <children>
-                  <Label fx:id="labelNombre" prefHeight="34.0" prefWidth="172.0" styleClass="title-3" text="Nombre usuario" />
-                  <VBox maxWidth="70.0" prefHeight="70.0" prefWidth="70.0" styleClass="bg-subtle">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </VBox>
-               </children>
-            </VBox>
-            <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="301.0" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets top="30.0" />
-               </HBox.margin>
-               <children>
-                  <Label fx:id="labelContenidoMensaje" wrapText="true" />
-               </children>
-            </HBox>
-         </children>
-      </HBox>
+      <Label fx:id="labelNombre" layoutX="140.0" prefHeight="34.0" prefWidth="183.0" styleClass="title-4" text="Nombre usuario" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="0.0" />
+      <Label fx:id="labelContenidoMensaje" layoutX="125.0" layoutY="40.0" prefWidth="378.0" wrapText="true" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="35.0" />
+      <VBox layoutX="20.0" layoutY="20.0" maxWidth="75.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="75.0" styleClass="bg-subtle" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
    </children>
 </AnchorPane>

@@ -3,22 +3,20 @@ package org.p2pnexus.cliente.controladores.vistas;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
-import com.p2pnexus.comun.TipoNotificacion;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2MZ;
-import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.TabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContacto;
 import org.p2pnexus.cliente.server.Conexion;
+import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.ventanas.Componentes;
@@ -27,7 +25,9 @@ import org.p2pnexus.cliente.ventanas.Ventanas;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ControladorMenuPrincipal {
     @FXML
@@ -48,6 +48,8 @@ public class ControladorMenuPrincipal {
     public TabPane tabPanePrincipal;
 
     public static ControladorMenuPrincipal controladorMenuPrincipalActual;
+
+    Map<Usuario, ControladorTarjetaContacto> controladoresTarjetaContacto = new HashMap<>();
 
 
     @FXML
@@ -110,6 +112,7 @@ public class ControladorMenuPrincipal {
                     Parent parent = loader.load();
                     ControladorTarjetaContacto controladorTarjetaContacto = loader.getController();
                     controladorTarjetaContacto.inicializarConUsuario(usuario);
+                    controladoresTarjetaContacto.put(usuario, controladorTarjetaContacto);
                     vboxContactos.getChildren().add(parent);
                 }catch (IOException e) {
                     throw new RuntimeException(e);
@@ -129,11 +132,12 @@ public class ControladorMenuPrincipal {
         }
     }
 
-    public void abrirChatConUsuario(Usuario usuario) {
+    public void abrirConversacion(Usuario usuario, Conversacion conversacion) {
         if (tabChat == null) {
             inicializarTabChat();
         }
-        controladorChat.abrirChat(usuario);
+
+        controladorChat.abrirChat(usuario,conversacion);
         tabPanePrincipal.getSelectionModel().select(tabChat);
     }
 
@@ -176,5 +180,9 @@ public class ControladorMenuPrincipal {
         }
         tabChat = chat;
         tabPanePrincipal.getTabs().add(tabChat);
+    }
+
+    public Map<Usuario, ControladorTarjetaContacto> getControladoresTarjetaContacto() {
+        return controladoresTarjetaContacto;
     }
 }

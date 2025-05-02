@@ -6,19 +6,24 @@ import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
+import javafx.application.Platform;
 import org.p2pnexus.cliente.controladores.vistas.ControladorChat;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.MensajeChat;
 
-import java.util.List;
-
-public class ManejarRespuestaMensajesChat implements IManejadorMensaje {
+public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        Conversacion conversacion = new Conversacion(mensaje.getData().get("id_conversacion").getAsInt());
-        List<MensajeChat> mensajes = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), MensajeChat.class);
-        System.out.println("Estableciendo mensajes en el chat");
-        ControladorChat.controladorChatActual.establecerMensajes(mensajes, conversacion);
+        System.out.println("Recibiendo nuevo mensaje de chat");
+
+        MensajeChat nuevoMensaje = JsonHerramientas.convertirJsonAObjeto(mensaje.getData(), MensajeChat.class);
+        Platform.runLater(() ->{
+            if (ControladorChat.controladorChatActual == null) {
+                return;
+            }
+            ControladorChat.controladorChatActual.nuevoMensaje(nuevoMensaje);
+        });
+
         return null;
     }
 }

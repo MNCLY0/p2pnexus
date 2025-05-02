@@ -1,5 +1,8 @@
 package org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable;
 
+import com.google.gson.JsonObject;
+import com.p2pnexus.comun.Mensaje;
+import com.p2pnexus.comun.TipoMensaje;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -7,7 +10,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import org.p2pnexus.cliente.controladores.componentes.ControladorComponenteMenuBase;
 import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
+import org.p2pnexus.cliente.server.Conexion;
+import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.Usuario;
+import org.p2pnexus.cliente.sesion.Sesion;
 
 public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
 
@@ -18,6 +24,8 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
     public AnchorPane anchorPane;
 
     private Usuario usuario;
+
+    private Conversacion conversacion;
 
     @FXML
     public void initialize() {
@@ -32,8 +40,30 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
 
         setOnClickListener(() -> {
             setSeleccionado(true);
-            ControladorMenuPrincipal.controladorMenuPrincipalActual.abrirChatConUsuario(usuario);
+            System.out.println("Estado de conversacion: " + (conversacion != null ? "no null" : "null"));
+            if (conversacion == null) {
+                solicitarConversacion();
+                return;
+            }
+            abrirConversacion();
         });
+    }
+
+    public void establecerConversacion(Conversacion conversacion) {
+        this.conversacion = conversacion;
+        abrirConversacion();
+    }
+
+    public void abrirConversacion() {
+        ControladorMenuPrincipal.controladorMenuPrincipalActual.abrirConversacion(usuario, conversacion);
+    }
+
+    public void solicitarConversacion() {
+        JsonObject json = new JsonObject();
+        json.addProperty("id_usuario_busqueda", usuario.getId_usuario());
+        json.addProperty("id_usuario_origen", Sesion.getUsuario().getId_usuario());
+        Mensaje mensaje = new Mensaje(TipoMensaje.C_CONVERSACION_CON_USUARIO, json);
+        Conexion.enviarMensaje(mensaje);
     }
 
     @Override

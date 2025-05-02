@@ -42,4 +42,23 @@ public class JsonHerramientas {
         return json;
     }
 
+    public static <T> JsonObject convertirObjetoAJson(T objeto) {
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdaptador())
+                .create();
+        JsonObject json = new JsonObject();
+        JsonElement jsonElement = gson.toJsonTree(objeto);
+        json.add("objeto", jsonElement);
+        return json;
+    }
+
+    public static <T> T convertirJsonAObjeto(JsonObject json, Class<T> clase) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdaptador())
+                .create();
+        JsonElement jsonElement = json.get("objeto");
+        return gson.fromJson(jsonElement, clase);
+    }
+
 }

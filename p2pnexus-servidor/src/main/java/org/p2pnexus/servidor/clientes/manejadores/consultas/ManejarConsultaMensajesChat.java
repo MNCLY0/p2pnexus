@@ -20,11 +20,13 @@ public class ManejarConsultaMensajesChat implements IManejadorMensaje {
         int id_usuario_solicitante = mensaje.getData().get("id_usuario_solicitante").getAsInt();
         int id_usuario = mensaje.getData().get("id_usuario").getAsInt();
 
+
         ConversacionDAO conversacionDAO = new ConversacionDAO();
         Conversacion conversacion = conversacionDAO.obtenerConversacionEntreDos(id_usuario_solicitante, id_usuario);
 
         List<org.p2pnexus.servidor.Entidades.Mensaje> mensajes = conversacionDAO.obtenerUltimosMensajesDeConversacion(conversacion.getId_conversacion());
         JsonObject mensajesPauqete = JsonHerramientas.empaquetarListaEnJsonObject(mensajes);
+        mensajesPauqete.addProperty("id_conversacion", conversacion.getId_conversacion());
         return new ResultadoMensaje(new Mensaje(TipoMensaje.R_MENSAJES_CHAT, mensajesPauqete));
     }
 }

@@ -1,5 +1,6 @@
 package org.p2pnexus.servidor.Entidades;
 
+import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "Conversacion")
 public class Conversacion {
 
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_conversacion;

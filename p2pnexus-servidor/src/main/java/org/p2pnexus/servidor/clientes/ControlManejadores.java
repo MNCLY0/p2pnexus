@@ -25,6 +25,8 @@ public class ControlManejadores extends ManejadorDeMensajes implements Runnable 
         manejadoresPeticiones.put(TipoMensaje.C_DENEGAR_SOLICITUD, new ManejarConsultaRechazarSolicitud());
         manejadoresPeticiones.put(TipoMensaje.C_LISTA_CONTACTOS, new ManejarConsultaListaContactos());
         manejadoresPeticiones.put(TipoMensaje.C_MENSAJES_CHAT, new ManejarConsultaMensajesChat());
+        manejadoresPeticiones.put(TipoMensaje.C_ENVIAR_MENSAJE_CHAT, new ManejarConsultaEnviarMensaje());
+        manejadoresPeticiones.put(TipoMensaje.C_CONVERSACION_CON_USUARIO, new ManejarConsultaSolicitudConversacionConUsuario());
     }
 
 }

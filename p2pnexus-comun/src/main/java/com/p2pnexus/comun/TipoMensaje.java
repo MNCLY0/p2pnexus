@@ -18,6 +18,7 @@ public enum TipoMensaje {
     C_LISTA_CONTACTOS,
     C_MENSAJES_CHAT,
     C_ENVIAR_MENSAJE_CHAT,
+    C_CONVERSACION_CON_USUARIO,
 
     // Mensajes de respuesta
     R_LOGIN_OK,
@@ -27,6 +28,8 @@ public enum TipoMensaje {
     R_BUSCAR_USUARIOS_POR_NOMBRE,
     R_SOLICITUDES_POR_ID,
     R_LISTA_CONTACTOS,
-    R_MENSAJES_CHAT
+    R_MENSAJES_CHAT,
+    R_NUEVO_MENSAJE_CHAT,
+    R_CONVERSACION_CON_USUARIO,
 
 }

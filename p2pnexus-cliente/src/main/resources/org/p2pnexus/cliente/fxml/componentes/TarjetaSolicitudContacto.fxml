@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="120.0" minHeight="120.0" prefHeight="120.0" prefWidth="600.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaSolicitudContacto">
+<AnchorPane maxHeight="120.0" minHeight="120.0" prefHeight="120.0" prefWidth="600.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaSolicitudContacto">
    <children>
       <VBox prefHeight="100.0" prefWidth="100.0" styleClass="bg-subtle" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <Label fx:id="labelNombre" layoutX="147.0" layoutY="10.0" styleClass="title-2" text="Nombre usuario" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="147.0" AnchorPane.topAnchor="10.0" />

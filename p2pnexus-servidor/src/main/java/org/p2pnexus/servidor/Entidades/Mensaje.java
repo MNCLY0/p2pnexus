@@ -11,6 +11,7 @@ public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_mensaje;
+    @Expose
     @ManyToOne
     @JoinColumn(name = "id_conversacion")
     private Conversacion conversacion;

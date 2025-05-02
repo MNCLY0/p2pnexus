@@ -56,6 +56,29 @@ public class ConversacionDAO extends DAO{
         }
     }
 
+
+    public Mensaje enviarMensajeAConversacion(int idConversacion, int idUsuarioEmisor, String contenido) {
+        try (Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            Conversacion conversacion = session.get(Conversacion.class, idConversacion);
+            Usuario emisor = session.get(Usuario.class, idUsuarioEmisor);
+
+            Mensaje mensaje = new Mensaje();
+            mensaje.setContenido(contenido);
+            mensaje.setConversacion(conversacion);
+            mensaje.setEmisor(emisor);
+            mensaje.setFecha_envio(LocalDateTime.now());
+
+            session.persist(mensaje);
+            session.getTransaction().commit();
+
+            return mensaje;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al enviar el mensaje: " + e.getMessage(), e);
+        }
+    }
+
     public List<Mensaje> obtenerUltimosMensajesDeConversacion(int idConversacion) {
     try (Session session = getSessionFactory().openSession()) {
         return session.createQuery("""
@@ -70,5 +93,19 @@ public class ConversacionDAO extends DAO{
                 throw new RuntimeException("Error al obtener los últimos mensajes: " + e.getMessage(), e);
             }
         }
-
+    public List<Usuario> obtenerUsuariosParticipantesConversacion(int idConversacion) {
+        try (Session session = getSessionFactory().openSession()) {
+            return session.createQuery("""
+                            SELECT p.usuario FROM Participante p
+                            WHERE p.conversacion.id_conversacion = :idConversacion
+                        """, Usuario.class)
+                    .setParameter("idConversacion", idConversacion)
+                    .list();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener los participantes de la conversación: " + e.getMessage(), e);
+        }
     }
+}
+
+
+

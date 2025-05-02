@@ -82,8 +82,8 @@ public class SolicitudContactoDAO extends DAO{
                     // Esta parte no me gusta mucho, si me da tiempo hay que refactorizar
                     // Basicamente lo que estamos haciendo es obtener las sesiones de ambos usuarios y enviarles un mensaje para que actualicen su lista de contactos
                     List<SesionCliente> sesionClientes = List.of(
-                            ControladorSesiones.getSesion(solicitud.getUsuarioOrigen().getNombre()),
-                            ControladorSesiones.getSesion(solicitud.getUsuarioDestino().getNombre())
+                            ControladorSesiones.getSesion(solicitud.getUsuarioOrigen().getId_usuario()),
+                            ControladorSesiones.getSesion(solicitud.getUsuarioDestino().getId_usuario())
                     );
                     for (SesionCliente sesionCliente : sesionClientes) {
                         // Si la sesion es nula, significa que el usuario no esta conectado
