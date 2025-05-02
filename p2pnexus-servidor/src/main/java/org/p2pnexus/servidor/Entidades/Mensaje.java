@@ -1,5 +1,6 @@
 package org.p2pnexus.servidor.Entidades;
 
+import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,17 +11,16 @@ public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_mensaje;
-
     @ManyToOne
     @JoinColumn(name = "id_conversacion")
     private Conversacion conversacion;
-
+    @Expose
     @ManyToOne
     @JoinColumn(name = "id_emisor")
     private Usuario emisor;
-
+    @Expose
     private String contenido;
-
+    @Expose
     private LocalDateTime fecha_envio;
 
     public Integer getId_mensaje() {

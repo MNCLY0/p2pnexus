@@ -3,6 +3,8 @@ package org.p2pnexus.cliente.server.entitades;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Set;
+
 public class Usuario {
 
     public Usuario(String nombre, Integer id_usuario) {

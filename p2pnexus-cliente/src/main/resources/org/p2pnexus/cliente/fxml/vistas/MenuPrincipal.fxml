@@ -13,34 +13,34 @@
 
 <HBox prefHeight="584.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal">
    <children>
-      <GridPane prefHeight="600.0" prefWidth="300.0" styleClass="bg-inset">
+      <GridPane prefHeight="584.0" prefWidth="336.0" styleClass="bg-inset">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="45.0" />
+            <RowConstraints minHeight="120.0" prefHeight="120.0" />
             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <VBox fx:id="vboxSecciones" prefWidth="234.0" />
-            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="548.0" prefWidth="300.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-               <content>
-                  <VBox>
-                     <children>
-                        <Separator prefWidth="200.0" />
-                        <Label styleClass="title-3" text="Contactos:" />
-                        <VBox fx:id="vboxContactos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" VBox.vgrow="ALWAYS">
-                           <VBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </VBox.margin>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </VBox>
-               </content>
-            </ScrollPane>
+            <VBox fx:id="vboxSecciones" prefHeight="110.0" prefWidth="336.0">
+               <GridPane.margin>
+                  <Insets top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox spacing="10.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+               <children>
+                  <Separator prefWidth="200.0" />
+                  <Label styleClass="title-3" text="Contactos:" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <content>
+                        <VBox fx:id="vboxContactos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                     </content>
+                  </ScrollPane>
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
          </children>
       </GridPane>
       <TabPane fx:id="tabPanePrincipal" prefHeight="200.0" prefWidth="200.0" styleClass="tabpane-principal" stylesheets="@../../estilos/estilos.css" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS" />

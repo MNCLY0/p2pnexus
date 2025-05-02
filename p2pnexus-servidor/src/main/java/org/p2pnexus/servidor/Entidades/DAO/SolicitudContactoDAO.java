@@ -1,6 +1,5 @@
 package org.p2pnexus.servidor.Entidades.DAO;
 
-import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
@@ -11,7 +10,6 @@ import org.p2pnexus.servidor.Entidades.Usuario;
 import org.p2pnexus.servidor.clientes.ControladorSesiones;
 import org.p2pnexus.servidor.clientes.SesionCliente;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +84,7 @@ public class SolicitudContactoDAO extends DAO{
                     List<SesionCliente> sesionClientes = List.of(
                             ControladorSesiones.getSesion(solicitud.getUsuarioOrigen().getNombre()),
                             ControladorSesiones.getSesion(solicitud.getUsuarioDestino().getNombre())
-                    ) ;
+                    );
                     for (SesionCliente sesionCliente : sesionClientes) {
                         // Si la sesion es nula, significa que el usuario no esta conectado
                         if (sesionCliente != null) {
@@ -114,7 +112,7 @@ public class SolicitudContactoDAO extends DAO{
             SolicitudContacto solicitud = session.createQuery(
                             "FROM SolicitudContacto " +
                                     "WHERE ((usuarioOrigen.id_usuario = :idUsuarioOrigen AND usuarioDestino.id_usuario = :idUsuarioDestino) " +
-                                    "   OR (usuarioOrigen.id_usuario = :idUsuarioDestino AND usuarioDestino.id_usuario = :idUsuarioOrigen)) " +
+                                    "OR (usuarioOrigen.id_usuario = :idUsuarioDestino AND usuarioDestino.id_usuario = :idUsuarioOrigen)) " +
                                     "AND (estado = :pendiente OR estado = :aceptada)", SolicitudContacto.class)
                     .setParameter("idUsuarioOrigen", idUsuarioOrigen)
                     .setParameter("idUsuarioDestino", idUsuarioDestino)

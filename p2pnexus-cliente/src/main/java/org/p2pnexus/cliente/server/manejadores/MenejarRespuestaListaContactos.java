@@ -14,9 +14,11 @@ import java.util.List;
 public class MenejarRespuestaListaContactos implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
+        System.out.println("Recibiendo lista de contactos");
         List<Usuario> lista = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), Usuario.class);
-
+        System.out.println("Lista de contactos convertida: " + lista.size());
         ControladorMenuPrincipal.controladorMenuPrincipalActual.actualizarListaContactos(lista);
+        System.out.println("Lista de contactos actualizada");
 
         return null;
     }

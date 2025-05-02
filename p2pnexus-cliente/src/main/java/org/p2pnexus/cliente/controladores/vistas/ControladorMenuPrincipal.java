@@ -40,6 +40,11 @@ public class ControladorMenuPrincipal {
     ArrayList<TabMenu> tabsMenu;
 
     @FXML
+    Tab tabChat = null;
+
+    ControladorChat controladorChat = null;
+
+    @FXML
     public TabPane tabPanePrincipal;
 
     public static ControladorMenuPrincipal controladorMenuPrincipalActual;
@@ -95,6 +100,7 @@ public class ControladorMenuPrincipal {
 
     public void actualizarListaContactos(List<Usuario> usuariosContacto)
     {
+        System.out.println("se procede a actualizar la lista de contactos con " + usuariosContacto.size() + " contactos");
         Platform.runLater(() -> {
             vboxContactos.getChildren().clear();
             for (Usuario usuario : usuariosContacto)
@@ -124,15 +130,19 @@ public class ControladorMenuPrincipal {
     }
 
     public void abrirChatConUsuario(Usuario usuario) {
-
+        if (tabChat == null) {
+            inicializarTabChat();
+        }
+        controladorChat.abrirChat(usuario);
+        tabPanePrincipal.getSelectionModel().select(tabChat);
     }
 
     public void inializarTabs()
     {
         tabsMenu = new ArrayList<>(
                 List.of(
-                        new TabMenu("Solicitudes", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_SOLICITUDES),
-                        new TabMenu("Espacios", new FontIcon(Material2RoundAL.CREATE_NEW_FOLDER), Ventanas.TAB_CHAT)
+                        new TabMenu("Solicitudes", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_SOLICITUDES)
+//                        new TabMenu("Espacios", new FontIcon(Material2RoundAL.CREATE_NEW_FOLDER), Ventanas.TAB_CHAT)
                 )
         );
 
@@ -151,5 +161,20 @@ public class ControladorMenuPrincipal {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void inicializarTabChat()
+    {
+        Tab chat = new Tab("Chat");
+        try {
+            FXMLLoader loader = GestorVentanas.crearFXMLoader(Ventanas.TAB_CHAT);
+            Parent root = loader.load();
+            controladorChat = loader.getController();
+            chat.setContent(root);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        tabChat = chat;
+        tabPanePrincipal.getTabs().add(tabChat);
     }
 }

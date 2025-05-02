@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import org.p2pnexus.cliente.controladores.componentes.ControladorComponenteMenuBase;
+import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 
 public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
@@ -31,6 +32,7 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
 
         setOnClickListener(() -> {
             setSeleccionado(true);
+            ControladorMenuPrincipal.controladorMenuPrincipalActual.abrirChatConUsuario(usuario);
         });
     }
 

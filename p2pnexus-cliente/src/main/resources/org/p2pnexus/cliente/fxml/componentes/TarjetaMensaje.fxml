@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaMensaje">
+   <children>
+      <HBox fillHeight="false" layoutX="15.0" layoutY="5.0" prefWidth="473.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <VBox alignment="TOP_CENTER">
+               <children>
+                  <Label fx:id="labelNombre" prefHeight="34.0" prefWidth="172.0" styleClass="title-3" text="Nombre usuario" />
+                  <VBox maxWidth="70.0" prefHeight="70.0" prefWidth="70.0" styleClass="bg-subtle">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="301.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets top="30.0" />
+               </HBox.margin>
+               <children>
+                  <Label fx:id="labelContenidoMensaje" wrapText="true" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
