@@ -1,23 +1,23 @@
-package org.p2pnexus.servidor.Entidades;
+package org.p2pnexus.cliente.server.entitades;
 
 import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "EspacioCompartido")
-public class EspacioCompartido {
+public class EspaciosCompartidos {
 
-    @Expose
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public EspaciosCompartidos(Integer id_espacio, String nombre, String ruta_directorio, Usuario propietario) {
+        this.id_espacio = id_espacio;
+        this.nombre = nombre;
+        this.ruta_directorio = ruta_directorio;
+        this.propietario = propietario;
+    }
+
     private Integer id_espacio;
-    @Expose
+
     private String nombre;
-    @Expose
+
     private String ruta_directorio;
-    @Expose
-    @ManyToOne
-    @JoinColumn(name = "id_propietario")
+
     private Usuario propietario;
 
     public Integer getId_espacio() {

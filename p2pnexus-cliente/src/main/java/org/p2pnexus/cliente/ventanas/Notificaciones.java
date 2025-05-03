@@ -45,6 +45,7 @@ public class Notificaciones {
         });
     }
 
+
     private static void mostrarNotificacion(Notification notificacion) {
         // Configuramos la posición inicial (arriba a la derecha)
         StackPane.setAlignment(notificacion, Pos.TOP_RIGHT);

@@ -74,6 +74,12 @@ public abstract class ManejadorDeMensajes implements Runnable {
         }
         TipoMensaje tipoMensaje = mensaje.getTipo();
         IManejadorMensaje manejador = manejadoresPeticiones.get(tipoMensaje);
+
+        if (manejador == null) {
+            System.err.println("No se encontró manejador para: " + tipoMensaje);
+            return;
+        }
+
         try {
             resultado = manejador.manejarDatos(mensaje, socketConexion);
         }catch (ManejarPeticionesExeptionError e) {

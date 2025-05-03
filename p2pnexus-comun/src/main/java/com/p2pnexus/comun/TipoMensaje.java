@@ -19,6 +19,8 @@ public enum TipoMensaje {
     C_MENSAJES_CHAT,
     C_ENVIAR_MENSAJE_CHAT,
     C_CONVERSACION_CON_USUARIO,
+    C_CREAR_ESPACIO,
+    C_ESPACIOS_POR_ID,
 
     // Mensajes de respuesta
     R_LOGIN_OK,
@@ -31,5 +33,7 @@ public enum TipoMensaje {
     R_MENSAJES_CHAT,
     R_NUEVO_MENSAJE_CHAT,
     R_CONVERSACION_CON_USUARIO,
+    R_CREAR_ESPACIO_OK,
+    R_ESPACIOS_POR_ID,
 
 }

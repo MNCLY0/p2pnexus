@@ -34,6 +34,13 @@ public class ControladorSesiones {
         }
     }
 
+    public static void enviarMensajeCliente(Integer idUsuario, Mensaje mensaje) {
+        SesionCliente sesion = sesiones.get(idUsuario);
+        if (sesion != null) {
+            sesion.getCliente().enviarMensaje(mensaje);
+        }
+    }
+
     public static SesionCliente getSesion(Integer id) {
         return sesiones.get(id);
     }

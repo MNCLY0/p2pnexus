@@ -80,6 +80,10 @@ public class GestorVentanas {
         return capaNotificaciones;
     }
 
+    public static void setCapaNotificaciones(StackPane capaNotificaciones) {
+        GestorVentanas.capaNotificaciones = capaNotificaciones;
+    }
+
 
     public static StackPane getContenedorPrincipal()
     {

@@ -12,6 +12,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2MZ;
+import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.TabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContacto;
@@ -145,8 +146,8 @@ public class ControladorMenuPrincipal {
     {
         tabsMenu = new ArrayList<>(
                 List.of(
-                        new TabMenu("Solicitudes", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_SOLICITUDES)
-//                        new TabMenu("Espacios", new FontIcon(Material2RoundAL.CREATE_NEW_FOLDER), Ventanas.TAB_CHAT)
+                        new TabMenu("Solicitudes", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_SOLICITUDES),
+                        new TabMenu("Espacios", new FontIcon(Material2RoundAL.CREATE_NEW_FOLDER), Ventanas.ESPACIOS)
                 )
         );
 
@@ -167,6 +168,7 @@ public class ControladorMenuPrincipal {
         }
     }
 
+    // Por como está montado merece la pena no inicializar el chat hasta que se necesite, luego podemos reutilizarlo para todos los usuarios
     public void inicializarTabChat()
     {
         Tab chat = new Tab("Chat");
