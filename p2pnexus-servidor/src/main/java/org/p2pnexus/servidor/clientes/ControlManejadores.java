@@ -29,6 +29,8 @@ public class ControlManejadores extends ManejadorDeMensajes implements Runnable 
         manejadoresPeticiones.put(TipoMensaje.C_CONVERSACION_CON_USUARIO, new ManejarConsultaSolicitudConversacionConUsuario());
         manejadoresPeticiones.put(TipoMensaje.C_CREAR_ESPACIO, new ManejarCrearEspacio());
         manejadoresPeticiones.put(TipoMensaje.C_ESPACIOS_POR_ID, new ManejarConsultaEspaciosPorId());
+        manejadoresPeticiones.put(TipoMensaje.C_ELIMINAR_ESPACIO, new ManejarConsultaEliminarEspacio());
+        manejadoresPeticiones.put(TipoMensaje.C_EDITAR_ESPACIO, new ManejarConsultaEditarEspacio());
     }
 
 }

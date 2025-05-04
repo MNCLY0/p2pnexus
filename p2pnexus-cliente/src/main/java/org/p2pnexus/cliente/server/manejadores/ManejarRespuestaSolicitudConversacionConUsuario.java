@@ -16,7 +16,7 @@ public class ManejarRespuestaSolicitudConversacionConUsuario implements IManejad
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
         Usuario usuario = new Usuario("", mensaje.getData().get("id_usuario").getAsInt());
         Conversacion conversacion = new Conversacion(mensaje.getData().get("id_conversacion").getAsInt());
-        ControladorTarjetaContacto controladorTarjetaContacto = ControladorMenuPrincipal.controladorMenuPrincipalActual.getControladoresTarjetaContacto().get(usuario);
+        ControladorTarjetaContacto controladorTarjetaContacto = ControladorMenuPrincipal.instancia.getControladoresTarjetaContacto().get(usuario);
         Platform.runLater(() -> {
             controladorTarjetaContacto.establecerConversacion(conversacion);
         });

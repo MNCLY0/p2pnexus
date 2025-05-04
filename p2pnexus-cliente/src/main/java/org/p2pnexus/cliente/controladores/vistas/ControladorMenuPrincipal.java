@@ -48,7 +48,7 @@ public class ControladorMenuPrincipal {
     @FXML
     public TabPane tabPanePrincipal;
 
-    public static ControladorMenuPrincipal controladorMenuPrincipalActual;
+    public static ControladorMenuPrincipal instancia;
 
     Map<Usuario, ControladorTarjetaContacto> controladoresTarjetaContacto = new HashMap<>();
 
@@ -56,7 +56,7 @@ public class ControladorMenuPrincipal {
     @FXML
     public void initialize() {
 
-        controladorMenuPrincipalActual = this;
+        instancia = this;
 
         inializarTabs();
 

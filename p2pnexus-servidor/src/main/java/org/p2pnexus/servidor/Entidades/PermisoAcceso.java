@@ -11,14 +11,16 @@ public class PermisoAcceso {
     private Integer id_permiso;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_espacio")
-    private EspacioCompartido espacio;
+    @JoinColumn(name = "id_espacio", nullable = false)
+    private EspacioCompartido espacioCompartido;
 
     private LocalDateTime fecha_asignacion;
+
+    // Getters y setters
 
     public Integer getId_permiso() {
         return id_permiso;
@@ -36,12 +38,12 @@ public class PermisoAcceso {
         this.usuario = usuario;
     }
 
-    public EspacioCompartido getEspacio() {
-        return espacio;
+    public EspacioCompartido getEspacioCompartido() {
+        return espacioCompartido;
     }
 
-    public void setEspacio(EspacioCompartido espacio) {
-        this.espacio = espacio;
+    public void setEspacioCompartido(EspacioCompartido espacioCompartido) {
+        this.espacioCompartido = espacioCompartido;
     }
 
     public LocalDateTime getFecha_asignacion() {

@@ -9,14 +9,11 @@ import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import org.p2pnexus.cliente.controladores.vistas.ControladorEspacios;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 
-import java.util.List;
-
-public class ManejarRespuestaEspaciosPorId implements IManejadorMensaje {
-
+public class ManejarRespuestaCrearEspacioOk implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        List<EspacioCompartido> espacioCompartidos = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), EspacioCompartido.class);
-        ControladorEspacios.instancia.inicializarEspacios(espacioCompartidos);
+        EspacioCompartido espacioCreado = JsonHerramientas.convertirJsonAObjeto(mensaje.getData(), EspacioCompartido.class);
+        ControladorEspacios.instancia.inicializarTarjetaEspacio(espacioCreado);
         return null;
     }
 }

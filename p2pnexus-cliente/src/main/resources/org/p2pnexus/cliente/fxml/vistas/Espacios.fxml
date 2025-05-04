@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorEspacios">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="402.0" prefWidth="595.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorEspacios">
    <children>
-      <VBox spacing="10.0">
+      <VBox spacing="10.0" VBox.vgrow="ALWAYS">
          <children>
             <VBox>
                <children>
                   <Label styleClass="title-3" text="Pulsa en &quot;Crear espacio&quot; y configura un espacio" wrapText="true" />
-                  <Label styleClass="title-4" text="Los espacios ya creados se pueden modificar pulsando en los tres puntitos" wrapText="true" />
+                  <Label styleClass="title-4" text="Los espacios ya creados se pueden modificar pulsando en &quot;Editar&quot;." wrapText="true" />
                </children>
             </VBox>
             <HBox prefHeight="36.0" prefWidth="412.0" spacing="10.0">
@@ -28,9 +28,9 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                <content>
-                  <FlowPane fx:id="flowPaneEspaciosCreados" prefHeight="200.0" prefWidth="200.0" />
+                  <FlowPane fx:id="flowPaneEspaciosCreados" alignment="TOP_CENTER" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" rowValignment="TOP" vgap="10.0" />
                </content>
             </ScrollPane>
          </children>

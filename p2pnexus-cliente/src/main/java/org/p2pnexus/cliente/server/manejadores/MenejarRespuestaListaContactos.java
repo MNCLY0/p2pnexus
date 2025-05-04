@@ -17,7 +17,7 @@ public class MenejarRespuestaListaContactos implements IManejadorMensaje {
         System.out.println("Recibiendo lista de contactos");
         List<Usuario> lista = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), Usuario.class);
         System.out.println("Lista de contactos convertida: " + lista.size());
-        ControladorMenuPrincipal.controladorMenuPrincipalActual.actualizarListaContactos(lista);
+        ControladorMenuPrincipal.instancia.actualizarListaContactos(lista);
         System.out.println("Lista de contactos actualizada");
 
         return null;

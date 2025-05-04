@@ -55,7 +55,7 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
     }
 
     public void abrirConversacion() {
-        ControladorMenuPrincipal.controladorMenuPrincipalActual.abrirConversacion(usuario, conversacion);
+        ControladorMenuPrincipal.instancia.abrirConversacion(usuario, conversacion);
     }
 
     public void solicitarConversacion() {

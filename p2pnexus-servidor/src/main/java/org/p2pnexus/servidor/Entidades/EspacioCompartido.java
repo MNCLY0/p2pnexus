@@ -4,21 +4,30 @@ import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "EspacioCompartido")
+@Table(name = "EspacioCompartido", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"nombre", "id_propietario"})
+})
 public class EspacioCompartido {
 
     @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_espacio;
+
     @Expose
+    @Column(nullable = false)
     private String nombre;
+
     @Expose
+    @Column(nullable = false)
     private String ruta_directorio;
+
     @Expose
     @ManyToOne
-    @JoinColumn(name = "id_propietario")
+    @JoinColumn(name = "id_propietario", nullable = false)
     private Usuario propietario;
+
+    // Getters y setters
 
     public Integer getId_espacio() {
         return id_espacio;

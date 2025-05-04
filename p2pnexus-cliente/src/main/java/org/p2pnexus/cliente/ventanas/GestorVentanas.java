@@ -4,7 +4,10 @@ import com.p2pnexus.comun.exepciones.GestorDeVentanasExeption;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -64,6 +67,16 @@ public class GestorVentanas {
             System.err.println("Error al cargar la ventana: " + e);
             throw new RuntimeException(e);
         }
+    }
+
+    public static void abrirModal(Parent root, String titulo, Boolean escalable)
+    {
+        Stage stage = new Stage();
+        stage.setTitle(titulo);
+        stage.setResizable(escalable);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     public static Parent crearVentana(Ventanas ventanaDestino) throws IOException {

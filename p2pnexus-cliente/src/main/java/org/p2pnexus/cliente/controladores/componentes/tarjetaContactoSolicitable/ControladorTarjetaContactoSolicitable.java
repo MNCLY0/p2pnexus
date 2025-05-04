@@ -3,7 +3,6 @@ package org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitabl
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,9 +36,9 @@ public class ControladorTarjetaContactoSolicitable {
 
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_CREAR_SOLICITUD,json));
 
-        ControladorSolicitudes.controladorSolicitudesActual.vboxResultadosUsuarios.getChildren().remove(labelNombre.getParent());
+        ControladorSolicitudes.instancia.vboxResultadosUsuarios.getChildren().remove(labelNombre.getParent());
 
-        ControladorSolicitudes.controladorSolicitudesActual.solicitarActualizacionSolicitudes();
+        ControladorSolicitudes.instancia.solicitarActualizacionSolicitudes();
 
     }
 }

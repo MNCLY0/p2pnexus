@@ -1,7 +1,6 @@
 package org.p2pnexus.cliente.controladores.vistas;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import javafx.application.Platform;
@@ -30,7 +29,7 @@ public class ControladorChat {
 
     Conversacion conversacionActual;
 
-    public static ControladorChat controladorChatActual;
+    public static ControladorChat instancia;
     @FXML
     public VBox contenedorMensajes;
     @FXML
@@ -44,7 +43,7 @@ public class ControladorChat {
 
     @FXML
     public void initialize() {
-        controladorChatActual = this;
+        instancia = this;
 
         areaContenidoMensaje.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {

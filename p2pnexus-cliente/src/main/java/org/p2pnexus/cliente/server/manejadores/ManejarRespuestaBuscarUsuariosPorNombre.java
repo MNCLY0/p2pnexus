@@ -20,7 +20,7 @@ public class ManejarRespuestaBuscarUsuariosPorNombre implements IManejadorMensaj
         if (respuesta.isEmpty()) {
             return null;
         }
-        ControladorSolicitudes.controladorSolicitudesActual.agregarUsuarios(respuesta);
+        ControladorSolicitudes.instancia.agregarUsuarios(respuesta);
         return null;
     }
 

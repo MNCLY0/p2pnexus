@@ -23,5 +23,6 @@ public class ControlManejadores extends ManejadorDeMensajes {
         manejadoresPeticiones.put(TipoMensaje.R_NUEVO_MENSAJE_CHAT, new ManejarRespuestaNuevoMensajeChat());
         manejadoresPeticiones.put(TipoMensaje.R_CONVERSACION_CON_USUARIO, new ManejarRespuestaSolicitudConversacionConUsuario());
         manejadoresPeticiones.put(TipoMensaje.R_ESPACIOS_POR_ID, new ManejarRespuestaEspaciosPorId());
+        manejadoresPeticiones.put(TipoMensaje.R_CREAR_ESPACIO_OK, new ManejarRespuestaCrearEspacioOk());
     }
 }

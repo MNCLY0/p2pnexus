@@ -16,7 +16,6 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         try {
             Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
-//            Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
             Parent root = FXMLLoader.load(Ventanas.MAIN.getRuta());
             primaryStage.setTitle("p2pnexus");
             primaryStage.setScene(new Scene(root));

@@ -19,7 +19,7 @@ public class ManejarRespuestaSolicitudesPorId implements IManejadorMensaje {
             return null;
         }
 
-        ControladorSolicitudes.controladorSolicitudesActual.agregarSolicitudes(respuesta);
+        ControladorSolicitudes.instancia.agregarSolicitudes(respuesta);
 
         return null;
     }

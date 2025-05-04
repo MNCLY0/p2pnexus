@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.ventanas.Animaciones;
@@ -32,6 +33,7 @@ public class ControladorCreacionEspacio {
 
     @FXML
     StackPane stackPanePrincipal;
+
 
 
 
@@ -71,6 +73,9 @@ public class ControladorCreacionEspacio {
 
         Mensaje mensaje = new Mensaje(TipoMensaje.C_CREAR_ESPACIO, json);
         Conexion.enviarMensaje(mensaje);
+
+        Stage stage = (Stage) stackPanePrincipal.getScene().getWindow();
+        stage.close();
 
     }
 

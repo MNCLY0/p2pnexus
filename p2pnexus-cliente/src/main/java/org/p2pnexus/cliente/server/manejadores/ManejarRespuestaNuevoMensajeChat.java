@@ -8,7 +8,6 @@ import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import javafx.application.Platform;
 import org.p2pnexus.cliente.controladores.vistas.ControladorChat;
-import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.MensajeChat;
 
 public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
@@ -18,10 +17,10 @@ public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
 
         MensajeChat nuevoMensaje = JsonHerramientas.convertirJsonAObjeto(mensaje.getData(), MensajeChat.class);
         Platform.runLater(() ->{
-            if (ControladorChat.controladorChatActual == null) {
+            if (ControladorChat.instancia == null) {
                 return;
             }
-            ControladorChat.controladorChatActual.nuevoMensaje(nuevoMensaje);
+            ControladorChat.instancia.nuevoMensaje(nuevoMensaje);
         });
 
         return null;

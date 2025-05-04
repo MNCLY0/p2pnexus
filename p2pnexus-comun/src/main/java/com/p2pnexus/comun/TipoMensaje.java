@@ -21,6 +21,8 @@ public enum TipoMensaje {
     C_CONVERSACION_CON_USUARIO,
     C_CREAR_ESPACIO,
     C_ESPACIOS_POR_ID,
+    C_ELIMINAR_ESPACIO,
+    C_EDITAR_ESPACIO,
 
     // Mensajes de respuesta
     R_LOGIN_OK,

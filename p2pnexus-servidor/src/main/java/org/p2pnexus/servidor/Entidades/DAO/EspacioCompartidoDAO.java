@@ -18,6 +18,36 @@ public class EspacioCompartidoDAO extends DAO{
         }
     }
 
+    public void editarEspacioCompartido(EspacioCompartido modificado) {
+        try (Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            EspacioCompartido entidadOriginal = session.get(EspacioCompartido.class, modificado.getId_espacio());
+            if (entidadOriginal != null) {
+                entidadOriginal.setNombre(modificado.getNombre());
+                entidadOriginal.setRuta_directorio(modificado.getRuta_directorio());
+                session.merge(entidadOriginal);
+            }
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al editar el espacio compartido: " + e.getMessage(), e);
+        }
+    }
+
+    public void eliminarEspacioCompartido(int idEspacioCompartido) {
+        try (Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+            EspacioCompartido espacio = session.get(EspacioCompartido.class, idEspacioCompartido);
+            if (espacio != null) {
+                session.remove(espacio);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar el espacio compartido: " + e.getMessage(), e);
+        }
+    }
+
     public List<EspacioCompartido> espaciosCompartidosPorPropietario(int id) {
 
         try(Session session = getSessionFactory().openSession()) {
@@ -26,6 +56,7 @@ public class EspacioCompartidoDAO extends DAO{
                     .setParameter("id", id)
                     .getResultList();
             session.getTransaction().commit();
+            System.out.println("Espacios compartidos por propietario: " + espaciosCompartidos);
             return espaciosCompartidos;
         } catch (Exception e) {
             throw new RuntimeException("Error al obtener los espacios compartidos por propietario: " + e.getMessage(), e);

@@ -6,9 +6,11 @@ import com.p2pnexus.comun.TipoMensaje;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
@@ -23,10 +25,10 @@ public class ControladorTarjetaSolicitudContacto {
     public Label labelNombre;
 
     @FXML
-    public VBox contenedorIconoAceptar;
+    Button botonAceptar;
 
     @FXML
-    public VBox contenedorIconoDenegar;
+    Button botonDenegar;
 
     SolicitudContacto solicitudContacto;
 
@@ -42,15 +44,11 @@ public class ControladorTarjetaSolicitudContacto {
         FontIcon iconoAceptar = new FontIcon(Material2RoundAL.ADD_CIRCLE);
         FontIcon iconoDenegar = new FontIcon(Material2RoundAL.CANCEL);
 
-        contenedorIconoAceptar.getChildren().add(iconoAceptar);
-        contenedorIconoDenegar.getChildren().add(iconoDenegar);
+        botonAceptar.setGraphic(iconoAceptar);
+        botonDenegar.setGraphic(iconoDenegar);
 
-        iconoAceptar.iconSizeProperty().bind(Bindings.createIntegerBinding(() -> (int) (contenedorIconoAceptar.getHeight() * 0.5), contenedorIconoAceptar.heightProperty()));
-        iconoDenegar.iconSizeProperty().bind(Bindings.createIntegerBinding(() -> (int) (contenedorIconoDenegar.getHeight() * 0.5), contenedorIconoDenegar.heightProperty()));
-
-
-        Tooltip.install(contenedorIconoAceptar, crearTooltip("Aceptar solicitud"));
-        Tooltip.install(contenedorIconoDenegar, crearTooltip("Denegar solicitud"));
+        Tooltip.install(botonAceptar, crearTooltip("Aceptar solicitud"));
+        Tooltip.install(botonDenegar, crearTooltip("Denegar solicitud"));
 
     }
 
@@ -72,12 +70,12 @@ public class ControladorTarjetaSolicitudContacto {
         json.addProperty(getIdSolicitud(), solicitudContacto.getId_solicitud());
         Mensaje mensaje = new Mensaje(tipoMensaje, json);
         Conexion.enviarMensaje(mensaje);
-        ControladorSolicitudes.controladorSolicitudesActual.vboxResultadosSolicitudes.getChildren().remove(labelNombre.getParent());
-        ControladorSolicitudes.controladorSolicitudesActual.solicitarActualizacionSolicitudes();
+        ControladorSolicitudes.instancia.vboxResultadosSolicitudes.getChildren().remove(labelNombre.getParent());
+        ControladorSolicitudes.instancia.solicitarActualizacionSolicitudes();
 
         // Actualizar la lista de usuarios
         Platform.runLater(() -> {
-            ControladorMenuPrincipal.controladorMenuPrincipalActual.solicitarContactos();
+            ControladorMenuPrincipal.instancia.solicitarContactos();
         });
     }
 

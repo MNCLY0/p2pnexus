@@ -7,15 +7,26 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="450.0" spacing="10.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacioCompartido">
    <children>
       <HBox>
          <children>
             <AnchorPane HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" layoutX="175.0" layoutY="3.0" styleClass="title-2" text="Nombre del espacio" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button layoutX="500.0" layoutY="11.0" mnemonicParsing="false" text="Editar" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                  <Label fx:id="labelNombreEspacio" alignment="CENTER" layoutY="3.0" prefHeight="37.0" prefWidth="440.0" styleClass="title-2" text="Nombre espacio" textOverrun="CENTER_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <padding>
+                        <Insets left="80.0" right="80.0" />
+                     </padding></Label>
+                  <Button layoutX="366.0" layoutY="5.0" mnemonicParsing="false" onAction="#abrirModoEditar" text="Editar" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="5.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="labelRutaEspacio" alignment="CENTER" layoutX="175.0" layoutY="3.0" styleClass="title-4" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
          </children>

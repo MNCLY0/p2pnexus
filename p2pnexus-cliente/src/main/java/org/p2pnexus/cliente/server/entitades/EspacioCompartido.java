@@ -1,24 +1,35 @@
 package org.p2pnexus.cliente.server.entitades;
 
 import com.google.gson.annotations.Expose;
-import jakarta.persistence.*;
 
-public class EspaciosCompartidos {
+public class EspacioCompartido {
 
-    public EspaciosCompartidos(Integer id_espacio, String nombre, String ruta_directorio, Usuario propietario) {
-        this.id_espacio = id_espacio;
+    @Expose
+    private Integer id_espacio;
+
+    @Expose
+    private String nombre;
+
+    @Expose
+    private String ruta_directorio;
+
+    @Expose
+    private Usuario propietario;
+
+    public EspacioCompartido() {}
+
+    public EspacioCompartido(String nombre, String ruta_directorio, Usuario propietario) {
         this.nombre = nombre;
         this.ruta_directorio = ruta_directorio;
         this.propietario = propietario;
     }
 
-    private Integer id_espacio;
-
-    private String nombre;
-
-    private String ruta_directorio;
-
-    private Usuario propietario;
+    public EspacioCompartido(Integer id_espacio, String nombre, String ruta_directorio, Usuario propietario) {
+        this.id_espacio = id_espacio;
+        this.nombre = nombre;
+        this.ruta_directorio = ruta_directorio;
+        this.propietario = propietario;
+    }
 
     public Integer getId_espacio() {
         return id_espacio;

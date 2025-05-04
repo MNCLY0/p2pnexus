@@ -18,7 +18,7 @@ public class ManejarRespuestaMensajesChat implements IManejadorMensaje {
         Conversacion conversacion = new Conversacion(mensaje.getData().get("id_conversacion").getAsInt());
         List<MensajeChat> mensajes = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), MensajeChat.class);
         System.out.println("Estableciendo mensajes en el chat");
-        ControladorChat.controladorChatActual.establecerMensajes(mensajes, conversacion);
+        ControladorChat.instancia.establecerMensajes(mensajes, conversacion);
         return null;
     }
 }

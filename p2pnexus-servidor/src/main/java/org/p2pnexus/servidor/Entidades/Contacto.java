@@ -24,7 +24,6 @@ public class Contacto {
 
     private LocalDateTime fecha_agregado;
 
-    // Getters y setters
     public ContactoId getId() { return id; }
     public void setId(ContactoId id) { this.id = id; }
 

@@ -40,12 +40,12 @@ public class ControladorSolicitudes {
     public List<Usuario> resultadosBusquedaUsuario = new ArrayList<>();
     public List<SolicitudContacto> resultadosBusquedaSolicitudes = new ArrayList<>();
 
-    public static ControladorSolicitudes controladorSolicitudesActual;
+    public static ControladorSolicitudes instancia;
 
     @FXML
     public void initialize()
     {
-        controladorSolicitudesActual = this;
+        instancia = this;
     }
 
     @FXML
