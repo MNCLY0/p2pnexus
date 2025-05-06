@@ -3,14 +3,19 @@ package org.p2pnexus.cliente.controladores.vistas;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import com.p2pnexus.comun.TipoNotificacion;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu;
@@ -22,6 +27,7 @@ import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.ventanas.Componentes;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
+import org.p2pnexus.cliente.ventanas.Notificaciones;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
 import java.io.IOException;
@@ -39,6 +45,9 @@ public class ControladorMenuPrincipal {
 
     @FXML
     ArrayList<TabMenu> tabsMenu;
+
+    @FXML
+    ImageView imagenTest;
 
     @FXML
     Tab tabChat = null;
@@ -186,5 +195,33 @@ public class ControladorMenuPrincipal {
 
     public Map<Usuario, ControladorTarjetaContacto> getControladoresTarjetaContacto() {
         return controladoresTarjetaContacto;
+    }
+
+    @FXML
+    void solicitarEstablecerImagenTest()
+    {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Establece la ruta de la imagen");
+            dialog.setHeaderText("Introduce un enlace directo a la imagen");
+            dialog.setContentText("Ruta de la imagen:");
+            dialog.setGraphic(new FontIcon(Material2AL.FILE_UPLOAD));
+            dialog.showAndWait().ifPresent(ruta ->
+                {
+                    if (ruta.isEmpty()) return;
+                    Platform.runLater(() -> {
+                        Image imagen = new Image(GestorVentanas.transformarDriveURL(ruta));
+                        imagenTest.setImage(imagen);
+                        if (imagenTest.getImage() != null) {
+                            System.out.printf("Imagen establecida: %s%n", ruta);
+                            System.out.print("Dimensiones de la imagen: " + imagen.getWidth() + ":" + imagen.getHeight());
+                            if (imagen.getWidth() == 0 || imagen.getHeight() == 0) {
+                                Notificaciones.MostrarNotificacion("Error al cargar la imagen", TipoNotificacion.ERROR);
+                            }
+                        } else {
+                            System.out.println("No se ha podido establecer la imagen");
+                        }
+                    });
+                }
+            );
     }
 }

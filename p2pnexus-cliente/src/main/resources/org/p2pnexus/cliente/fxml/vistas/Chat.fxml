@@ -3,14 +3,19 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="589.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorChat">
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="589.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorChat">
    <tabs>
       <Tab styleClass="title-2" text="Chat">
          <content>
@@ -41,7 +46,68 @@
       </Tab>
       <Tab styleClass="title-2" text="Espacios compartidos">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <SplitPane dividerPositions="0.65" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox>
+                                       <children>
+                                          <Label styleClass="title-3" text="Espacios compartidos contigo" />
+                                       </children>
+                                    </HBox>
+                                    <FlowPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                           <children>
+                              <VBox alignment="TOP_CENTER" layoutX="92.0" layoutY="35.0" prefWidth="382.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label styleClass="title-3" text="Tus espacios compartidos">
+                                             <padding>
+                                                <Insets left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="BOTTOM_LEFT">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="Selecciona un espacio y pulsa &quot;Compartir&quot;" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="BOTTOM_LEFT" spacing="10.0">
+                                       <children>
+                                          <ComboBox fx:id="comboBoxSeleccionEspacio" maxHeight="1.7976931348623157E308" maxWidth="300.0" promptText="Selecciona un espacio" HBox.hgrow="ALWAYS" />
+                                          <Button mnemonicParsing="false" text="Compartir" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <FlowPane VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children></AnchorPane>
          </content>
       </Tab>
    </tabs>

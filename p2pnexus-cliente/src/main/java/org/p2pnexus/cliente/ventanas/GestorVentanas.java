@@ -5,11 +5,15 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class GestorVentanas {
 
@@ -107,6 +111,27 @@ public class GestorVentanas {
     {
         if (ventanaAnterior == null) throw new GestorDeVentanasExeption("No hay ventana a la que volver");
         transicionarVentana(ventanaAnterior);
+    }
+
+    public static String transformarDriveURL(String enlace) {
+        if (enlace.contains("drive.google.com/file/d/")) {
+            String id = enlace.split("/d/")[1].split("/")[0];
+            return "https://drive.google.com/uc?export=view&id=" + id;
+        }
+        return enlace;
+    }
+
+    public static Image rutaAImagen(String ruta) {
+        try {
+            URL url = new URL(ruta);
+            HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+            conexion.setRequestProperty("User-Agent", "Mozilla/5.0");
+            InputStream inputStream = conexion.getInputStream();
+            return new Image(inputStream);
+        } catch (IOException e) {
+            System.err.println("No se pudo cargar la imagen: " + e.getMessage());
+            return null;
+        }
     }
 
 }

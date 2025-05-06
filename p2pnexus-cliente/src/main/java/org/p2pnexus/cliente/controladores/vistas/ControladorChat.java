@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
@@ -14,6 +15,7 @@ import javafx.scene.layout.VBox;
 import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaMensaje;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
+import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 import org.p2pnexus.cliente.server.entitades.MensajeChat;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
@@ -39,6 +41,9 @@ public class ControladorChat {
 
     Map<Integer, List<MensajeChat>> mensajesChats = new HashMap<>();
 
+    @FXML
+    ComboBox<EspacioCompartido> comboBoxSeleccionEspacio;
+
 
 
     @FXML
@@ -53,6 +58,8 @@ public class ControladorChat {
                 event.consume();
             }
         });
+
+        comboBoxSeleccionEspacio.setItems(Sesion.getDatosSesionUsuario().getEspaciosUsuario());
 
     }
 

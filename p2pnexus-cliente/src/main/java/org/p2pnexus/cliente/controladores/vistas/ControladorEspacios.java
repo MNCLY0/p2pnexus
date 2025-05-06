@@ -7,10 +7,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacioCompartido;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
@@ -60,6 +57,7 @@ public class ControladorEspacios {
                 controlador.inicializarTarjetaEspacio(espacio);
                 flowPaneEspaciosCreados.getChildren().add(root);
                 tarjetasEspaciosCompartidos.put(espacio, root);
+                Sesion.getDatosSesionUsuario().agregarEspacio(espacio);
             }catch (IOException e) {
                 System.out.println("Error al cargar el componente de tarjeta de espacio compartido: " + e);
             }
@@ -73,6 +71,7 @@ public class ControladorEspacios {
             if (tarjeta != null) {
                 flowPaneEspaciosCreados.getChildren().remove(tarjeta);
                 tarjetasEspaciosCompartidos.remove(espacio);
+                Sesion.getDatosSesionUsuario().eliminarEspacio(espacio);
             }
         });
     }

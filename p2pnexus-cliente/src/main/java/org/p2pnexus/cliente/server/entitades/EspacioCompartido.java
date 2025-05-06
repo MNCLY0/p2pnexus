@@ -62,4 +62,9 @@ public class EspacioCompartido {
     public void setPropietario(Usuario propietario) {
         this.propietario = propietario;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }
