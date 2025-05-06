@@ -1,5 +1,6 @@
 package org.p2pnexus.cliente.server.manejadores;
 
+import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
@@ -12,11 +13,12 @@ import org.p2pnexus.cliente.server.entitades.MensajeChat;
 
 import java.util.List;
 
-public class ManejarRespuestaMensajesChat implements IManejadorMensaje {
+public class ManejarRespuestaActualizarChat implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
         Conversacion conversacion = new Conversacion(mensaje.getData().get("id_conversacion").getAsInt());
-        List<MensajeChat> mensajes = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), MensajeChat.class);
+        JsonObject mensajesJson = mensaje.getData().get("mensajes").getAsJsonObject();
+        List<MensajeChat> mensajes = JsonHerramientas.obtenerListaDeJsonObject(mensajesJson, MensajeChat.class);
         System.out.println("Estableciendo mensajes en el chat");
         ControladorChat.instancia.establecerMensajes(mensajes, conversacion);
         return null;

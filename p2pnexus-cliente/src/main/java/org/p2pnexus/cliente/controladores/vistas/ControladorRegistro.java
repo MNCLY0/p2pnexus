@@ -25,7 +25,16 @@ public class ControladorRegistro {
     @FXML
     public TextField txtUsuario;
     @FXML
-    public PasswordField txtPassword;
+    public PasswordField passfieldPassword;
+    @FXML
+    public PasswordField passfieldPasswordConfirmar;
+    @FXML
+    public TextField txtPassword;
+    @FXML
+    public TextField txtPasswordConfirmar;
+
+    @FXML
+    public CheckBox chkVisibilidad;
 
     public VBox iconoInfoPassword;
 
@@ -44,13 +53,14 @@ public class ControladorRegistro {
                 return;
             }
 
-            if (validarPass(txtPassword.getText().trim())) {
+            if (validarPass(passfieldPassword.getText().trim())) {
                 JsonObject json = new JsonObject();
                 json.addProperty("usuario", txtUsuario.getText().trim());
-                json.addProperty("pass", Hasheador.hashear(txtPassword.getText().trim()));
+                json.addProperty("pass", Hasheador.hashear(passfieldPassword.getText().trim()));
                 Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_REGISTRO,json));
             }
         });
+
 
         btnVolver.setOnAction(event -> {
             try {
@@ -59,6 +69,24 @@ public class ControladorRegistro {
                 System.err.println(e.getMessage());
             }
         });
+
+        passfieldPassword.managedProperty().bind(chkVisibilidad.selectedProperty().not());
+        passfieldPassword.visibleProperty().bind(chkVisibilidad.selectedProperty().not());
+
+        txtPassword.managedProperty().bind(chkVisibilidad.selectedProperty());
+        txtPassword.visibleProperty().bind(chkVisibilidad.selectedProperty());
+
+        passfieldPasswordConfirmar.managedProperty().bind(chkVisibilidad.selectedProperty().not());
+        passfieldPasswordConfirmar.visibleProperty().bind(chkVisibilidad.selectedProperty().not());
+
+        txtPasswordConfirmar.managedProperty().bind(chkVisibilidad.selectedProperty());
+        txtPasswordConfirmar.visibleProperty().bind(chkVisibilidad.selectedProperty());
+
+        passfieldPasswordConfirmar.textProperty().bindBidirectional(txtPasswordConfirmar.textProperty());
+        passfieldPassword.textProperty().bindBidirectional(txtPassword.textProperty());
+
+
+
     }
 
     public void crearInfo()
@@ -88,7 +116,7 @@ public class ControladorRegistro {
     }
 
     public boolean validarPass(String pass) {
-        // Validar la contraseña
+        // Validar la contraseña con todas las reglas
         boolean valida = true;
         String razon = "";
 
@@ -106,6 +134,11 @@ public class ControladorRegistro {
         }
         if (!pass.matches(".*\\d.*") && valida) {
             razon = "La contraseña debe tener al menos un número";
+            valida = false;
+        }
+
+        if (!pass.equals(passfieldPasswordConfirmar.getText().trim())) {
+            razon = "Las contraseñas no coinciden";
             valida = false;
         }
 

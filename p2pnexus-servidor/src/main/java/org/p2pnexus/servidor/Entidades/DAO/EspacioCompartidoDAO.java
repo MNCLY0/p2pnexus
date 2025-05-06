@@ -1,7 +1,10 @@
 package org.p2pnexus.servidor.Entidades.DAO;
 
 import org.hibernate.Session;
+import org.p2pnexus.servidor.Entidades.Conversacion;
 import org.p2pnexus.servidor.Entidades.EspacioCompartido;
+import org.p2pnexus.servidor.Entidades.PermisoAcceso;
+import org.p2pnexus.servidor.Entidades.Usuario;
 
 import java.util.List;
 
@@ -61,6 +64,45 @@ public class EspacioCompartidoDAO extends DAO{
         } catch (Exception e) {
             throw new RuntimeException("Error al obtener los espacios compartidos por propietario: " + e.getMessage(), e);
         }
+    }
+
+    // Esto ahora mismo no tiene mucho sentido porque las conversaciones ahora mismo solo son entre dos usuarios, pero si lo hacemos de esta manera
+    // luego cuando hagamos los grupos no habría que cambiar nada de este punto
+    public List<Usuario> crearPermisosATodosLosUsuariosDeConversacion(EspacioCompartido espacio, Conversacion conversacion) {
+        ConversacionDAO conversacionDAO = new ConversacionDAO();
+        List<Usuario> usuarios = conversacionDAO.obtenerUsuariosParticipantesConversacion(conversacion.getId_conversacion());
+        for (Usuario usuario : usuarios) {
+            // No tiene sentido crear un permiso de acceso a un espacio que ya es de su propiedad así que nos lo saltamos
+            if (usuario.getId_usuario().equals(espacio.getPropietario().getId_usuario())) continue;
+            crearPermisoDeAccesoAUsuario(espacio, usuario);
+        }
+        return usuarios;
+    }
+
+    public List<EspacioCompartido> espaciosCompartidosPorUsuarioConOtroUsuario(int idUsuario1, int idUsuario2) {
+        try (Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+            List<EspacioCompartido> espaciosCompartidos = session.createQuery("SELECT p.espacioCompartido FROM PermisoAcceso p WHERE p.usuario.id_usuario = :idUsuario2 AND p.espacioCompartido.propietario.id_usuario = :idUsuario1", EspacioCompartido.class)
+                    .setParameter("idUsuario1", idUsuario1)
+                    .setParameter("idUsuario2", idUsuario2)
+                    .getResultList();
+            session.getTransaction().commit();
+            return espaciosCompartidos;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener los espacios compartidos por usuario: " + e.getMessage(), e);
+        }
+    }
+
+    public void crearPermisoDeAccesoAUsuario(EspacioCompartido espacio, Usuario usuario) {
+
+        try(Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+            PermisoAcceso permisoAcceso = new PermisoAcceso();
+            permisoAcceso.setEspacioCompartido(espacio);
+            permisoAcceso.setUsuario(usuario);
+            session.persist(permisoAcceso);
+            session.getTransaction().commit();
+        } catch (IllegalStateException e) {}
     }
 
 }

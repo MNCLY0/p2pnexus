@@ -3,7 +3,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "PermisoAcceso")
+@Table(name = "PermisoAcceso", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"id_usuario", "id_espacio"})
+} )
 public class PermisoAcceso {
 
     @Id

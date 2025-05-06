@@ -94,7 +94,7 @@
                                     <HBox alignment="BOTTOM_LEFT" spacing="10.0">
                                        <children>
                                           <ComboBox fx:id="comboBoxSeleccionEspacio" maxHeight="1.7976931348623157E308" maxWidth="300.0" promptText="Selecciona un espacio" HBox.hgrow="ALWAYS" />
-                                          <Button mnemonicParsing="false" text="Compartir" />
+                                          <Button mnemonicParsing="false" text="Compartir" onMouseClicked="#compartirEspacioSeleccionado" />
                                        </children>
                                        <padding>
                                           <Insets left="10.0" right="10.0" />

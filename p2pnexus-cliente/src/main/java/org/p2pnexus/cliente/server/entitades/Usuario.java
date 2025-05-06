@@ -1,5 +1,6 @@
 package org.p2pnexus.cliente.server.entitades;
 
+import com.google.gson.annotations.Expose;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,8 +14,9 @@ public class Usuario {
         this.id_usuario = id_usuario;
     }
 
+    @Expose
     private Integer id_usuario;
-
+    @Expose
     private String nombre;
 
     public Integer getId_usuario() {

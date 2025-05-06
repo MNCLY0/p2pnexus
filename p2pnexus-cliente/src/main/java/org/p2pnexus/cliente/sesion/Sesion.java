@@ -1,6 +1,7 @@
 package org.p2pnexus.cliente.sesion;
 
 import org.p2pnexus.cliente.server.entitades.Usuario;
+import org.p2pnexus.cliente.sesion.datos.DatosSesionUsuario;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
