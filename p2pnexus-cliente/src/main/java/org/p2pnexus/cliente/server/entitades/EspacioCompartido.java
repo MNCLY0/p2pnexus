@@ -19,25 +19,31 @@ public class EspacioCompartido {
     @Expose
     private Usuario propietario;
 
-    SimpleStringProperty nombrePropiedad = new SimpleStringProperty();
-    SimpleStringProperty rutaPropiedad = new SimpleStringProperty();
+
+    private transient SimpleStringProperty nombrePropiedad = new SimpleStringProperty();;
+
+    private transient SimpleStringProperty rutaPropiedad = new SimpleStringProperty();;
 
 
-    public EspacioCompartido() {}
+    public EspacioCompartido() {
+        System.out.println("Creando espacio compartido");
+    }
 
     public EspacioCompartido(Integer id_espacio, String nombre, String ruta_directorio, Usuario propietario) {
         this.id_espacio = id_espacio;
         this.nombre = nombre;
         this.ruta_directorio = ruta_directorio;
         this.propietario = propietario;
-        this.nombrePropiedad.set(nombre);
-        this.rutaPropiedad.set(ruta_directorio);
-        System.out.printf("Inicializado EspacioCompartido: %s, %s, %s, %s\n", id_espacio, nombre, ruta_directorio, propietario);
     }
 
 
     public EspacioCompartido(String nombre, String ruta_directorio, Usuario propietario) {
         this(null, nombre, ruta_directorio, propietario);
+    }
+
+    public void inializarPropiedades() {
+        this.nombrePropiedad.set(nombre);
+        this.rutaPropiedad.set(ruta_directorio);
     }
 
 

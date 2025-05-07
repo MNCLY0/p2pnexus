@@ -12,6 +12,7 @@ import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacio;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 import org.p2pnexus.cliente.sesion.Sesion;
+import org.p2pnexus.cliente.sesion.datos.DatosSesionUsuario;
 import org.p2pnexus.cliente.ventanas.Componentes;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
@@ -29,7 +30,7 @@ public class ControladorEspacios {
     @FXML
     FlowPane flowPaneEspaciosCreados;
 
-    Map<EspacioCompartido, Parent> tarjetasEspaciosCompartidos = new HashMap<>();
+    Map<Integer, Parent> tarjetasEspaciosCompartidos = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -42,6 +43,7 @@ public class ControladorEspacios {
     public void inicializarEspacios(List<EspacioCompartido> espacioCompartidos) {
 
             for (EspacioCompartido espacio : espacioCompartidos) {
+                espacio.inializarPropiedades();
                 inicializarTarjetaEspacio(espacio);
             }
     }
@@ -50,13 +52,16 @@ public class ControladorEspacios {
     {
         Platform.runLater(() -> {
             try {
+                // Si el espacio que se intenta agregar ya existe va a devolver false y no se va a agregar pero si se va a actualizar
+                if (!Sesion.datosSesionUsuario.agregarEspacio(espacio)) return;
+
                 FXMLLoader loader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TARJETA_ESPACIO_COMPARTIDO);
                 Parent root = loader.load();
                 ControladorTarjetaEspacio controlador = loader.getController();
                 controlador.inicializarTarjetaEspacio(espacio);
                 flowPaneEspaciosCreados.getChildren().add(0,root);
-                tarjetasEspaciosCompartidos.put(espacio, root);
-                Sesion.getDatosSesionUsuario().agregarEspacio(espacio);
+                tarjetasEspaciosCompartidos.put(espacio.getId_espacio(), root);
+
             }catch (IOException e) {
                 System.out.println("Error al cargar el componente de tarjeta de espacio compartido: " + e);
             }
@@ -66,11 +71,17 @@ public class ControladorEspacios {
     public void eliminarTarjetaEspacio(EspacioCompartido espacio)
     {
         Platform.runLater(() -> {
-            Parent tarjeta = tarjetasEspaciosCompartidos.get(espacio);
-            if (tarjeta != null) {
-                flowPaneEspaciosCreados.getChildren().remove(tarjeta);
-                tarjetasEspaciosCompartidos.remove(espacio);
-                Sesion.getDatosSesionUsuario().eliminarEspacio(espacio);
+            try {
+                System.out.println("Tarjetas de espacios compartidos: " + tarjetasEspaciosCompartidos);
+                Parent tarjeta = tarjetasEspaciosCompartidos.get(espacio.getId_espacio());
+                if (tarjeta != null) {
+                    flowPaneEspaciosCreados.getChildren().remove(tarjeta);
+                    tarjetasEspaciosCompartidos.remove(espacio.getId_espacio());
+                    Sesion.getDatosSesionUsuario().eliminarEspacio(espacio);
+                }
+            }catch (
+                    Exception e) {
+                System.out.println("Error al eliminar la tarjeta de espacio compartido: " + e);
             }
         });
     }

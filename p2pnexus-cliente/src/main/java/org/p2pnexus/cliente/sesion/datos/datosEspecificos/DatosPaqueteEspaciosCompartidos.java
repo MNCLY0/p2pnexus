@@ -22,6 +22,16 @@ public class DatosPaqueteEspaciosCompartidos {
         this.enviados.addListener((ListChangeListener<EspacioCompartido>) cambio -> {
            actualizarFiltroNoCompartidos();
         });
+        inicializarPropiedades();
+    }
+
+    void inicializarPropiedades() {
+        for (EspacioCompartido espacioCompartido : enviados) {
+            espacioCompartido.inializarPropiedades();
+        }
+        for (EspacioCompartido espacioCompartido : recibidos) {
+            espacioCompartido.inializarPropiedades();
+        }
     }
 
     public ObservableList<EspacioCompartido> getEnviados() {
@@ -39,7 +49,10 @@ public class DatosPaqueteEspaciosCompartidos {
     // Este filtro sirve para los espacios que aun no se han compartido en una conversacion sobre el total de todos los espacios creados por el usuario
     public void actualizarFiltroNoCompartidos() {
         Platform.runLater(() ->{
-            if (this.espaciosNoEnviados == null) this.espaciosNoEnviados = new FilteredList<>(Sesion.datosSesionUsuario.getEspacios());
+            if (this.espaciosNoEnviados == null)
+            {
+                this.espaciosNoEnviados = new FilteredList<>(Sesion.datosSesionUsuario.getObservableListEspacios());
+            };
             espaciosNoEnviados.setPredicate(espacioCompartido -> !enviados.contains(espacioCompartido));
         });
 

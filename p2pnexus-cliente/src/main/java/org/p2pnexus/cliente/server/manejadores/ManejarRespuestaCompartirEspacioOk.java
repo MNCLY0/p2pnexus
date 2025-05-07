@@ -19,11 +19,14 @@ public class ManejarRespuestaCompartirEspacioOk implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
         EspacioCompartido espacioCompartido = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("espacio").getAsJsonObject(), EspacioCompartido.class);
+        espacioCompartido.inializarPropiedades();
+        System.out.println("Espacios compartidos con el usuario: " + espacioCompartido.getNombrePropiedadProperty().getValue());
         Conversacion conversacion = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("conversacion").getAsJsonObject(), Conversacion.class);
 
         DatosPaqueteEspaciosCompartidos datosPaqueteEspaciosCompartidos = Sesion.getDatosSesionUsuario().getCacheDatosConversacion()
                 .get(conversacion.getIdConversacion())
                 .getDatosPaqueteEspaciosCompartidos();
+
         datosPaqueteEspaciosCompartidos.getEnviados().add(espacioCompartido);
 
         ControladorChat.instancia.actualizarFiltroComboBox(conversacion);

@@ -6,6 +6,7 @@ import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import org.p2pnexus.cliente.controladores.vistas.ControladorEspacios;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
+import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 import java.io.File;
@@ -57,7 +59,18 @@ public class ControladorEdicionEspacio {
     @FXML
     public void eliminarEspacio()
     {
+        boolean confirmacion = GestorVentanas.pedirConfirmacion(
+                "Eliminar espacio",
+                "¿Estás seguro de que deseas eliminar el espacio \"" +
+                        espacioCompartidoOriginal.getNombrePropiedadProperty().get() + "\"?\n\n" +
+                        "Esta acción eliminará permanentemente el espacio de tu lista y dejará de estar compartido con los usuarios que tenían acceso.",
+                Alert.AlertType.ERROR,
+                textFieldRuta.getScene()
+        );
+
+        if (!confirmacion) {return;}
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_ELIMINAR_ESPACIO, JsonHerramientas.convertirObjetoAJson(espacioCompartidoOriginal)));
+        System.out.println("Se va a tratar de eliminar el espacio: " + espacioCompartidoOriginal.getNombrePropiedadProperty().get() + "con id " + espacioCompartidoOriginal.getId_espacio());
         ControladorEspacios.instancia.eliminarTarjetaEspacio(espacioCompartidoOriginal);
         cerrarVentana();
     }
@@ -94,8 +107,6 @@ public class ControladorEdicionEspacio {
         json.add("espacio_modificado", JsonHerramientas.convertirObjetoAJson(espacioCompartidoModificado));
 
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_EDITAR_ESPACIO, json));
-
-        ControladorEspacios.instancia.eliminarTarjetaEspacio(espacioCompartidoOriginal);
 
         cerrarVentana();
 

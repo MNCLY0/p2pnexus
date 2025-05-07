@@ -14,6 +14,7 @@ public class ManejarRespuestaCrearEspacioOk implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
         EspacioCompartido espacioCreado = JsonHerramientas.convertirJsonAObjeto(mensaje.getData(), EspacioCompartido.class);
+        espacioCreado.inializarPropiedades();
         ControladorEspacios.instancia.inicializarTarjetaEspacio(espacioCreado);
         return null;
     }

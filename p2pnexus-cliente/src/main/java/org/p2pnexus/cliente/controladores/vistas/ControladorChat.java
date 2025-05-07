@@ -204,13 +204,17 @@ public class ControladorChat {
 
     void cargarEspaciosDesdeCache()
     {
-        System.out.printf("ADPKASDñlAKSDÑLASJKdAKDPAKWdKpOASKdpoASKDpo");
         Platform.runLater(() -> {
             flowPaneEspaciosEnviados.getChildren().clear();
             System.out.print("Se van a cargar los siguientes espacios: " + datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados());
             for (EspacioCompartido espacio : datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados())
             {
-                crearVistaEspacio(espacio);
+                if (espacio == null)
+                {
+                    System.out.println("Espacio nulo");
+                    return;
+                }
+                crearVistaEspacio(Sesion.getDatosSesionUsuario().getEspacios().get(espacio.getId_espacio()));
             }
         });
 

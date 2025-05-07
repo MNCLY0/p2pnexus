@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -119,6 +122,22 @@ public class GestorVentanas {
             return "https://drive.google.com/uc?export=view&id=" + id;
         }
         return enlace;
+    }
+
+    public static boolean pedirConfirmacion(String titulo, String mensaje, Alert.AlertType tipo, Scene owner) {
+        Alert ventanaConfirmacion = new Alert(tipo);
+        ventanaConfirmacion.setTitle("Confirmación");
+        ventanaConfirmacion.setHeaderText(titulo);
+        ventanaConfirmacion.setContentText(mensaje);
+
+        ButtonType si = new ButtonType("Si", ButtonBar.ButtonData.YES);
+        ButtonType no = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+        ventanaConfirmacion.getButtonTypes().setAll(si, no);
+        ventanaConfirmacion.initOwner(owner.getWindow());
+        ventanaConfirmacion.showAndWait();
+
+        return ventanaConfirmacion.getResult() == si;
     }
 
     public static Image rutaAImagen(String ruta) {

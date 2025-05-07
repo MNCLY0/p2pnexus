@@ -20,8 +20,9 @@ public class ControladorTarjetaEspacio {
     EspacioCompartido espacioCompartido;
 
     public void inicializarTarjetaEspacio(EspacioCompartido espacio) {
-        labelNombreEspacio.setText(espacio.getNombrePropiedadProperty().get());
-        labelRutaEspacio.setText(espacio.getRutaPropiedadProperty().get());
+        System.out.println("Inicializando tarjeta de espacio compartido para " + espacio.getNombrePropiedadProperty().get());
+        labelNombreEspacio.textProperty().bind(espacio.getNombrePropiedadProperty());
+        labelRutaEspacio.textProperty().bind(espacio.getRutaPropiedadProperty());
         this.espacioCompartido = espacio;
     }
 

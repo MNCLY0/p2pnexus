@@ -15,8 +15,13 @@ public class ManejarRespuestaEspaciosPorId implements IManejadorMensaje {
 
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        List<EspacioCompartido> espacioCompartidos = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), EspacioCompartido.class);
-        ControladorEspacios.instancia.inicializarEspacios(espacioCompartidos);
+        try {
+            List<EspacioCompartido> espacioCompartidos = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), EspacioCompartido.class);
+            ControladorEspacios.instancia.inicializarEspacios(espacioCompartidos);
+        }catch (Exception e) {
+            throw new ManejarPeticionesExeptionError("Error al manejar la respuesta", e);
+        }
+
         return null;
     }
 }
