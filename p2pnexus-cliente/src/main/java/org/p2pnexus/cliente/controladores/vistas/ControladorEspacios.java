@@ -12,7 +12,6 @@ import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacio;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 import org.p2pnexus.cliente.sesion.Sesion;
-import org.p2pnexus.cliente.sesion.datos.DatosSesionUsuario;
 import org.p2pnexus.cliente.ventanas.Componentes;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
@@ -30,7 +29,7 @@ public class ControladorEspacios {
     @FXML
     FlowPane flowPaneEspaciosCreados;
 
-    Map<Integer, Parent> tarjetasEspaciosCompartidos = new HashMap<>();
+    Map<Integer, Parent> tarjetasEspacios = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -60,7 +59,7 @@ public class ControladorEspacios {
                 ControladorTarjetaEspacio controlador = loader.getController();
                 controlador.inicializarTarjetaEspacio(espacio);
                 flowPaneEspaciosCreados.getChildren().add(0,root);
-                tarjetasEspaciosCompartidos.put(espacio.getId_espacio(), root);
+                tarjetasEspacios.put(espacio.getId_espacio(), root);
 
             }catch (IOException e) {
                 System.out.println("Error al cargar el componente de tarjeta de espacio compartido: " + e);
@@ -72,11 +71,11 @@ public class ControladorEspacios {
     {
         Platform.runLater(() -> {
             try {
-                System.out.println("Tarjetas de espacios compartidos: " + tarjetasEspaciosCompartidos);
-                Parent tarjeta = tarjetasEspaciosCompartidos.get(espacio.getId_espacio());
+                System.out.println("Tarjetas de espacios compartidos: " + tarjetasEspacios);
+                Parent tarjeta = tarjetasEspacios.get(espacio.getId_espacio());
                 if (tarjeta != null) {
                     flowPaneEspaciosCreados.getChildren().remove(tarjeta);
-                    tarjetasEspaciosCompartidos.remove(espacio.getId_espacio());
+                    tarjetasEspacios.remove(espacio.getId_espacio());
                     Sesion.getDatosSesionUsuario().eliminarEspacio(espacio);
                 }
             }catch (

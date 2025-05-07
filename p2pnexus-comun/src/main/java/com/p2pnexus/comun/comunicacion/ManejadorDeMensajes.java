@@ -13,7 +13,6 @@ import java.util.Map;
  * Clase abstracta que maneja los mensajes recibidos por el socket.
  * Se encarga de inicializar los manejadores de mensajes y de recibir los mensajes del socket.
  * Se debe extender para implementar los manejadores de mensajes específicos.
- * @author mncly
  */
 
 public abstract class ManejadorDeMensajes implements Runnable {

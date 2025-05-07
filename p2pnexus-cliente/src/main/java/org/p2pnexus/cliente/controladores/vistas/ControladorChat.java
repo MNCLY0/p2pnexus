@@ -31,6 +31,7 @@ import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,7 @@ public class ControladorChat {
 
     @FXML
     FlowPane flowPaneEspaciosEnviados;
+    Map<EspacioCompartido, Parent> tarjetasEspaciosEnviados = new HashMap<>();
 
 
     @FXML
@@ -217,7 +219,6 @@ public class ControladorChat {
                 crearVistaEspacio(Sesion.getDatosSesionUsuario().getEspacios().get(espacio.getId_espacio()));
             }
         });
-
     }
 
     void crearVistaEspacio(EspacioCompartido espacio)
@@ -226,10 +227,22 @@ public class ControladorChat {
             FXMLLoader loader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TARJETA_ESPACIO_COMPARTIDO_ENVIADO);
             Parent parent = loader.load();
             ControladorTarjetaEspacioEnviada controlador = loader.getController();
-            controlador.inicializarTarjetaEspacio(espacio);
+            controlador.inicializarTarjetaEspacio(espacio,conversacionActual);
             flowPaneEspaciosEnviados.getChildren().add(parent);
+            tarjetasEspaciosEnviados.put(espacio, parent);
         } catch (IOException e) {
             System.out.println("Error al cargar la vista de espacio");
+        }
+    }
+
+    public void eliminarEspacioEnviado(EspacioCompartido espacio)
+    {
+        Parent parent = tarjetasEspaciosEnviados.get(espacio);
+        if (parent != null)
+        {
+            flowPaneEspaciosEnviados.getChildren().remove(parent);
+            tarjetasEspaciosEnviados.remove(espacio);
+            datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados().remove(espacio);
         }
     }
 
