@@ -10,6 +10,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.PlatformLoggingMXBean;
+
 public class App extends Application {
 
     @Override
@@ -19,6 +22,7 @@ public class App extends Application {
             Parent root = FXMLLoader.load(Ventanas.MAIN.getRuta());
             primaryStage.setTitle("p2pnexus");
             primaryStage.setScene(new Scene(root));
+
             // Limitamos el tamaño mínimo de la ventana
 //            primaryStage.setMinWidth(1200);
 //            primaryStage.setMinHeight(800);

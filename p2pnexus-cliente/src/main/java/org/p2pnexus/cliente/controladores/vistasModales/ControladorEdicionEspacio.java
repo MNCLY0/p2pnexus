@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 import org.p2pnexus.cliente.controladores.vistas.ControladorEspacios;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
-import org.p2pnexus.cliente.sesion.Sesion;
-import org.p2pnexus.cliente.ventanas.Animaciones;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 import java.io.File;
@@ -52,8 +50,8 @@ public class ControladorEdicionEspacio {
     public void inicializarEdicion(EspacioCompartido espacioCompartido)
     {
         this.espacioCompartidoOriginal = espacioCompartido;
-        textFieldNombre.setText(espacioCompartido.getNombre());
-        textFieldRuta.setText(espacioCompartido.getRuta_directorio());
+        textFieldNombre.setText(espacioCompartido.getNombrePropiedadProperty().get());
+        textFieldRuta.setText(espacioCompartido.getRutaPropiedadProperty().get());
     }
 
     @FXML
@@ -67,9 +65,9 @@ public class ControladorEdicionEspacio {
     @FXML
     public void editarEspacio()
     {
-        String rutaOriginal = espacioCompartidoOriginal.getRuta_directorio();
+        String rutaOriginal = espacioCompartidoOriginal.getRutaPropiedadProperty().get();
         String rutaNueva = textFieldRuta.getText();
-        String nombreOriginal = espacioCompartidoOriginal.getNombre();
+        String nombreOriginal = espacioCompartidoOriginal.getNombrePropiedadProperty().get();
         String nombreNuevo = textFieldNombre.getText();
 
         // Comprobamos si hay cambios
@@ -90,7 +88,10 @@ public class ControladorEdicionEspacio {
         EspacioCompartido espacioCompartidoModificado = new EspacioCompartido(nombreNuevo, rutaNueva, espacioCompartidoOriginal.getPropietario());
         espacioCompartidoModificado.setId_espacio(espacioCompartidoOriginal.getId_espacio());
 
-        JsonObject json = JsonHerramientas.convertirObjetoAJson(espacioCompartidoModificado);
+        JsonObject json = new JsonObject();
+        //Envaiamos los dos espacios por si ocurre un error devolver el original
+        json.add("espacio_original", JsonHerramientas.convertirObjetoAJson(espacioCompartidoOriginal));
+        json.add("espacio_modificado", JsonHerramientas.convertirObjetoAJson(espacioCompartidoModificado));
 
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_EDITAR_ESPACIO, json));
 

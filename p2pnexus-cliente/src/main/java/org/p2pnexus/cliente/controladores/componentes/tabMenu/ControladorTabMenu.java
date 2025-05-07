@@ -1,6 +1,9 @@
 package org.p2pnexus.cliente.controladores.componentes.tabMenu;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -19,12 +22,13 @@ public class ControladorTabMenu extends ControladorComponenteMenuBase {
     @FXML
     public HBox contenedorPrincipal;
 
-    int iconoSize = 16;
+    IntegerProperty iconSize = new SimpleIntegerProperty(32);
+
 
     public void establecerDatos(TabMenu tabMenu) {
         nombreTitulo.setText(tabMenu.getNombre());
-        // La unica manera que he encontrado de hacer que el icono se ajuste al tamaño del contenedor es usando un binding
-        tabMenu.getIcono().iconSizeProperty().bind(Bindings.createIntegerBinding(() -> (int) (contenedorIcono.getHeight() * 0.5), contenedorIcono.heightProperty()));
+        tabMenu.getIcono().getStyleClass().remove("ikonli-font-icon");
+        tabMenu.getIcono().getStyleClass().add("icono-menu");
         contenedorIcono.getChildren().add(tabMenu.getIcono());
 
         // Inicializar eventos de hover desde la clase base

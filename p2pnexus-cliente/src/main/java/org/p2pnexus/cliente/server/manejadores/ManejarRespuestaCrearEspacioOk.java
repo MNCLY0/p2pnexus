@@ -8,6 +8,7 @@ import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import org.p2pnexus.cliente.controladores.vistas.ControladorEspacios;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
+import org.p2pnexus.cliente.sesion.Sesion;
 
 public class ManejarRespuestaCrearEspacioOk implements IManejadorMensaje {
     @Override

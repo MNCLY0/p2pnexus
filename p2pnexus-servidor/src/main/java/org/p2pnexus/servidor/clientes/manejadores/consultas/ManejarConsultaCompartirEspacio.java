@@ -33,7 +33,8 @@ public class ManejarConsultaCompartirEspacio implements IManejadorMensaje {
         JsonObject json = new JsonObject();
 
         json.add("espacio", JsonHerramientas.convertirObjetoAJson(espacio));
-        json.add("usuarios", JsonHerramientas.empaquetarListaEnJsonObject(usuariosAfectados));
+        json.add("conversacion", JsonHerramientas.convertirObjetoAJson(conversacion));
+
         socketConexion.enviarMensaje(FabricaMensajes.crearNotificacion("Espacio compartirdo corretamente", TipoNotificacion.EXITO));
         return new ResultadoMensaje(new Mensaje(TipoMensaje.R_COMPARTIR_ESPACIO_OK,json));
     }

@@ -11,7 +11,7 @@ import org.p2pnexus.cliente.ventanas.Ventanas;
 
 import java.io.IOException;
 
-public class ControladorTarjetaEspacioCompartido {
+public class ControladorTarjetaEspacio {
     @FXML
     Label labelNombreEspacio;
     @FXML
@@ -20,8 +20,8 @@ public class ControladorTarjetaEspacioCompartido {
     EspacioCompartido espacioCompartido;
 
     public void inicializarTarjetaEspacio(EspacioCompartido espacio) {
-        labelNombreEspacio.setText(espacio.getNombre());
-        labelRutaEspacio.setText(espacio.getRuta_directorio());
+        labelNombreEspacio.setText(espacio.getNombrePropiedadProperty().get());
+        labelRutaEspacio.setText(espacio.getRutaPropiedadProperty().get());
         this.espacioCompartido = espacio;
     }
 

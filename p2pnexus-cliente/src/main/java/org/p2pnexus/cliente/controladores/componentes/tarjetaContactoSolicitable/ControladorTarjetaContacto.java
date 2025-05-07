@@ -40,7 +40,6 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
 
         setOnClickListener(() -> {
             setSeleccionado(true);
-            System.out.println("Estado de conversacion: " + (conversacion != null ? "no null" : "null"));
             if (conversacion == null) {
                 solicitarConversacion();
                 return;

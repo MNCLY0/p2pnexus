@@ -36,8 +36,8 @@ public class ManejarConsultaActualizarChat implements IManejadorMensaje {
         List<EspacioCompartido> espaciosCompartidosPorSolicitante = espacioDAO.espaciosCompartidosPorUsuarioConOtroUsuario(idUsuarioCliente, idUsuarioSolicitado);
         List<EspacioCompartido> espaciosCompartidosPorUsuario = espacioDAO.espaciosCompartidosPorUsuarioConOtroUsuario(idUsuarioSolicitado, idUsuarioCliente);
 
-        json.add("espacios_compartidos_cliente", JsonHerramientas.empaquetarListaEnJsonObject(espaciosCompartidosPorSolicitante));
-        json.add("espacios_compartidos_solicitado", JsonHerramientas.empaquetarListaEnJsonObject(espaciosCompartidosPorUsuario));
+        json.add("espacios_compartidos_enviados", JsonHerramientas.empaquetarListaEnJsonObject(espaciosCompartidosPorSolicitante));
+        json.add("espacios_compartidos_recibidos", JsonHerramientas.empaquetarListaEnJsonObject(espaciosCompartidosPorUsuario));
 
         return new ResultadoMensaje(new Mensaje(TipoMensaje.R_ACTUALIZAR_CHAT, json));
     }

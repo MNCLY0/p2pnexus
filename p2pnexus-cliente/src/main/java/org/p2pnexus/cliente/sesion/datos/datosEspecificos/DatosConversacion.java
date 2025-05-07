@@ -8,8 +8,7 @@ import java.util.List;
 public class DatosConversacion {
 
     List<MensajeChat> mensajes;
-    List<EspacioCompartido> espaciosCompartidosPorUsuarioCliente;
-    List<EspacioCompartido> espaciosCompartidosPorUsuarioConversacion;
+    DatosPaqueteEspaciosCompartidos datosPaqueteEspaciosCompartidos;
 
     public List<MensajeChat> getMensajes() {
         return mensajes;
@@ -19,19 +18,11 @@ public class DatosConversacion {
         this.mensajes = mensajes;
     }
 
-    public List<EspacioCompartido> getEspaciosCompartidosPorUsuarioCliente() {
-        return espaciosCompartidosPorUsuarioCliente;
+    public DatosPaqueteEspaciosCompartidos getDatosPaqueteEspaciosCompartidos() {
+        return datosPaqueteEspaciosCompartidos;
     }
 
-    public void setEspaciosCompartidosPorUsuarioCliente(List<EspacioCompartido> espaciosCompartidosPorUsuarioCliente) {
-        this.espaciosCompartidosPorUsuarioCliente = espaciosCompartidosPorUsuarioCliente;
-    }
-
-    public List<EspacioCompartido> getEspaciosCompartidosPorUsuarioConversacion() {
-        return espaciosCompartidosPorUsuarioConversacion;
-    }
-
-    public void setEspaciosCompartidosPorUsuarioConversacion(List<EspacioCompartido> espaciosCompartidosPorUsuarioConversacion) {
-        this.espaciosCompartidosPorUsuarioConversacion = espaciosCompartidosPorUsuarioConversacion;
+    public void setDatosPaqueteEspaciosCompartidos(DatosPaqueteEspaciosCompartidos datosPaqueteEspaciosCompartidos) {
+        this.datosPaqueteEspaciosCompartidos = datosPaqueteEspaciosCompartidos;
     }
 }

@@ -5,6 +5,9 @@ import javafx.scene.layout.StackPane;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ControladorMain {
     @FXML
     public StackPane contenedorPrincipal;

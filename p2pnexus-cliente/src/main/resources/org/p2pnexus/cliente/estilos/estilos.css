@@ -4,3 +4,21 @@
     -fx-pref-height: 0;
     -fx-opacity: 0;
 }
+
+.icono-menu {
+    -fx-icon-color: -color-fg-default;
+    -fx-fill: -color-fg-default;
+    -fx-icon-size: 30px;
+}
+
+.icono-solicitud {
+    -fx-icon-size: 35px;
+    -fx-icon-color: -color-fg-default;
+    -fx-fill: -color-fg-default;
+}
+
+.icono-solicitud:hover {
+    -fx-icon-size: 40px;
+    -fx-icon-color: -color-bg-default;
+    -fx-fill: -color-bg-default;
+}

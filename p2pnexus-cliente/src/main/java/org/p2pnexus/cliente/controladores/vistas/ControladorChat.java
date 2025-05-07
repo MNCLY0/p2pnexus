@@ -6,14 +6,17 @@ import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacioEnviada;
 import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaMensaje;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
@@ -22,6 +25,7 @@ import org.p2pnexus.cliente.server.entitades.MensajeChat;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.sesion.datos.datosEspecificos.DatosConversacion;
+import org.p2pnexus.cliente.sesion.datos.datosEspecificos.DatosPaqueteEspaciosCompartidos;
 import org.p2pnexus.cliente.ventanas.Componentes;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
@@ -48,6 +52,9 @@ public class ControladorChat {
     DatosConversacion datosConversacionActual;
     Map<Integer, DatosConversacion> cacheDatosConversacion;
 
+    @FXML
+    FlowPane flowPaneEspaciosEnviados;
+
 
     @FXML
     public void initialize() {
@@ -61,10 +68,7 @@ public class ControladorChat {
             }
         });
 
-        comboBoxSeleccionEspacio.setItems(Sesion.getDatosSesionUsuario().getEspacios());
-
         cacheDatosConversacion = Sesion.getDatosSesionUsuario().getCacheDatosConversacion();
-
     }
 
     public void abrirChat(Usuario usuario, Conversacion conversacion) {
@@ -74,7 +78,7 @@ public class ControladorChat {
             cacheDatosConversacion.put(conversacion.getIdConversacion(), new DatosConversacion());
         }
         datosConversacionActual = cacheDatosConversacion.get(conversacion.getIdConversacion());
-        solicitarMensajes(usuario, conversacion);
+        solicitarActualizarConversacion(usuario, conversacion);
         // Si la conversacion no existe en la cache se crea
 
     }
@@ -106,7 +110,7 @@ public class ControladorChat {
         });
     }
 
-    void solicitarMensajes(Usuario usuario, Conversacion conversacion) {
+    void solicitarActualizarConversacion(Usuario usuario, Conversacion conversacion) {
         // Si ya tenemos los mensajes de la conversacion no necesitamos solicitarlos nuevo y los cargamos desde la cache
 
         if (cacheDatosConversacion.get(conversacion.getIdConversacion()).getMensajes() != null) {
@@ -119,12 +123,20 @@ public class ControladorChat {
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_ACTUALIZAR_CHAT, json));
     }
 
-    public void establecerMensajes(List<MensajeChat> mensajes, Conversacion conversacion) {
-        cacheDatosConversacion.get(conversacion.getIdConversacion()).setMensajes(mensajes);
+    public void actualizarDatosCoversacion(DatosConversacion cache, Conversacion conversacion) {
+        cacheDatosConversacion.get(conversacion.getIdConversacion()).setMensajes(
+                cache.getMensajes()
+        );
+
+        cacheDatosConversacion.get(conversacion.getIdConversacion()).setDatosPaqueteEspaciosCompartidos(
+                cache.getDatosPaqueteEspaciosCompartidos()
+        );
+
         cargarConversacionDesdeCache(conversacion);
     }
 
     public void cargarConversacionDesdeCache(Conversacion conversacion) {
+        actualizarFiltroComboBox(conversacion);
         Platform.runLater(() -> {
             contenedorMensajes.getChildren().clear();
             for (MensajeChat mensaje : cacheDatosConversacion.get(conversacion.getIdConversacion()).getMensajes()) {
@@ -132,6 +144,7 @@ public class ControladorChat {
             }
             bajarChat();
         });
+
 
     }
 
@@ -154,7 +167,7 @@ public class ControladorChat {
     public void compartirEspacioSeleccionado()
     {
         EspacioCompartido espacioCompartido = comboBoxSeleccionEspacio.getSelectionModel().getSelectedItem();
-        if (espacioCompartido == null) {
+        if (espacioCompartido == null || espacioCompartido.getId_espacio() == -1) {
             Notificaciones.MostrarNotificacion("No se ha seleccionado ningún espacio", TipoNotificacion.ERROR);
             return;
         }
@@ -164,9 +177,60 @@ public class ControladorChat {
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_COMPARTIR_ESPACIO, json));
     }
 
+    public void actualizarFiltroComboBox(Conversacion conversacion)
+    {
+        DatosPaqueteEspaciosCompartidos datosPaqueteEspaciosCompartidos = cacheDatosConversacion.get(conversacion.getIdConversacion()).getDatosPaqueteEspaciosCompartidos();
+        Platform.runLater(() -> {
+            FilteredList<EspacioCompartido> espaciosNoEnviados = datosPaqueteEspaciosCompartidos.getEspaciosNoEnviados();
+            System.out.printf("Espacios no enviados: %s\n", espaciosNoEnviados);
+            // Si no hay espacios disponibles se desactiva el comboBox y se muestra un mensaje
+            if (espaciosNoEnviados.isEmpty()) {
+                comboBoxSeleccionEspacio.setItems(FXCollections.observableArrayList());
+                comboBoxSeleccionEspacio.setDisable(true);
+                return;
+            }
+            // Si hay espacios se selecciona el primero y activa por si no lo estaba
+            comboBoxSeleccionEspacio.setDisable(false);
+            comboBoxSeleccionEspacio.setItems(espaciosNoEnviados);
+            comboBoxSeleccionEspacio.getSelectionModel().selectFirst();
+        });
+        // Una vez ya está todo cargado se inicializan los listeners encargados de actualizar la vista
+        cargarEspaciosDesdeCache();
+    }
+
     public Conversacion getConversacionActual() {
         return conversacionActual;
     }
+
+    void cargarEspaciosDesdeCache()
+    {
+        System.out.printf("ADPKASDñlAKSDÑLASJKdAKDPAKWdKpOASKdpoASKDpo");
+        Platform.runLater(() -> {
+            flowPaneEspaciosEnviados.getChildren().clear();
+            System.out.print("Se van a cargar los siguientes espacios: " + datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados());
+            for (EspacioCompartido espacio : datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados())
+            {
+                crearVistaEspacio(espacio);
+            }
+        });
+
+    }
+
+    void crearVistaEspacio(EspacioCompartido espacio)
+    {
+        try {
+            FXMLLoader loader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TARJETA_ESPACIO_COMPARTIDO_ENVIADO);
+            Parent parent = loader.load();
+            ControladorTarjetaEspacioEnviada controlador = loader.getController();
+            controlador.inicializarTarjetaEspacio(espacio);
+            flowPaneEspaciosEnviados.getChildren().add(parent);
+        } catch (IOException e) {
+            System.out.println("Error al cargar la vista de espacio");
+        }
+    }
+
+
+
 
 
 }

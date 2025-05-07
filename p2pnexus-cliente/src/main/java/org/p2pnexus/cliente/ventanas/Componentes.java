@@ -9,7 +9,8 @@ public enum Componentes implements IEnumVistaCargable  {
     COMPONENTE_TARJETA_SOLICITUD("org/p2pnexus/cliente/fxml/componentes/TarjetaSolicitudContacto.fxml"),
     COMPONENTE_TARJETA_CONTACTO("org/p2pnexus/cliente/fxml/componentes/TarjetaContacto.fxml"),
     COMPONENTE_TARJETA_MENSAJE("org/p2pnexus/cliente/fxml/componentes/TarjetaMensaje.fxml"),
-    COMPONENTE_TARJETA_ESPACIO_COMPARTIDO("org/p2pnexus/cliente/fxml/componentes/TarjetaEspacio.fxml"),;
+    COMPONENTE_TARJETA_ESPACIO_COMPARTIDO("org/p2pnexus/cliente/fxml/componentes/TarjetaEspacio.fxml"),
+    COMPONENTE_TARJETA_ESPACIO_COMPARTIDO_ENVIADO("org/p2pnexus/cliente/fxml/componentes/TarjetaEspacioEnviada.fxml"),;
     Componentes(String ruta) {
         try {
             this.ruta = getClass().getClassLoader().getResource(ruta);

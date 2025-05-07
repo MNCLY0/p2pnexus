@@ -16,11 +16,18 @@ public class ManejarConsultaEditarEspacio implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
 
-        EspacioCompartido espacio = JsonHerramientas.convertirJsonAObjeto(mensaje.getData(), EspacioCompartido.class);
-
+        EspacioCompartido espacioOriginal = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("espacio_original").getAsJsonObject(), EspacioCompartido.class);
+        System.out.printf("\n\n\n\n\n\n\nEspacio original: %s\n", espacioOriginal.getId_espacio());
+        EspacioCompartido espacioModificado = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("espacio_modificado").getAsJsonObject(), EspacioCompartido.class);
         EspacioCompartidoDAO espacioCompartidoDAO = new EspacioCompartidoDAO();
-        espacioCompartidoDAO.editarEspacioCompartido(espacio);
+        try {
+            espacioCompartidoDAO.editarEspacioCompartido(espacioModificado);
+        }catch (Exception e) {
+            socketConexion.enviarMensaje(new Mensaje(TipoMensaje.R_CREAR_ESPACIO_OK, JsonHerramientas.convertirObjetoAJson(espacioOriginal)));
+            throw new ManejarPeticionesExeptionError("Ya existe un espacio con ese nombre");
+        }
 
-        return new ResultadoMensaje(new Mensaje(TipoMensaje.R_CREAR_ESPACIO_OK, mensaje.getData()));
+
+        return new ResultadoMensaje(new Mensaje(TipoMensaje.R_CREAR_ESPACIO_OK, JsonHerramientas.convertirObjetoAJson(espacioModificado)));
     }
 }

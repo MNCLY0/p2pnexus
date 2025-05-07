@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.FlowPane;
-import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacioCompartido;
+import org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacio;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 import org.p2pnexus.cliente.sesion.Sesion;
@@ -49,13 +49,12 @@ public class ControladorEspacios {
     public void inicializarTarjetaEspacio(EspacioCompartido espacio)
     {
         Platform.runLater(() -> {
-            System.out.println("Inicalizando tarjeta de espacio compartido: " + espacio.getNombre());
             try {
                 FXMLLoader loader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TARJETA_ESPACIO_COMPARTIDO);
                 Parent root = loader.load();
-                ControladorTarjetaEspacioCompartido controlador = loader.getController();
+                ControladorTarjetaEspacio controlador = loader.getController();
                 controlador.inicializarTarjetaEspacio(espacio);
-                flowPaneEspaciosCreados.getChildren().add(root);
+                flowPaneEspaciosCreados.getChildren().add(0,root);
                 tarjetasEspaciosCompartidos.put(espacio, root);
                 Sesion.getDatosSesionUsuario().agregarEspacio(espacio);
             }catch (IOException e) {

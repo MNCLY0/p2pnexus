@@ -6,8 +6,12 @@ import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
+import org.p2pnexus.cliente.controladores.vistas.ControladorChat;
+import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 import org.p2pnexus.cliente.server.entitades.Usuario;
+import org.p2pnexus.cliente.sesion.Sesion;
+import org.p2pnexus.cliente.sesion.datos.datosEspecificos.DatosPaqueteEspaciosCompartidos;
 
 import java.util.List;
 
@@ -15,10 +19,14 @@ public class ManejarRespuestaCompartirEspacioOk implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
         EspacioCompartido espacioCompartido = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("espacio").getAsJsonObject(), EspacioCompartido.class);
-        List<Usuario> usuarios = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData().get("usuarios").getAsJsonObject(), Usuario.class);
+        Conversacion conversacion = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("conversacion").getAsJsonObject(), Conversacion.class);
 
-        System.out.println("El espacio ha sido compartido correctamente con los usuarios: " + usuarios);
+        DatosPaqueteEspaciosCompartidos datosPaqueteEspaciosCompartidos = Sesion.getDatosSesionUsuario().getCacheDatosConversacion()
+                .get(conversacion.getIdConversacion())
+                .getDatosPaqueteEspaciosCompartidos();
+        datosPaqueteEspaciosCompartidos.getEnviados().add(espacioCompartido);
 
+        ControladorChat.instancia.actualizarFiltroComboBox(conversacion);
 
         return null;
     }

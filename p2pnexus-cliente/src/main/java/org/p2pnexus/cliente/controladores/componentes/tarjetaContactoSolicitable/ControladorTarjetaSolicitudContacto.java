@@ -43,6 +43,11 @@ public class ControladorTarjetaSolicitudContacto {
     {
         FontIcon iconoAceptar = new FontIcon(Material2RoundAL.ADD_CIRCLE);
         FontIcon iconoDenegar = new FontIcon(Material2RoundAL.CANCEL);
+        iconoAceptar.getStyleClass().remove("ikonli-font-icon");
+        iconoDenegar.getStyleClass().remove("ikonli-font-icon");
+
+        iconoAceptar.getStyleClass().add("icono-solicitud");
+        iconoDenegar.getStyleClass().add("icono-solicitud");
 
         botonAceptar.setGraphic(iconoAceptar);
         botonDenegar.setGraphic(iconoDenegar);
