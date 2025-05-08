@@ -21,6 +21,7 @@ import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.TabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContacto;
+import org.p2pnexus.cliente.controladores.vistas.controladorChat.ControladorChat;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.Usuario;

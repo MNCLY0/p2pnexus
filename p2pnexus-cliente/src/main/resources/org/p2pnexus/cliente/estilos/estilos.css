@@ -22,3 +22,20 @@
     -fx-icon-color: -color-bg-default;
     -fx-fill: -color-bg-default;
 }
+
+.tarjeta-seleccionada{
+    -fx-border-width: 5;
+    -fx-border-color: -color-border-default;
+    -fx-border-radius: 3;
+    -fx-border-insets: 1;
+}
+
+.context-menu-seleccionado {
+    -fx-background-color: -color-bg-default;
+    -fx-border-color: -color-fg-default;
+    -fx-border-radius: 4;
+    -fx-border-width: 3;
+    -fx-border-insets: -3;
+}
+
+

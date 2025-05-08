@@ -13,7 +13,9 @@ import org.p2pnexus.servidor.Entidades.Conversacion;
 import org.p2pnexus.servidor.Entidades.DAO.EspacioCompartidoDAO;
 import org.p2pnexus.servidor.Entidades.EspacioCompartido;
 import org.p2pnexus.servidor.Entidades.Usuario;
+import org.p2pnexus.servidor.clientes.ControladorSesiones;
 import org.p2pnexus.servidor.clientes.FabricaMensajes;
+import org.p2pnexus.servidor.clientes.SesionCliente;
 
 import java.util.List;
 
@@ -34,6 +36,9 @@ public class ManejarConsultaCompartirEspacio implements IManejadorMensaje {
 
         json.add("espacio", JsonHerramientas.convertirObjetoAJson(espacio));
         json.add("conversacion", JsonHerramientas.convertirObjetoAJson(conversacion));
+
+        // Avisamos a todos los usuarios afectados
+        ControladorSesiones.enviarMensajeAUsuariosEnLinea(new Mensaje(TipoMensaje.R_NUEVO_ESPACIO_RECIBIDO, json), usuariosAfectados, espacio.getPropietario());
 
         socketConexion.enviarMensaje(FabricaMensajes.crearNotificacion("Espacio compartirdo corretamente", TipoNotificacion.EXITO));
         return new ResultadoMensaje(new Mensaje(TipoMensaje.R_COMPARTIR_ESPACIO_OK,json));

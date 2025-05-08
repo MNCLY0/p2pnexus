@@ -25,5 +25,8 @@ public class ControlManejadores extends ManejadorDeMensajes {
         manejadoresPeticiones.put(TipoMensaje.R_ESPACIOS_POR_ID, new ManejarRespuestaEspaciosPorId());
         manejadoresPeticiones.put(TipoMensaje.R_CREAR_ESPACIO_OK, new ManejarRespuestaCrearEspacioOk());
         manejadoresPeticiones.put(TipoMensaje.R_COMPARTIR_ESPACIO_OK, new ManejarRespuestaCompartirEspacioOk());
+        manejadoresPeticiones.put(TipoMensaje.R_NUEVO_ESPACIO_RECIBIDO, new ManejarNuevoEspacioRecibido());
+        manejadoresPeticiones.put(TipoMensaje.R_ACTUALIZAR_ESPACIO_RECIBIDO, new ManejarActualizarEspacioRecibido());
+        manejadoresPeticiones.put(TipoMensaje.R_ELIMINAR_ESPACIO_RECIBIDO, new ManejarEliminarEspacioRecibido());
     }
 }

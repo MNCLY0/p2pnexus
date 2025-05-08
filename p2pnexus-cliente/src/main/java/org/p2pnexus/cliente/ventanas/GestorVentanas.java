@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -129,6 +130,10 @@ public class GestorVentanas {
         ventanaConfirmacion.setTitle("Confirmación");
         ventanaConfirmacion.setHeaderText(titulo);
         ventanaConfirmacion.setContentText(mensaje);
+
+        ventanaConfirmacion.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        ventanaConfirmacion.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
+
 
         ButtonType si = new ButtonType("Si", ButtonBar.ButtonData.YES);
         ButtonType no = new ButtonType("No", ButtonBar.ButtonData.NO);

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vboxPadre" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#animarInteracion" onMouseExited="#animarInteracionSalida" prefHeight="200.0" prefWidth="450.0" spacing="10.0" styleClass="context-menu" stylesheets="@../../estilos/estilos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacioRecibida">
+   <children>
+      <HBox alignment="TOP_RIGHT" />
+      <HBox>
+         <children>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="labelNombreEspacio" alignment="CENTER" layoutY="3.0" prefHeight="37.0" prefWidth="440.0" styleClass="title-2" text="Nombre espacio" textOverrun="CENTER_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="labelRutaEspacio" alignment="CENTER" layoutX="175.0" layoutY="3.0" styleClass="title-4" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

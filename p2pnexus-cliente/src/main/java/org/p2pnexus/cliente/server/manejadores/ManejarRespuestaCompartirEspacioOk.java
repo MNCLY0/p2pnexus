@@ -6,14 +6,11 @@ import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
-import org.p2pnexus.cliente.controladores.vistas.ControladorChat;
+import org.p2pnexus.cliente.controladores.vistas.controladorChat.ControladorChat;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
-import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.sesion.datos.datosEspecificos.DatosPaqueteEspaciosCompartidos;
-
-import java.util.List;
 
 public class ManejarRespuestaCompartirEspacioOk implements IManejadorMensaje {
     @Override
@@ -29,7 +26,7 @@ public class ManejarRespuestaCompartirEspacioOk implements IManejadorMensaje {
 
         datosPaqueteEspaciosCompartidos.getEnviados().add(espacioCompartido);
 
-        ControladorChat.instancia.actualizarFiltroComboBox(conversacion);
+        ControladorChat.instancia.gestorEspacios.actualizarFiltroComboBox(conversacion);
 
         return null;
     }

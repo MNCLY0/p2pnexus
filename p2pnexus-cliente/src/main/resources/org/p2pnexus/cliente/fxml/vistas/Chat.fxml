@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="589.0" prefWidth="1143.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorChat">
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="589.0" prefWidth="1143.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.controladorChat.ControladorChat">
    <tabs>
       <Tab styleClass="title-2" text="Chat">
          <content>
@@ -48,7 +48,7 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <SplitPane dividerPositions="0.65" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.55" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
                            <children>
@@ -59,7 +59,20 @@
                                           <Label styleClass="title-3" text="Espacios compartidos contigo" />
                                        </children>
                                     </HBox>
-                                    <FlowPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <FlowPane fx:id="flowPlaneEspaciosRecibidos" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="10.0" vgap="10.0">
+                                             <padding>
+                                                <Insets top="10.0" />
+                                             </padding></FlowPane>
+                                       </content>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </ScrollPane>
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -102,8 +115,14 @@
                                     </HBox>
                                     <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                                        <content>
-                                          <FlowPane fx:id="flowPaneEspaciosEnviados" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="10.0" vgap="10.0" />
+                                          <FlowPane fx:id="flowPaneEspaciosEnviados" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="10.0" vgap="10.0">
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding></FlowPane>
                                        </content>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
                                     </ScrollPane>
                                  </children>
                               </VBox>

@@ -32,11 +32,8 @@ public class ManejarConsultaActualizarChat implements IManejadorMensaje {
         json.addProperty("id_conversacion", conversacion.getId_conversacion());
 
         EspacioCompartidoDAO espacioDAO = new EspacioCompartidoDAO();
-        System.out.println("Se procede a deserializar los espacios compartidos");
         List<EspacioCompartido> espaciosCompartidosPorSolicitante = espacioDAO.espaciosCompartidosPorUsuarioConOtroUsuario(idUsuarioCliente, idUsuarioSolicitado);
         List<EspacioCompartido> espaciosCompartidosPorUsuario = espacioDAO.espaciosCompartidosPorUsuarioConOtroUsuario(idUsuarioSolicitado, idUsuarioCliente);
-        System.out.println("Espacios compartidos por solicitante: " + espaciosCompartidosPorSolicitante);
-        System.out.println("Espacios compartidos por usuario: " + espaciosCompartidosPorUsuario);
         json.add("espacios_compartidos_enviados", JsonHerramientas.empaquetarListaEnJsonObject(espaciosCompartidosPorSolicitante));
         json.add("espacios_compartidos_recibidos", JsonHerramientas.empaquetarListaEnJsonObject(espaciosCompartidosPorUsuario));
 

@@ -7,7 +7,7 @@ import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
-import org.p2pnexus.cliente.controladores.vistas.ControladorChat;
+import org.p2pnexus.cliente.controladores.vistas.controladorChat.ControladorChat;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 import org.p2pnexus.cliente.server.entitades.MensajeChat;
@@ -42,10 +42,12 @@ public class ManejarRespuestaActualizarChat implements IManejadorMensaje {
         datosConversacion.setMensajes(mensajes);
         datosConversacion.setDatosPaqueteEspaciosCompartidos(datosPaqueteEspaciosCompartidos);
 
-        System.out.printf("Espacios compartidos enviados: %s\n", espacioCompartidosPorCliente);
-        System.out.printf("Espacios compartidos recibidos: %s\n", espacioCompartidosPorSolicitado);
+        System.out.printf("Espacios compartidos enviados: %s\n", datosPaqueteEspaciosCompartidos.getEnviados());
+        System.out.printf("Espacios compartidos recibidos: %s\n", datosPaqueteEspaciosCompartidos.getRecibidos());
 
-        ControladorChat.instancia.actualizarDatosCoversacion(datosConversacion, conversacion);
+
+
+        ControladorChat.instancia.gestorChat.actualizarDatosCoversacion(datosConversacion, conversacion);
         return null;
     }
 }

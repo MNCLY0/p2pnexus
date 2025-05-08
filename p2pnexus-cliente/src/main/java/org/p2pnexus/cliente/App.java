@@ -22,11 +22,9 @@ public class App extends Application {
             Parent root = FXMLLoader.load(Ventanas.MAIN.getRuta());
             primaryStage.setTitle("p2pnexus");
             primaryStage.setScene(new Scene(root));
-
-            // Limitamos el tamaño mínimo de la ventana
-//            primaryStage.setMinWidth(1200);
-//            primaryStage.setMinHeight(800);
+            primaryStage.setMaximized(true);
             primaryStage.show();
+
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("Error al cargar la ventana de inicio de sesión.");

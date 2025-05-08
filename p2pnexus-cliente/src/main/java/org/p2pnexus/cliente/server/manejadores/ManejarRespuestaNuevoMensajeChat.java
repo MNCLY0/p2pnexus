@@ -7,7 +7,7 @@ import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import javafx.application.Platform;
-import org.p2pnexus.cliente.controladores.vistas.ControladorChat;
+import org.p2pnexus.cliente.controladores.vistas.controladorChat.ControladorChat;
 import org.p2pnexus.cliente.server.entitades.MensajeChat;
 
 public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
@@ -20,7 +20,7 @@ public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
             if (ControladorChat.instancia == null) {
                 return;
             }
-            ControladorChat.instancia.nuevoMensaje(nuevoMensaje);
+            ControladorChat.instancia.gestorChat.nuevoMensaje(nuevoMensaje);
         });
 
         return null;

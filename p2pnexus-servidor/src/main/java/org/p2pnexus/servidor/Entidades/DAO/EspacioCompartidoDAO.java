@@ -79,7 +79,7 @@ public class EspacioCompartidoDAO extends DAO{
         return usuarios;
     }
 
-    public void eliminarAccesoAEspacioCompartido(EspacioCompartido espacio, Conversacion conversacion) {
+    public List<Usuario> eliminarAccesoAEspacioCompartido(EspacioCompartido espacio, Conversacion conversacion) {
         ConversacionDAO conversacionDAO = new ConversacionDAO();
         List<Usuario> usuarios = conversacionDAO.obtenerUsuariosParticipantesConversacion(conversacion.getId_conversacion());
         for (Usuario usuario : usuarios) {
@@ -87,6 +87,7 @@ public class EspacioCompartidoDAO extends DAO{
             if (usuario.getId_usuario().equals(espacio.getPropietario().getId_usuario())) continue;
             eliminarPermisoDeAccesoAUsuario(espacio, usuario);
         }
+        return usuarios;
     }
 
     public void eliminarPermisoDeAccesoAUsuario(EspacioCompartido espacio, Usuario usuario) {
@@ -128,6 +129,19 @@ public class EspacioCompartidoDAO extends DAO{
             return espaciosCompartidos;
         } catch (Exception e) {
             throw new RuntimeException("Error al obtener los espacios compartidos por usuario" + e);
+        }
+    }
+
+    public List<Usuario> usuariosConAccesoAEspacio(EspacioCompartido espacio) {
+        try (Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+            List<Usuario> usuarios = session.createQuery("SELECT p.usuario FROM PermisoAcceso p WHERE p.espacioCompartido.id_espacio = :idEspacio", Usuario.class)
+                    .setParameter("idEspacio", espacio.getId_espacio())
+                    .getResultList();
+            session.getTransaction().commit();
+            return usuarios;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener los usuarios con acceso al espacio compartido" + e);
         }
     }
 

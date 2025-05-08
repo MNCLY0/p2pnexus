@@ -4,12 +4,11 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
-import javafx.beans.value.ObservableStringValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.p2pnexus.cliente.controladores.vistas.ControladorChat;
+import org.p2pnexus.cliente.controladores.vistas.controladorChat.ControladorChat;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
@@ -48,8 +47,8 @@ public class ControladorTarjetaEspacioEnviada {
         json.add("conversacion", JsonHerramientas.convertirObjetoAJson(conversacion));
         json.add("espacio", JsonHerramientas.convertirObjetoAJson(espacioCompartido));
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_DEJAR_DE_COMPARTIR_ESPACIO, json));
-        ControladorChat.instancia.eliminarEspacioEnviado(espacioCompartido);
-        ControladorChat.instancia.actualizarFiltroComboBox(conversacion);
+        ControladorChat.instancia.gestorEspacios.eliminarEspacioEnviado(espacioCompartido);
+        ControladorChat.instancia.gestorEspacios.actualizarFiltroComboBox(conversacion);
 
     }
 
