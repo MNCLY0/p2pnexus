@@ -15,6 +15,7 @@ public class ManejarRespuestaSolicitudesPorId implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
         List<SolicitudContacto> respuesta = JsonHerramientas.obtenerListaDeJsonObject(mensaje.getData(), SolicitudContacto.class);
+
         if (respuesta.isEmpty()) {
             return null;
         }

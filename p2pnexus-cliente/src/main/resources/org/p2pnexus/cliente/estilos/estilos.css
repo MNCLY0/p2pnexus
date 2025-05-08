@@ -11,16 +11,28 @@
     -fx-icon-size: 30px;
 }
 
-.icono-solicitud {
+.icono-solicitud-aceptar {
+    -fx-icon-size: 35px;
+    -fx-icon-color: -color-success-fg;
+    -fx-fill: -color-fg-default;
+}
+
+.icono-solicitud-rechazar{
+    -fx-icon-size: 35px;
+    -fx-icon-color: -color-danger-fg;
+    -fx-fill: -color-danger-fg;
+}
+
+.icono-solicitud-rechazar:hover{
     -fx-icon-size: 35px;
     -fx-icon-color: -color-fg-default;
     -fx-fill: -color-fg-default;
 }
 
-.icono-solicitud:hover {
-    -fx-icon-size: 40px;
-    -fx-icon-color: -color-bg-default;
-    -fx-fill: -color-bg-default;
+.icono-solicitud-aceptar:hover{
+    -fx-icon-size: 35px;
+    -fx-icon-color: -color-fg-default;
+    -fx-fill: -color-fg-default;
 }
 
 .tarjeta-seleccionada{

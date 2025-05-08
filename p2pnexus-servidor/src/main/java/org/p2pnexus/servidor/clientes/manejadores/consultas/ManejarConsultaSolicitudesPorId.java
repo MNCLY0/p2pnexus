@@ -18,11 +18,13 @@ public class ManejarConsultaSolicitudesPorId implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
         int idUsuario = mensaje.getData().get("id_usuario").getAsInt();
+        boolean notificable = mensaje.getData().get("notificable").getAsBoolean();
 
         SolicitudContactoDAO dao = new SolicitudContactoDAO();
         ArrayList<SolicitudContacto> solicitudes = dao.obtenerSolicitudesPendientesDeUsuario(idUsuario);
 
         if (solicitudes.isEmpty()) {
+            if (!notificable) return null;
             return new ResultadoMensaje("No se han encontrado solicitudes pendientes", TipoNotificacion.AVISO);
         }
 

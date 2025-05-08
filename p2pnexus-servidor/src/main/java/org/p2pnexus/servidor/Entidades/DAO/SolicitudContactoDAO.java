@@ -79,12 +79,9 @@ public class SolicitudContactoDAO extends DAO{
                     contactoDAO.crearContacto(solicitud.getUsuarioOrigen().getId_usuario(), solicitud.getUsuarioDestino().getId_usuario());
                     UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-                    // Esta parte no me gusta mucho, si me da tiempo hay que refactorizar
                     // Basicamente lo que estamos haciendo es obtener las sesiones de ambos usuarios y enviarles un mensaje para que actualicen su lista de contactos
-                    List<SesionCliente> sesionClientes = List.of(
-                            ControladorSesiones.getSesion(solicitud.getUsuarioOrigen().getId_usuario()),
-                            ControladorSesiones.getSesion(solicitud.getUsuarioDestino().getId_usuario())
-                    );
+                    List<SesionCliente> sesionClientes = ControladorSesiones.filtrarEnLinea(List.of(solicitud.getUsuarioOrigen(), solicitud.getUsuarioDestino()));
+
                     for (SesionCliente sesionCliente : sesionClientes) {
                         // Si la sesion es nula, significa que el usuario no esta conectado
                         if (sesionCliente != null) {
@@ -98,7 +95,8 @@ public class SolicitudContactoDAO extends DAO{
             }
             return false;
         } catch (Exception e) {
-            throw new RuntimeException("Error al aceptar la solicitud: " + e.getMessage(), e);
+            e.printStackTrace();
+            throw new RuntimeException("Error al aceptar la solicitud");
         }
     }
 

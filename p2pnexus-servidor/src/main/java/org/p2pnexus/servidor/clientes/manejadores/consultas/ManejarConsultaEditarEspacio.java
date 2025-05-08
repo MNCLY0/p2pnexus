@@ -42,10 +42,12 @@ public class ManejarConsultaEditarEspacio implements IManejadorMensaje {
         }
 
         // Si hay usuarios afectados nos encargamos de avisar a los clientes para que actualicen el espacio
-        if (usuariosAfectados.isEmpty()) {
+        System.out.println("Avisando a " + usuariosAfectados.size() + " usuarios de la edicion del espacio " + espacioModificado.getId_espacio());
+        if (!usuariosAfectados.isEmpty()) {
             ConversacionDAO conversacionDAO = new ConversacionDAO();
             List<SesionCliente> sesiones = ControladorSesiones.filtrarEnLinea(usuariosAfectados);
             for (SesionCliente sesionCliente : sesiones) {
+                System.out.println("Enviando mensaje a " + sesionCliente.getUsuario().getId_usuario());
                 Conversacion conversacion = conversacionDAO.obtenerConversacionEntreDos(sesionCliente.getUsuario().getId_usuario(), espacioModificado.getPropietario().getId_usuario());
                 JsonObject json = new JsonObject();
                 json.add("espacio", JsonHerramientas.convertirObjetoAJson(espacioModificado));

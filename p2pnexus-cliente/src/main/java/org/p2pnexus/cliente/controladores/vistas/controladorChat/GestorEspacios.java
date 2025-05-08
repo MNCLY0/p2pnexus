@@ -136,19 +136,21 @@ public class GestorEspacios {
 
     public void eliminarEspacioRecibido(EspacioCompartido espacio, Conversacion conversacion)
     {
-
         Platform.runLater(() ->{
-            Parent parent = controladorChat.tarjetasEspaciosRecibidos.get(espacio);
-            // en caso de que las tarjetas estén en pantalla
-            if (parent != null)
+            Platform.runLater(() ->
             {
-                controladorChat.flowPlaneEspaciosRecibidos.getChildren().remove(parent);
-                controladorChat.tarjetasEspaciosRecibidos.remove(espacio);
-            }
-        });
+                Parent parent = controladorChat.tarjetasEspaciosRecibidos.get(espacio);
+                // en caso de que las tarjetas estén en pantalla
+                if (parent != null)
+                {
+                    controladorChat.flowPlaneEspaciosRecibidos.getChildren().remove(parent);
+                    controladorChat.tarjetasEspaciosRecibidos.remove(espacio);
+                }
+                controladorChat.cacheDatosConversacion.get(conversacion.getIdConversacion()).getDatosPaqueteEspaciosCompartidos().getRecibidos().remove(espacio);
 
-        controladorChat.cacheDatosConversacion.get(conversacion.getIdConversacion()).getDatosPaqueteEspaciosCompartidos().getRecibidos().remove(espacio);
-
+                });
+            });
+        
     }
 
     public void actualizarEspacioRecibido(EspacioCompartido espacio,Conversacion conversacion)

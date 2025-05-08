@@ -46,6 +46,10 @@ public class ControladorSolicitudes {
     public void initialize()
     {
         instancia = this;
+        Platform.runLater(() ->
+        {
+            solicitarActualizacionSolicitudes(false);
+        });
     }
 
     @FXML
@@ -65,11 +69,17 @@ public class ControladorSolicitudes {
     }
 
     @FXML
-    public void solicitarActualizacionSolicitudes()
+    public void solicitarActualizacionSolicitudes(boolean notificable)
     {
         JsonObject json = new JsonObject();
         json.addProperty("id_usuario", Sesion.getUsuario().getId_usuario());
+        json.addProperty("notificable", notificable);
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_SOLICITUDES_POR_ID,json));
+    }
+
+    public void solicitarActualizacionSolicitudes()
+    {
+        solicitarActualizacionSolicitudes(true);
     }
 
     public void agregarUsuarios(List<Usuario> usuarios) {

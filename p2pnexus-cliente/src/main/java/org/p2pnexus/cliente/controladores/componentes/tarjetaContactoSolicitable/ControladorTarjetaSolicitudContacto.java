@@ -46,8 +46,8 @@ public class ControladorTarjetaSolicitudContacto {
         iconoAceptar.getStyleClass().remove("ikonli-font-icon");
         iconoDenegar.getStyleClass().remove("ikonli-font-icon");
 
-        iconoAceptar.getStyleClass().add("icono-solicitud");
-        iconoDenegar.getStyleClass().add("icono-solicitud");
+        iconoAceptar.getStyleClass().add("icono-solicitud-aceptar");
+        iconoDenegar.getStyleClass().add("icono-solicitud-rechazar");
 
         botonAceptar.setGraphic(iconoAceptar);
         botonDenegar.setGraphic(iconoDenegar);
