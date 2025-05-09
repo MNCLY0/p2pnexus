@@ -26,7 +26,7 @@ public class ControladorVisualizarEspacio {
 
         ObservableList<Fichero> ficheros = FXCollections.observableArrayList();
         for (int i = 0; i < 20; i++) {
-            Fichero fichero = new Fichero("Fichero " + i, "Ruta del fichero " + i);
+            Fichero fichero = new Fichero("Fichero " + i, "Ruta del fichero " + i, "100MB", "txt");
             ficheros.add(fichero);
         }
         listaFicheros.setCellFactory(fichero -> new FicheroListCell());

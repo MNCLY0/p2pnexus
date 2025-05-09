@@ -92,6 +92,11 @@ public class ControladorSesiones {
         return sesionesFiltradas;
     }
 
+    public static SesionCliente obenerUsuarioEnLinea(Usuario usuario)
+    {
+        return sesiones.get(usuario.getId_usuario());
+    }
+
     public static SesionCliente getSesion(Integer id) {
         return sesiones.get(id);
     }

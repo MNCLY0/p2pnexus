@@ -26,6 +26,13 @@ public enum TipoMensaje {
     C_COMPARTIR_ESPACIO,
     C_DEJAR_DE_COMPARTIR_ESPACIO,
 
+    // Mensajes de P2P
+    C_P2P_SDP_OFERTA,
+    C_P2P_SDP_RESPUESTA,
+    C_P2P_ICE,
+
+    R_P2P_SDP_OFERTA,
+
     // Mensajes de respuesta
     R_LOGIN_OK,
     R_TEST,

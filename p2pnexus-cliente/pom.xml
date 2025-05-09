@@ -70,6 +70,11 @@
       <artifactId>ikonli-javafx</artifactId>
       <version>12.4.0</version>
     </dependency>
+    <dependency>
+      <groupId>dev.onvoid.webrtc</groupId>
+      <artifactId>webrtc-java</artifactId>
+      <version>0.10.0</version>
+    </dependency>
 
   </dependencies>
 
