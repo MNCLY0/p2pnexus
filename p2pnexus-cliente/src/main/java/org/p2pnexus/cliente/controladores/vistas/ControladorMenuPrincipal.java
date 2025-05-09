@@ -216,7 +216,7 @@ public class ControladorMenuPrincipal {
                             System.out.printf("Imagen establecida: %s%n", ruta);
                             System.out.print("Dimensiones de la imagen: " + imagen.getWidth() + ":" + imagen.getHeight());
                             if (imagen.getWidth() == 0 || imagen.getHeight() == 0) {
-                                Notificaciones.MostrarNotificacion("Error al cargar la imagen", TipoNotificacion.ERROR);
+                                Notificaciones.mostrarNotificacion("Error al cargar la imagen", TipoNotificacion.ERROR);
                             }
                         } else {
                             System.out.println("No se ha podido establecer la imagen");
@@ -224,5 +224,20 @@ public class ControladorMenuPrincipal {
                     });
                 }
             );
+    }
+
+    public void actualizarEstadoTarjetaContacto(Usuario usuario)
+    {
+        Platform.runLater(()->{
+            ControladorTarjetaContacto controladorTarjetaContacto = controladoresTarjetaContacto.get(usuario);
+            System.out.printf("Estableciendo el estado de la tarjeta de contacto del usuario %s a %s%n", usuario.getNombre(), usuario.getConectado());
+            System.out.printf("Existe la tarjeta? %s%n", controladorTarjetaContacto != null);
+            if (controladorTarjetaContacto != null)
+            {
+                controladorTarjetaContacto.getUsuario().establecerConectado(usuario.getConectado());
+                controladorTarjetaContacto.actualizarEstado();
+            }
+        });
+
     }
 }

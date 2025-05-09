@@ -3,11 +3,13 @@ package org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitabl
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.p2pnexus.cliente.controladores.componentes.ControladorComponenteMenuBase;
 import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
 import org.p2pnexus.cliente.server.Conexion;
@@ -28,6 +30,10 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
     private Conversacion conversacion;
 
     @FXML
+    VBox vboxImagen;
+
+
+    @FXML
     public void initialize() {
         inicializarEventosHover();
     }
@@ -46,6 +52,8 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
             }
             abrirConversacion();
         });
+
+        actualizarEstado();
     }
 
     public void establecerConversacion(Conversacion conversacion) {
@@ -72,5 +80,30 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
 
     public void setOnClickListener(Runnable accion) {
         anchorPane.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> accion.run());
+    }
+
+    public void actualizarEstado()
+    {
+        Platform.runLater(() ->
+        {
+
+            vboxImagen.getStyleClass().removeAll("icono-conectado", "icono-desconectado");
+
+            System.out.printf("Actualizando estado de %s\n", usuario.getNombre() + " a " + usuario.getConectado());
+            if (usuario.getConectado())
+            {
+                vboxImagen.getStyleClass().add("icono-conectado");
+            }
+            else
+            {
+                vboxImagen.getStyleClass().add("icono-desconectado");
+            }
+
+            vboxImagen.applyCss();
+        });
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 }

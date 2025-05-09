@@ -86,14 +86,14 @@ public class ControladorEdicionEspacio {
         // Comprobamos si hay cambios
         if (rutaOriginal.equals(rutaNueva) && nombreOriginal.equals(nombreNuevo))
         {
-            Notificaciones.MostrarNotificacion("No se han realizado cambios", TipoNotificacion.AVISO);
+            Notificaciones.mostrarNotificacion("No se han realizado cambios", TipoNotificacion.AVISO);
             cerrarVentana();
             return;
         }
         // Comprobamos si los campos están vacios
         if (rutaNueva.isEmpty() || nombreNuevo.isEmpty())
         {
-            Notificaciones.MostrarNotificacion("No se han realizado cambios, ningún campo puede estar vacio", TipoNotificacion.AVISO);
+            Notificaciones.mostrarNotificacion("No se han realizado cambios, ningún campo puede estar vacio", TipoNotificacion.AVISO);
             cerrarVentana();
             return;
         }

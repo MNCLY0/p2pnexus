@@ -104,12 +104,12 @@ public class ControladorRegistro {
     public boolean validarUsuario(String usuario)
     {
         if (usuario.isEmpty()) {
-            Notificaciones.MostrarNotificacion("El usuario no puede estar vacío", TipoNotificacion.AVISO);
+            Notificaciones.mostrarNotificacion("El usuario no puede estar vacío", TipoNotificacion.AVISO);
             return false;
         }
 
         if (usuario.length() < 5) {
-            Notificaciones.MostrarNotificacion("El usuario debe tener al menos 5 caracteres", TipoNotificacion.AVISO);
+            Notificaciones.mostrarNotificacion("El usuario debe tener al menos 5 caracteres", TipoNotificacion.AVISO);
             return false;
         }
         return true;
@@ -144,7 +144,7 @@ public class ControladorRegistro {
 
         if (valida) return valida;
         // Si no es valida, mostramos en una notificacion de aviso
-        Notificaciones.MostrarNotificacion(razon, TipoNotificacion.AVISO);
+        Notificaciones.mostrarNotificacion(razon, TipoNotificacion.AVISO);
         return false;
     }
 }

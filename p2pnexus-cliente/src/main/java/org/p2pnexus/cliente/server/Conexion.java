@@ -1,8 +1,13 @@
 package org.p2pnexus.cliente.server;
 
 import com.p2pnexus.comun.Mensaje;
+import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ConectarExeption;
+import javafx.application.Platform;
+import org.p2pnexus.cliente.ventanas.GestorVentanas;
+import org.p2pnexus.cliente.ventanas.Notificaciones;
+import org.p2pnexus.cliente.ventanas.Ventanas;
 
 import java.io.BufferedOutputStream;
 import java.net.InetSocketAddress;
@@ -85,6 +90,17 @@ public class Conexion {
             System.err.println("No hay conexión establecida.");
             return null;
         }
+    }
+
+    public static void cerrarConexion() {
+        Notificaciones.mostrarNotificacion("Se ha perdido la conexión con el servidor", TipoNotificacion.ERROR);
+        OUT = null;
+        controlManejadores = null;
+        CONEXION = null;
+        Platform.runLater(() ->
+        {
+            GestorVentanas.transicionarVentana(Ventanas.CARGANDO_CONEXION);
+        });
     }
 
 

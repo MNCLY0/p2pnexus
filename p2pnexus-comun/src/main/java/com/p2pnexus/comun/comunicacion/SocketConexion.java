@@ -13,6 +13,8 @@ public class SocketConexion {
     private PrintWriter output;
     private Socket socket;
     private String nombre;
+    private int idUsuario;
+    private boolean errorConexion = false;
 
     public SocketConexion(Socket socket, String nombre) throws IOException {
 
@@ -22,7 +24,9 @@ public class SocketConexion {
         this.output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
         System.out.println("Búferes inicializados : " + socket.getInetAddress().getHostAddress() + " (" + nombre + ")");
         this.nombre = nombre;
+        this.idUsuario = -1; // valor por defecto cuando no hay ningún usuario asociado
     }
+
 
     public void enviarMensaje(Mensaje mensaje) {
         System.out.println("Enviando mensaje: " + mensaje.getTipo() + " " + mensaje.getData());
@@ -39,8 +43,9 @@ public class SocketConexion {
                 Gson gson = new Gson();
                 return gson.fromJson(json, Mensaje.class);
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("Error al recibir el mensaje: " + e.getMessage() + " cerrando socket ");
+            errorConexion = true;
             try {
                 cerrar();
             } catch (IOException ex) {
@@ -64,5 +69,15 @@ public class SocketConexion {
         return nombre;
     }
 
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public boolean hayErrorConexion() {
+        return errorConexion;
+    }
 }

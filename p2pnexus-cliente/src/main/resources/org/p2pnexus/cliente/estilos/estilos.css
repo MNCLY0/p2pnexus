@@ -50,4 +50,16 @@
     -fx-border-insets: -3;
 }
 
+.icono-conectado{
+    -fx-border-color: -color-success-fg;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+}
+
+.icono-desconectado{
+    -fx-border-color: -color-fg-subtle;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+}
+
 

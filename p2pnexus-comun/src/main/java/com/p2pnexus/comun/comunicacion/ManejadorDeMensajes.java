@@ -45,9 +45,14 @@ public abstract class ManejadorDeMensajes implements Runnable {
                 // A veces se reciben mensajes nulos por la magia divina de java, así que simplemente los ignoramos
                 // pero si hay varios seguidos es que el cliente se ha desconectado
                 if (mensaje == null) {
+                    // Si hay error de conexión o el socket está cerrado desconectar directamente
+                    if (socketConexion.getSocket().isClosed() || socketConexion.hayErrorConexion()) {
+                        break;
+                    }
                     nullsRecibidos++;
                     if (nullsRecibidos >= nullsSeguidos) {
-                        System.out.println("Demasiados mensajes nulos seguidos, cerrando conexión: " + socketConexion.getSocket().getInetAddress().getHostAddress());
+                        System.out.println("Demasiados mensajes nulos seguidos, cerrando conexión: " +
+                                socketConexion.getSocket().getInetAddress().getHostAddress());
                         socketConexion.cerrar();
                         break;
                     }
@@ -55,13 +60,16 @@ public abstract class ManejadorDeMensajes implements Runnable {
                 }
                 nullsRecibidos = 0;
                 manejarPeticion(mensaje);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.err.println("Error al manejar la petición: " + e.getMessage());
             }
         }
+        desconectar();
     }
 
     public abstract void inicializarManejadores();
+    public abstract void desconectar();
 
     void manejarPeticion(Mensaje mensaje)
     {
@@ -126,4 +134,11 @@ public abstract class ManejadorDeMensajes implements Runnable {
         return manejadoresPeticiones.get(tipoMensaje);
     }
 
+    public SocketConexion getSocketConexion() {
+        return socketConexion;
+    }
+
+    public void setSocketConexion(SocketConexion socketConexion) {
+        this.socketConexion = socketConexion;
+    }
 }

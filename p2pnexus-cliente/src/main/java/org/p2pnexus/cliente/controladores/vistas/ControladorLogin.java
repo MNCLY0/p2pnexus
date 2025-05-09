@@ -45,7 +45,7 @@ public class ControladorLogin {
     public void intentarLogin(){
         // Validamos campos para que no esten vacíos
         if (txtUsuario.getText().trim().isEmpty() || txtPassword.getText().trim().isEmpty()) {
-            Notificaciones.MostrarNotificacion("Usuario o contraseña vacíos.", TipoNotificacion.ERROR);
+            Notificaciones.mostrarNotificacion("Usuario o contraseña vacíos.", TipoNotificacion.ERROR);
             return;
         }
 

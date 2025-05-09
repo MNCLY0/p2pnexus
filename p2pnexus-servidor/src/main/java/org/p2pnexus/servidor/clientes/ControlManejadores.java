@@ -35,4 +35,14 @@ public class ControlManejadores extends ManejadorDeMensajes implements Runnable 
         manejadoresPeticiones.put(TipoMensaje.C_DEJAR_DE_COMPARTIR_ESPACIO, new ManejarConsultaEliminarAccesoAEspacio());
     }
 
+    @Override
+    public void desconectar()
+    {
+        //si el socket tiene un cliente asociado eliminamos la refenrencia de la sesion
+        if (getSocketConexion().getIdUsuario() != -1)
+        {
+            ControladorSesiones.eliminarSesion(getSocketConexion().getIdUsuario());
+        }
+    }
+
 }

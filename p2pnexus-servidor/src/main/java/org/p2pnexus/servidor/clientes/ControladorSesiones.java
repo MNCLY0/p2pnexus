@@ -1,7 +1,12 @@
 package org.p2pnexus.servidor.clientes;
 
+import com.google.gson.JsonObject;
+import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
+import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
+import org.p2pnexus.servidor.Entidades.DAO.ContactoDAO;
+import org.p2pnexus.servidor.Entidades.DAO.UsuarioDAO;
 import org.p2pnexus.servidor.Entidades.Usuario;
 
 import java.util.ArrayList;
@@ -23,6 +28,8 @@ public class ControladorSesiones {
 
         SesionCliente sesion = new SesionCliente(socketConexion, usuario);
         sesiones.put(usuario.getId_usuario(), sesion);
+        usuario.establecerConectado(true);
+        notificarEstadoSesionAClientes(usuario);
     }
 
     public static void enviarMensajeClientes(List<Usuario> usuarios, Mensaje mensaje )
@@ -39,6 +46,16 @@ public class ControladorSesiones {
         SesionCliente sesion = sesiones.get(idUsuario);
         if (sesion != null) {
             sesion.getCliente().enviarMensaje(mensaje);
+        }
+    }
+
+    public static void eliminarSesion(Integer idUsuario) {
+        SesionCliente sesion = sesiones.get(idUsuario);
+        if (sesion != null) {
+            sesion.desconectar("");
+            sesiones.remove(idUsuario);
+            sesion.getUsuario().establecerConectado(false);
+            notificarEstadoSesionAClientes(sesion.usuario);
         }
     }
 
@@ -77,5 +94,25 @@ public class ControladorSesiones {
 
     public static SesionCliente getSesion(Integer id) {
         return sesiones.get(id);
+    }
+
+    public static void notificarEstadoSesionAClientes(Usuario usuario) {
+        boolean estado;
+        if (sesiones.get(usuario.getId_usuario()) == null) {
+            estado = false;
+        } else {
+            estado = sesiones.get(usuario.getId_usuario()).usuario.conectado;
+        }
+        System.out.printf("Notificando estado de sesion a contactos de %s, estado: %s", usuario.getNombre(), estado);
+        usuario.establecerConectado(estado);
+        System.out.printf("Estado de sesion de %s: %s", usuario.getNombre(), usuario.getConectado());
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> contactos = dao.listarContactos(usuario.getId_usuario());
+        System.out.printf("Notificando estado de sesion a %s contactos", contactos.size());
+        JsonObject json = new JsonObject();
+        json.add("usuario", JsonHerramientas.convertirObjetoAJson(usuario));
+        System.out.printf("Json: %s", json);
+
+        enviarMensajeAUsuariosEnLinea(new Mensaje(TipoMensaje.R_ESTADO_SESION_CONTACTO,json),contactos);
     }
 }

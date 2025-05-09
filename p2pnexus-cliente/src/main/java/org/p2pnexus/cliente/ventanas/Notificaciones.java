@@ -18,7 +18,6 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class Notificaciones {
@@ -28,10 +27,10 @@ public class Notificaciones {
     private static final double ALTURA_ESTIMADA = 50.0;  // Mas o menos el tamaño de la notificación (se hace a ojo :p)
 
     // Usamos una lista observable para mantener el estado de las notificaciones activas
-    private static final ObservableList<Notification> notificacionesActivas = FXCollections.observableArrayList();
+    private static final ObservableList<NotificacionConSize> notificacionesActivas = FXCollections.observableArrayList();
 
 
-    public static void MostrarNotificacion(String mensaje, TipoNotificacion tipo) {
+    public static void mostrarNotificacion(String mensaje, TipoNotificacion tipo, int size) {
 
         if (GestorVentanas.getCapaNotificaciones() == null) {
             System.err.println("No hay stackPane disponible para mostrar la notificacion");
@@ -39,21 +38,25 @@ public class Notificaciones {
         }
 
         Platform.runLater(() -> {
-            Notification notificacion = crearNotificacion(mensaje, tipo);
+            NotificacionConSize notificacion = crearNotificacion(mensaje, tipo,size);
             notificacion.setPickOnBounds(true);
-            mostrarNotificacion(notificacion);
+            generarNotificacion(notificacion,size);
         });
     }
 
+    public static void mostrarNotificacion(String mensaje, TipoNotificacion tipo) {
+        mostrarNotificacion(mensaje, tipo, 1);
+    }
 
-    private static void mostrarNotificacion(Notification notificacion) {
+
+    private static void generarNotificacion(NotificacionConSize notificacion, int extraMargen) {
         // Configuramos la posición inicial (arriba a la derecha)
         StackPane.setAlignment(notificacion, Pos.TOP_RIGHT);
 
         // Calculamos el margen superior basado en notificaciones existentes
         double margenSuperior = 10;
         if (!notificacionesActivas.isEmpty()) {
-            margenSuperior += notificacionesActivas.size() * (ALTURA_ESTIMADA + ESPACIO_VERTICAL);
+            margenSuperior += notificacionesActivas.size() * (ALTURA_ESTIMADA  + ESPACIO_VERTICAL * notificacion.size);
         }
 
         // Establecemos los márgenes
@@ -76,7 +79,7 @@ public class Notificaciones {
         timeline.play();
     }
 
-    private static void cerrarNotificacion(Notification notificacion) {
+    private static void cerrarNotificacion(NotificacionConSize notificacion) {
         // Si ya se ha eliminado, no hacemos nada
         if (!GestorVentanas.getCapaNotificaciones().getChildren().contains(notificacion)) {
             return;
@@ -100,11 +103,11 @@ public class Notificaciones {
         // Solo reposicionamos las notificaciones que estaban debajo de la eliminada
         try {
             for (int i = indiceEliminado; i < notificacionesActivas.size(); i++) {
-                Notification notif = notificacionesActivas.get(i);
+                NotificacionConSize notif = notificacionesActivas.get(i);
 
                 // Calculamos el nuevo margen superior
                 Insets margenesPrevios = StackPane.getMargin(notif);
-                double nuevoMargenSuperior = 10 + (i * (ALTURA_ESTIMADA + ESPACIO_VERTICAL));
+                double nuevoMargenSuperior = 10 + (i * (ALTURA_ESTIMADA + ESPACIO_VERTICAL * notif.size));
 
                 // Animamos el movimiento hacia arriba
                 Timeline timeline = new Timeline();
@@ -126,7 +129,7 @@ public class Notificaciones {
 
     }
 
-    private static Notification crearNotificacion(String mensaje, TipoNotificacion tipo) {
+    private static NotificacionConSize crearNotificacion(String mensaje, TipoNotificacion tipo, int size) {
         FontIcon icono = null;
         String estilo;
 
@@ -150,7 +153,7 @@ public class Notificaciones {
         // Solución: normalizar explícitamente las secuencias de bytes UTF-8
         String mensajeCorregido = new String(mensaje.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
-        Notification notificacion = new Notification(mensajeCorregido, icono);
+        NotificacionConSize notificacion = new NotificacionConSize(mensajeCorregido, icono, size);
 
         notificacion.getStyleClass().add(Styles.INTERACTIVE);
         notificacion.getStyleClass().add(estilo);

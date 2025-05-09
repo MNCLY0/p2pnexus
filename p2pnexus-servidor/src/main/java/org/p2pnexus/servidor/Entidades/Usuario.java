@@ -42,5 +42,17 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
+    @Expose
+    @Transient
+    public boolean conectado = false;
+
+    public void establecerConectado(boolean conectado) {
+        this.conectado = conectado;
+    }
+
+    public boolean getConectado() {
+        return conectado;
+    }
+
 
 }

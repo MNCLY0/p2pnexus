@@ -1,6 +1,7 @@
 package org.p2pnexus.cliente.server.entitades;
 
 import com.google.gson.annotations.Expose;
+import jakarta.persistence.Transient;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,6 +14,7 @@ public class Usuario {
         this.nombre = nombre;
         this.id_usuario = id_usuario;
     }
+
 
     @Expose
     private Integer id_usuario;
@@ -45,5 +47,16 @@ public class Usuario {
     @Override
     public int hashCode() {
         return Objects.hashCode(id_usuario);
+    }
+
+    @Expose
+    public boolean conectado = false;
+
+    public void establecerConectado(boolean conectado) {
+        this.conectado = conectado;
+    }
+
+    public boolean getConectado() {
+        return conectado;
     }
 }

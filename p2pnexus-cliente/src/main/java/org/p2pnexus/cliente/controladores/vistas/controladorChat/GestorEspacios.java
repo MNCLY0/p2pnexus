@@ -36,7 +36,7 @@ public class GestorEspacios {
     {
         EspacioCompartido espacioCompartido = controladorChat.comboBoxSeleccionEspacio.getSelectionModel().getSelectedItem();
         if (espacioCompartido == null || espacioCompartido.getId_espacio() == -1) {
-            Notificaciones.MostrarNotificacion("No se ha seleccionado ningún espacio", TipoNotificacion.ERROR);
+            Notificaciones.mostrarNotificacion("No se ha seleccionado ningún espacio", TipoNotificacion.ERROR);
             return;
         }
         JsonObject json = new JsonObject();
@@ -79,18 +79,25 @@ public class GestorEspacios {
     {
         Platform.runLater(() -> {
             controladorChat.flowPaneEspaciosEnviados.getChildren().clear();
-            for (EspacioCompartido espacio : controladorChat.datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados())
-            {
-                if (espacio == null) {return;}
-                crearVistaEspacioEnviado(Sesion.getDatosSesionUsuario().getEspacios().get(espacio.getId_espacio()));
+            if (controladorChat.datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados() != null) {
+                for (EspacioCompartido espacio : controladorChat.datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getEnviados())
+                {
+                    if (espacio == null) {return;}
+                    crearVistaEspacioEnviado(Sesion.getDatosSesionUsuario().getEspacios().get(espacio.getId_espacio()));
+                }
             }
-            controladorChat.flowPlaneEspaciosRecibidos.getChildren().clear();
-            for (EspacioCompartido espacio : controladorChat.datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getRecibidos())
+
+            if (controladorChat.datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getRecibidos() != null)
             {
-                if (espacio == null) {return;}
-                System.out.printf("Id de espacio recibido: %s\n", espacio.getId_espacio());
-                crearVistaEspacioRecibido(espacio);
+                controladorChat.flowPlaneEspaciosRecibidos.getChildren().clear();
+                for (EspacioCompartido espacio : controladorChat.datosConversacionActual.getDatosPaqueteEspaciosCompartidos().getRecibidos())
+                {
+                    if (espacio == null) {return;}
+                    System.out.printf("Id de espacio recibido: %s\n", espacio.getId_espacio());
+                    crearVistaEspacioRecibido(espacio);
+                }
             }
+
         });
     }
 

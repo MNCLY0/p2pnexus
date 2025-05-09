@@ -17,6 +17,7 @@ public class SesionCliente {
         this.usuario = usuario;
         this.ip = cliente.getSocket().getInetAddress().getHostAddress();
         this.puerto = cliente.getSocket().getPort();
+        cliente.setIdUsuario(usuario.getId_usuario());
     }
 
     public SocketConexion getCliente() {
@@ -33,7 +34,9 @@ public class SesionCliente {
 
     public void desconectar(String motivo) {
         try {
-            cliente.enviarMensaje(FabricaMensajes.crearNotificacion("Desconectando del servidor " + motivo, TipoNotificacion.ERROR));
+            if (cliente.getSocket().isClosed()) return; // ya está desconectado
+            // El motivo es opcional si no se pasa nada se cierra la conexión sin notificar
+            if (!motivo.isEmpty()) cliente.enviarMensaje(FabricaMensajes.crearNotificacion("Desconectando del servidor " + motivo, TipoNotificacion.ERROR));
             cliente.enviarMensaje(new Mensaje(TipoMensaje.C_CERRAR_SESION_CLIENTE));
         } catch (Exception e) {
             System.err.println("Error al cerrar la conexión del cliente: " + e.getMessage());

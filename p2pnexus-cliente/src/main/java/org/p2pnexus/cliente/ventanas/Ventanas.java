@@ -12,7 +12,8 @@ public enum Ventanas implements IEnumVistaCargable{
     TAB_CHAT("org/p2pnexus/cliente/fxml/vistas/Chat.fxml"),
     ESPACIOS("org/p2pnexus/cliente/fxml/vistas/Espacios.fxml"),
     MODAL_CREAR_ESPACIO("org/p2pnexus/cliente/fxml/vistasModales/CreacionEspacio.fxml"),
-    MODAL_EDITAR_ESPACIO("org/p2pnexus/cliente/fxml/vistasModales/EdicionEspacio.fxml"),;
+    MODAL_EDITAR_ESPACIO("org/p2pnexus/cliente/fxml/vistasModales/EdicionEspacio.fxml"),
+    MODAL_VISUALIZAR_ESPACIO("org/p2pnexus/cliente/fxml/vistasModales/VisualizarEspacio.fxml"),;
 
     Ventanas(String ruta) {
         try {

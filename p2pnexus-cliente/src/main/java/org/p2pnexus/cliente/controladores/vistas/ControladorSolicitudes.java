@@ -57,7 +57,7 @@ public class ControladorSolicitudes {
     {
         if (campobuscar.getText().isEmpty())
         {
-            Notificaciones.MostrarNotificacion("Campo de búsqueda vacío", TipoNotificacion.AVISO);
+            Notificaciones.mostrarNotificacion("Campo de búsqueda vacío", TipoNotificacion.AVISO);
             vboxResultadosUsuarios.getChildren().clear();
             return;
         }

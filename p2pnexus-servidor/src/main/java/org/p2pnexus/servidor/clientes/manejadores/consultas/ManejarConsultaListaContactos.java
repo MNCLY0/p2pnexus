@@ -11,6 +11,8 @@ import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import org.p2pnexus.servidor.Entidades.DAO.ContactoDAO;
 import org.p2pnexus.servidor.Entidades.DAO.UsuarioDAO;
 import org.p2pnexus.servidor.Entidades.Usuario;
+import org.p2pnexus.servidor.clientes.ControladorSesiones;
+import org.p2pnexus.servidor.clientes.SesionCliente;
 
 import java.util.List;
 

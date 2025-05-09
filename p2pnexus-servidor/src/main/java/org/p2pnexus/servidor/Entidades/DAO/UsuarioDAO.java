@@ -4,9 +4,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.p2pnexus.servidor.Entidades.Contacto;
 import org.p2pnexus.servidor.Entidades.Usuario;
+import org.p2pnexus.servidor.clientes.ControladorSesiones;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDAO extends DAO{
 
@@ -83,9 +86,9 @@ public class UsuarioDAO extends DAO{
 
     // Listamos todos los contactos de un usuario, como la relacion es bidireccional, no importa si el usuario1 es el que busca o el usuario2
     // siempre devolvemos el contacto diferente al usuario que busca
-    public ArrayList<Usuario> listarContactos(int id_usuario) {
+    public List<Usuario> listarContactos(int id_usuario) {
         try (Session session = getSessionFactory().openSession()) {
-            return (ArrayList<Usuario>) session.createQuery(
+            List<Usuario> contactos = session.createQuery(
                             "SELECT u FROM Usuario u WHERE u.id_usuario IN " +
                                     "(SELECT CASE " +
                                     "WHEN c.usuario1.id_usuario = :id_usuario THEN c.usuario2.id_usuario " +
@@ -94,6 +97,12 @@ public class UsuarioDAO extends DAO{
                                     "WHERE c.usuario1.id_usuario = :id_usuario OR c.usuario2.id_usuario = :id_usuario)", Usuario.class)
                     .setParameter("id_usuario", id_usuario)
                     .list();
+            // Establecemos el estado de cada contacto
+            for (Usuario usuario : contactos) {
+                boolean estado = ControladorSesiones.getSesion(usuario.getId_usuario()) != null;
+                usuario.establecerConectado(estado);
+            }
+            return contactos;
         } catch (Exception e) {
             throw new RuntimeException("Error al listar contactos: " + e.getMessage(), e);
         }

@@ -14,7 +14,7 @@ public class ManejarNotificaciones implements IManejadorMensaje {
         TipoNotificacion tipo = TipoNotificacion.valueOf(mensaje.getData().get("tipo").getAsString().toUpperCase());
         String mensajeNotificacion = mensaje.getData().get("mensaje").getAsString();
         System.out.println("Notificacion recibida: " + mensaje);
-        Notificaciones.MostrarNotificacion(mensajeNotificacion, tipo);
+        Notificaciones.mostrarNotificacion(mensajeNotificacion, tipo);
         // No es necesario devolver un resultado
         return null;
     }

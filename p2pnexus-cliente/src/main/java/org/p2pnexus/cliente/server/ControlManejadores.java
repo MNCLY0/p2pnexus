@@ -3,7 +3,10 @@ package org.p2pnexus.cliente.server;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.comunicacion.ManejadorDeMensajes;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
+import javafx.application.Platform;
 import org.p2pnexus.cliente.server.manejadores.*;
+import org.p2pnexus.cliente.ventanas.GestorVentanas;
+import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class ControlManejadores extends ManejadorDeMensajes {
 
@@ -28,5 +31,12 @@ public class ControlManejadores extends ManejadorDeMensajes {
         manejadoresPeticiones.put(TipoMensaje.R_NUEVO_ESPACIO_RECIBIDO, new ManejarNuevoEspacioRecibido());
         manejadoresPeticiones.put(TipoMensaje.R_ACTUALIZAR_ESPACIO_RECIBIDO, new ManejarActualizarEspacioRecibido());
         manejadoresPeticiones.put(TipoMensaje.R_ELIMINAR_ESPACIO_RECIBIDO, new ManejarEliminarEspacioRecibido());
+        manejadoresPeticiones.put(TipoMensaje.R_ESTADO_SESION_CONTACTO, new ManejarRespuestaEstadoSesionContacto());
+    }
+
+    @Override
+    public void desconectar() {
+        System.out.println("Desconectando el cliente del servidor...");
+        Conexion.cerrarConexion();
     }
 }

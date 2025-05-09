@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vboxPadre" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#animarInteracion" onMouseExited="#animarInteracionSalida" prefHeight="200.0" prefWidth="450.0" spacing="10.0" styleClass="context-menu" stylesheets="@../../estilos/estilos.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacioRecibida">
+<VBox onMouseClicked="#acceder" fx:id="vboxPadre" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#animarInteracion" onMouseExited="#animarInteracionSalida" prefHeight="200.0" prefWidth="450.0" spacing="10.0" styleClass="context-menu" stylesheets="@../../estilos/estilos.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaEspacioRecibida">
    <children>
       <HBox alignment="TOP_RIGHT" />
       <HBox>
