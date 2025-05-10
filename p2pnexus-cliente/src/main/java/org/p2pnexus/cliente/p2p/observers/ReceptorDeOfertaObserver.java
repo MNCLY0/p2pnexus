@@ -58,4 +58,5 @@ public class ReceptorDeOfertaObserver implements SetSessionDescriptionObserver {
     public void onFailure(String s) {
         System.err.println("Error al establecer la descripción remota: " + s);
     }
+
 }

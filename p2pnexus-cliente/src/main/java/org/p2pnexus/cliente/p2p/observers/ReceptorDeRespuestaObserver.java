@@ -8,6 +8,7 @@ public class ReceptorDeRespuestaObserver implements SetSessionDescriptionObserve
     @Override
     public void onSuccess() {
         System.out.println("Descripción remota establecida correctamente.");
+
     }
 
     @Override

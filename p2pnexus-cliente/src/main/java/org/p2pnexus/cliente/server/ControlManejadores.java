@@ -5,6 +5,7 @@ import com.p2pnexus.comun.comunicacion.ManejadorDeMensajes;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import javafx.application.Platform;
 import org.p2pnexus.cliente.server.manejadores.*;
+import org.p2pnexus.cliente.server.manejadores.p2p.ManejarRecibirIceP2P;
 import org.p2pnexus.cliente.server.manejadores.p2p.ManejarRecibirOfertaP2P;
 import org.p2pnexus.cliente.server.manejadores.p2p.ManejarRecibirRespuestaP2P;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
@@ -36,6 +37,7 @@ public class ControlManejadores extends ManejadorDeMensajes {
         manejadoresPeticiones.put(TipoMensaje.R_ESTADO_SESION_CONTACTO, new ManejarRespuestaEstadoSesionContacto());
         manejadoresPeticiones.put(TipoMensaje.R_P2P_SDP_OFERTA, new ManejarRecibirOfertaP2P());
         manejadoresPeticiones.put(TipoMensaje.R_P2P_SDP_RESPUESTA, new ManejarRecibirRespuestaP2P());
+        manejadoresPeticiones.put(TipoMensaje.R_P2P_ICE, new ManejarRecibirIceP2P());
     }
 
     @Override

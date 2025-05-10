@@ -33,6 +33,7 @@ public enum TipoMensaje {
 
     R_P2P_SDP_OFERTA,
     R_P2P_SDP_RESPUESTA,
+    R_P2P_ICE,
 
     // Mensajes de respuesta
     R_LOGIN_OK,

@@ -6,6 +6,7 @@ import com.p2pnexus.comun.TipoMensaje;
 import org.p2pnexus.servidor.clientes.manejadores.ManejarLogin;
 import org.p2pnexus.servidor.clientes.manejadores.ManejarRegistro;
 import org.p2pnexus.servidor.clientes.manejadores.consultas.*;
+import org.p2pnexus.servidor.clientes.manejadores.consultas.p2p.ManejarEnviarICEp2p;
 import org.p2pnexus.servidor.clientes.manejadores.consultas.p2p.ManejarOfertaSDPp2p;
 import org.p2pnexus.servidor.clientes.manejadores.consultas.p2p.ManejarRespuestaSDPp2p;
 
@@ -37,6 +38,7 @@ public class ControlManejadores extends ManejadorDeMensajes implements Runnable 
         manejadoresPeticiones.put(TipoMensaje.C_DEJAR_DE_COMPARTIR_ESPACIO, new ManejarConsultaEliminarAccesoAEspacio());
         manejadoresPeticiones.put(TipoMensaje.C_P2P_SDP_OFERTA, new ManejarOfertaSDPp2p());
         manejadoresPeticiones.put(TipoMensaje.C_P2P_SDP_RESPUESTA, new ManejarRespuestaSDPp2p());
+        manejadoresPeticiones.put(TipoMensaje.C_P2P_ICE, new ManejarEnviarICEp2p());
     }
 
     @Override
