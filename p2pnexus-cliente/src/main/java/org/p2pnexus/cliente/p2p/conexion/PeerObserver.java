@@ -2,14 +2,24 @@ package org.p2pnexus.cliente.p2p.conexion;
 
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
+import com.p2pnexus.comun.Mensaje;
+import com.p2pnexus.comun.TipoMensaje;
 import dev.onvoid.webrtc.*;
+import org.p2pnexus.cliente.p2p.manejador.ManejadorMensajesP2P;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
+
+import java.nio.ByteBuffer;
 
 
 public class PeerObserver implements PeerConnectionObserver {
 
     Usuario usuarioRemoto;
+    GestorP2P gestorP2P;
+
+    public PeerObserver(GestorP2P gestorP2P) {
+        this.gestorP2P = gestorP2P;
+    }
 
     public void setUsuarioRemoto(Usuario usuarioRemoto) {
         this.usuarioRemoto = usuarioRemoto;
@@ -41,23 +51,24 @@ public class PeerObserver implements PeerConnectionObserver {
 
     @Override
     public void onDataChannel(RTCDataChannel dataChannel) {
-        System.out.println("Canal de datos recibido del otro peer");
+        System.out.println("Canal de datos recibido: " + dataChannel.getLabel());
+        gestorP2P.canal = dataChannel;
+
+        gestorP2P.manejador = new ManejadorMensajesP2P(dataChannel);
+
         dataChannel.registerObserver(new RTCDataChannelObserver() {
-
-            @Override
-            public void onBufferedAmountChange(long l) {
-
-            }
-
             @Override
             public void onStateChange() {
-                System.out.println("Estado del canal: " + dataChannel.getState());
+                System.out.println("Estado del canal recibido: " + dataChannel.getState());
+                if (dataChannel.getState() == RTCDataChannelState.OPEN) {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("mensajePrueba", "Hola desde receptor");
+                    gestorP2P.manejador.enviarMensaje(new Mensaje(TipoMensaje.P2P_DEBUG_MENSAJE, json));
+                }
             }
 
-            @Override
-            public void onMessage(RTCDataChannelBuffer rtcDataChannelBuffer) {
-                System.out.println();
-            }
+            @Override public void onBufferedAmountChange(long l) {}
+            @Override public void onMessage(RTCDataChannelBuffer buffer) {}
         });
     }
 

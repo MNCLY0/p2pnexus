@@ -26,15 +26,6 @@ public enum TipoMensaje {
     C_COMPARTIR_ESPACIO,
     C_DEJAR_DE_COMPARTIR_ESPACIO,
 
-    // Mensajes de P2P
-    C_P2P_SDP_OFERTA,
-    C_P2P_SDP_RESPUESTA,
-    C_P2P_ICE,
-
-    R_P2P_SDP_OFERTA,
-    R_P2P_SDP_RESPUESTA,
-    R_P2P_ICE,
-
     // Mensajes de respuesta
     R_LOGIN_OK,
     R_TEST,
@@ -52,4 +43,20 @@ public enum TipoMensaje {
     R_NUEVO_ESPACIO_RECIBIDO,
     R_ACTUALIZAR_ESPACIO_RECIBIDO,
     R_ELIMINAR_ESPACIO_RECIBIDO,
-    R_ESTADO_SESION_CONTACTO}
+    R_ESTADO_SESION_CONTACTO,
+
+    // Mensajes de P2P Cliente - Servidor
+    C_P2P_SDP_OFERTA,
+    C_P2P_SDP_RESPUESTA,
+    C_P2P_ICE,
+
+    R_P2P_SDP_OFERTA,
+    R_P2P_SDP_RESPUESTA,
+    R_P2P_ICE,
+
+    // Mensajes de P2P Cliente - Cliente
+
+    P2P_DEBUG_MENSAJE,
+
+}
+

@@ -3,6 +3,7 @@ package org.p2pnexus.cliente.p2p.conexion;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import dev.onvoid.webrtc.*;
+import org.p2pnexus.cliente.p2p.manejador.ManejadorMensajesP2P;
 import org.p2pnexus.cliente.p2p.observers.CreadorDeOfertaObserver;
 import org.p2pnexus.cliente.p2p.observers.ReceptorDeOfertaObserver;
 import org.p2pnexus.cliente.p2p.observers.ReceptorDeRespuestaObserver;
@@ -22,23 +23,30 @@ public class GestorP2P {
     PeerObserver peerObserver;
     Usuario usuarioRemoto;
     RTCDataChannel canal;
+    ManejadorMensajesP2P manejador;
 
     public GestorP2P() {
+        peerObserver = new PeerObserver(this);
         peer = crearPeerConection();
     }
 
     public void hacerOferta(Usuario usuario)
     {
+        System.out.println("Creando oferta de canal de datos");
+        conexiones.put(usuario.getId_usuario(), this);
+        canal = peer.createDataChannel("canal", new RTCDataChannelInit());
+        manejador = new ManejadorMensajesP2P(canal);
         usuarioRemoto = usuario;
         peerObserver.setUsuarioRemoto(usuario);
-        canal = peer.createDataChannel("canal", new RTCDataChannelInit());
-        peer.createOffer(new RTCOfferOptions(), new CreadorDeOfertaObserver(peer,usuario,this));
+        peer.createOffer(new RTCOfferOptions(), new CreadorDeOfertaObserver(peer, usuario, this));
     }
 
     public void recibirOferta(JsonObject json)
     {
         usuarioRemoto = JsonHerramientas.convertirJsonAObjeto(json.get("usuario_remoto").getAsJsonObject(), Usuario.class);
         peerObserver.setUsuarioRemoto(usuarioRemoto);
+
+        conexiones.put(usuarioRemoto.getId_usuario(), this);
 
         String sdp = json.get("sdp").getAsString();
         RTCSessionDescription oferta = new RTCSessionDescription(RTCSdpType.OFFER, sdp);
@@ -83,10 +91,24 @@ public class GestorP2P {
         RTCConfiguration configuracion = new RTCConfiguration();
 
         configuracion.iceServers = crearListaIceServer(servidoreStun);
-        peerObserver = new PeerObserver();
+//        peerObserver = new PeerObserver(this);
         return factory.createPeerConnection(configuracion,peerObserver);
     }
 
+    public void cerrarConexion()
+    {
+        if (peer != null) {
+            peer.close();
+            peer = null;
+        }
+        if (canal != null) {
+            canal.close();
+            canal = null;
+        }
+        if (manejador != null) {
+            manejador = null;
+        }
+    }
 
     public RTCIceServer crearIceServer(String url)
     {

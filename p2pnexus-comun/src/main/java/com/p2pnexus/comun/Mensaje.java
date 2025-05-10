@@ -1,13 +1,18 @@
 package com.p2pnexus.comun;
 
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
 
 import java.util.List;
 
 public class Mensaje {
+    @Expose
     private TipoMensaje tipo;
+    @Expose
     private JsonObject data;
+    @Expose
     private String id;
+    @Expose
     private boolean esRespuesta = false;
 
     public Mensaje(TipoMensaje tipo, JsonObject data) {

@@ -5,6 +5,7 @@ import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ConectarExeption;
 import javafx.application.Platform;
+import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 import org.p2pnexus.cliente.ventanas.Ventanas;
@@ -97,6 +98,12 @@ public class Conexion {
         OUT = null;
         controlManejadores = null;
         CONEXION = null;
+
+        // Cerrar todas las conexiones P2P que puedan estar abiertas
+        GestorP2P.conexiones.forEach((integer, gestorP2P) -> {
+            gestorP2P.cerrarConexion();
+        });
+
         Platform.runLater(() ->
         {
             GestorVentanas.transicionarVentana(Ventanas.CARGANDO_CONEXION);
