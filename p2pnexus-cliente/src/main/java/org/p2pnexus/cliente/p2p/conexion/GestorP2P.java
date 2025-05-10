@@ -2,15 +2,21 @@ package org.p2pnexus.cliente.p2p.conexion;
 
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
-import com.p2pnexus.comun.Mensaje;
 import dev.onvoid.webrtc.*;
+import org.p2pnexus.cliente.p2p.observers.CreadorDeOfertaObserver;
+import org.p2pnexus.cliente.p2p.observers.ReceptorDeOfertaObserver;
+import org.p2pnexus.cliente.p2p.observers.ReceptorDeRespuestaObserver;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GestorP2P {
+
+    public static Map<Integer, GestorP2P> conexiones = new HashMap<>();
 
     RTCPeerConnection peer;
     Usuario usuarioRemoto;
@@ -22,101 +28,26 @@ public class GestorP2P {
 
     public void hacerOferta(Usuario usuario)
     {
-        peer.createOffer(new RTCOfferOptions(), new CreateSessionDescriptionObserver() {
-            @Override
-            public void onSuccess(RTCSessionDescription offer) {
-
-                peer.setLocalDescription(offer, new SetSessionDescriptionObserver() {
-                    @Override
-                    public void onSuccess() {
-                        System.out.println("Local description establecida correctamente.");
-
-                        JsonObject json = new JsonObject();
-                        json.addProperty("sdp", offer.sdp);
-                        json.add("usuario_remoto", JsonHerramientas.convertirObjetoAJson(usuario));
-                        json.add("usuario_local", JsonHerramientas.convertirObjetoAJson(Sesion.getUsuario()));
-
-                        MensajesP2P.enviarOferta(json);
-                    }
-
-                    @Override
-                    public void onFailure(String s) {
-                        System.err.println("Error al establecer la descripción: " + s);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(String s) {
-                System.err.println("Error al crear la oferta SDP: " + s);
-            }
-        });
+        peer.createOffer(new RTCOfferOptions(), new CreadorDeOfertaObserver(peer,usuario,this));
 
     }
 
     public void recibirOferta(JsonObject json)
     {
         String sdp = json.get("sdp").getAsString();
-        usuarioRemoto = JsonHerramientas.convertirJsonAObjeto(json.get("usuario_remoto").getAsJsonObject(), Usuario.class);
+        this.usuarioRemoto = JsonHerramientas.convertirJsonAObjeto(json.get("usuario_remoto").getAsJsonObject(), Usuario.class);
+        RTCSessionDescription oferta = new RTCSessionDescription(RTCSdpType.OFFER, sdp);
+        peer.setRemoteDescription(oferta, new ReceptorDeOfertaObserver(peer,usuarioRemoto,this));
+        System.out.println("Estado de la conexión: " + peer.getRemoteDescription());
 
-        peer.setRemoteDescription(new RTCSessionDescription(RTCSdpType.OFFER, sdp), new SetSessionDescriptionObserver() {
-            @Override
-            public void onSuccess() {
-                System.out.println("Descripción remota establecida correctamente.");
-                // Crear respuesta SDP
-                peer.createAnswer(new RTCAnswerOptions(), new CreateSessionDescriptionObserver() {
-                    @Override
-                    public void onSuccess(RTCSessionDescription answer) {
-                        peer.setLocalDescription(answer, new SetSessionDescriptionObserver() {
-                            @Override
-                            public void onSuccess() {
-                                System.out.println("Respuesta establecida como descripción local correctamente.");
-
-                                JsonObject jsonRespuesta = new JsonObject();
-                                jsonRespuesta.addProperty("sdp", answer.sdp);
-                                jsonRespuesta.add("usuario_remoto", JsonHerramientas.convertirObjetoAJson(usuarioRemoto));
-                                jsonRespuesta.add("usuario_local", JsonHerramientas.convertirObjetoAJson(Sesion.getUsuario()));
-
-                                MensajesP2P.enviarRespuesta(jsonRespuesta);
-                            }
-
-                            @Override
-                            public void onFailure(String s) {
-                                System.err.println("Error al establecer descripción local con respuesta: " + s);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(String s) {
-                        System.err.println("Error al crear respuesta SDP: " + s);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(String s) {
-                System.err.println("Error al establecer la descripción remota: " + s);
-            }
-        });
     }
 
-    public void recibirRespuesta(JsonObject json)
+    public void recibirRespuesta(String sdp)
     {
-        String sdp = json.get("sdp").getAsString();
-        usuarioRemoto = JsonHerramientas.convertirJsonAObjeto(json.get("usuario_remoto").getAsJsonObject(), Usuario.class);
 
-        peer.setRemoteDescription(new RTCSessionDescription(RTCSdpType.ANSWER, sdp), new SetSessionDescriptionObserver() {
-            @Override
-            public void onSuccess() {
-                System.out.println("Descripción remota establecida correctamente.");
-            }
-
-            @Override
-            public void onFailure(String s) {
-                System.err.println("Error al establecer la descripción remota: " + s);
-            }
-        });
+        RTCSessionDescription respuesta = new RTCSessionDescription(RTCSdpType.ANSWER, sdp);
+        peer.setRemoteDescription(respuesta, new ReceptorDeRespuestaObserver());
+        System.out.println("Estado de la conexión: " + peer.getRemoteDescription());
     }
 
     RTCPeerConnection crearPeerConection()

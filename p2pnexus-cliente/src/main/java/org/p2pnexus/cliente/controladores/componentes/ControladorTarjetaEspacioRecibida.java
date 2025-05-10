@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
 import org.p2pnexus.cliente.controladores.vistasModales.ControladorVisualizarEspacio;
+import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 import org.p2pnexus.cliente.server.entitades.Usuario;
@@ -61,24 +62,27 @@ public class ControladorTarjetaEspacioRecibida {
     @FXML
     void acceder()
     {
-        // Sincronizar el espacio compartido con el usuario real (con el que llevamos el control del estado)
-        Usuario usuarioReal = ControladorMenuPrincipal.instancia.getControladoresTarjetaContacto().get(espacioCompartido.getPropietario()).getUsuario();
-        espacioCompartido.setPropietario(usuarioReal);
+        GestorP2P gestor = new GestorP2P();
+        gestor.hacerOferta(espacioCompartido.getPropietario());
 
-//        if (!espacioCompartido.getPropietario().getConectado())
-//        {
-//            Notificaciones.mostrarNotificacion("No puedes acceder al espacio porque el propietario no está conectado", TipoNotificacion.ERROR,2);
-//            return;
+//        // Sincronizar el espacio compartido con el usuario real (con el que llevamos el control del estado)
+//        Usuario usuarioReal = ControladorMenuPrincipal.instancia.getControladoresTarjetaContacto().get(espacioCompartido.getPropietario()).getUsuario();
+//        espacioCompartido.setPropietario(usuarioReal);
+//
+////        if (!espacioCompartido.getPropietario().getConectado())
+////        {
+////            Notificaciones.mostrarNotificacion("No puedes acceder al espacio porque el propietario no está conectado", TipoNotificacion.ERROR,2);
+////            return;
+////        }
+//        try {
+//            FXMLLoader loader = GestorVentanas.crearFXMLoader(Ventanas.MODAL_VISUALIZAR_ESPACIO);
+//            Parent parent = loader.load();
+//            ControladorVisualizarEspacio controlador = loader.getController();
+//            controlador.inicializarConEspacio(espacioCompartido);
+//            GestorVentanas.abrirModal(parent, espacioCompartido.getNombrePropiedadProperty().get(), false);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
 //        }
-        try {
-            FXMLLoader loader = GestorVentanas.crearFXMLoader(Ventanas.MODAL_VISUALIZAR_ESPACIO);
-            Parent parent = loader.load();
-            ControladorVisualizarEspacio controlador = loader.getController();
-            controlador.inicializarConEspacio(espacioCompartido);
-            GestorVentanas.abrirModal(parent, espacioCompartido.getNombrePropiedadProperty().get(), false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
