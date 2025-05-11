@@ -18,8 +18,13 @@ import java.util.Random;
 public class Conexion {
 
     public static int PUERTO = 5055; // Puerto del servidor
-    public static String HOST = "localhost"; // Direccion del servidor
+    public static String HOST = "localhost";
     private static SocketConexion CONEXION = null; // Socket del servidor
+
+    public static String[] servidores = new String[] {
+            "localhost",
+            "sv.mncly.com"
+    };
 
     public static BufferedOutputStream OUT = null;
 
@@ -27,36 +32,40 @@ public class Conexion {
 
     public static String ipGenerada = null;
 
-    public static void iniciarConexion(boolean test) throws ConectarExeption
-    {
-        try {
+    public static void iniciarConexion(boolean test) throws ConectarExeption {
 
-            Socket socket = new Socket();
+        for (String servidor : servidores) {
+            try {
+                Socket socket = new Socket();
 
-            if (test && ipGenerada == null) {
-                Random rand = new Random();
-                ipGenerada = "127.0.0." + rand.nextInt(0,255);
-                System.out.println("Ip generada: " + socket.getLocalAddress().getHostAddress());
-            }else
-            {
-              ipGenerada = socket.getLocalAddress().getHostAddress();
+                if (test && ipGenerada == null) {
+                    Random rand = new Random();
+                    ipGenerada = "127.0.0." + rand.nextInt(0, 255);
+                    System.out.println("IP generada: " + ipGenerada);
+                } else {
+                    ipGenerada = socket.getLocalAddress().getHostAddress();
+                }
+
+                socket.bind(new InetSocketAddress(ipGenerada, 0));
+                socket.connect(new InetSocketAddress(servidor, PUERTO), 3000); // timeout 3s por intento
+
+                System.out.println("Conectado al servidor en " + servidor + ":" + PUERTO);
+                socket.setKeepAlive(true);
+
+                CONEXION = new SocketConexion(socket, "Servidor " + socket.getInetAddress().getHostAddress());
+
+                controlManejadores = new ControlManejadores(CONEXION);
+                new Thread(controlManejadores).start();
+
+                HOST = servidor;
+                return;
+
+            } catch (Exception e) {
+                System.err.println("Error al conectar con " + servidor + ": " + e.getMessage());
             }
-            socket.bind(new InetSocketAddress(ipGenerada, 0));
-            socket.connect(new InetSocketAddress(HOST, PUERTO));
-
-            System.out.println("Conectado al servidor en " + HOST + ":" + PUERTO);
-            // Hacemos que el socket siempre mantenga la conexión activa (nos encargaremos de cerrarla cuando sea necesario)
-            socket.setKeepAlive(true);
-
-            CONEXION = new SocketConexion(socket, "Servidor " + socket.getInetAddress().getHostAddress());
-
-            controlManejadores = new ControlManejadores(CONEXION);
-            new Thread(controlManejadores).start();
-
-        } catch (Exception e) {
-            throw new ConectarExeption("Error al conectar al servidor", e);
         }
 
+        throw new ConectarExeption("No se pudo conectar a ningún servidor");
     }
 
     public static void iniciarConexion() throws ConectarExeption
