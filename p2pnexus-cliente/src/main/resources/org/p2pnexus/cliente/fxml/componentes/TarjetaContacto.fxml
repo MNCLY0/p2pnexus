@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="120.0" minHeight="80.0" prefHeight="80.0" prefWidth="339.0" stylesheets="@../../estilos/estilos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContacto">
+<AnchorPane fx:id="anchorPane" maxHeight="120.0" minHeight="80.0" prefHeight="80.0" prefWidth="339.0" stylesheets="@../../estilos/estilos.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContacto">
    <children>
       <VBox fx:id="vboxImagen" layoutX="14.0" layoutY="15.0" maxHeight="70.0" maxWidth="70.0" prefHeight="70.0" prefWidth="70.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
          <styleClass>

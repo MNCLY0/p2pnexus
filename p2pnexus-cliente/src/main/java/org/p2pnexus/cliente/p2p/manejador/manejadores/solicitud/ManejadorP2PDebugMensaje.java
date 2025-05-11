@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.p2p.manejador.manejadores;
+package org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud;
 
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.comunicacion.IManejadorMensaje;

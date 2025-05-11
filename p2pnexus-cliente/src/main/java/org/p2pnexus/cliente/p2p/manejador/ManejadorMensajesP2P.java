@@ -11,8 +11,9 @@ import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import dev.onvoid.webrtc.RTCDataChannel;
 import dev.onvoid.webrtc.RTCDataChannelBuffer;
 import dev.onvoid.webrtc.RTCDataChannelObserver;
-import org.p2pnexus.cliente.p2p.manejador.manejadores.ManejadorP2PDebugMensaje;
-import org.p2pnexus.cliente.p2p.manejador.manejadores.ManejadorP2PInfoRuta;
+import org.p2pnexus.cliente.p2p.manejador.manejadores.respuesta.ManejadorP2PRInfoRuta;
+import org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud.ManejadorP2PDebugMensaje;
+import org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud.ManejadorP2PInfoRuta;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class ManejadorMensajesP2P {
     public void inicializarManejadores() {
         manejadores.put(TipoMensaje.P2P_DEBUG_MENSAJE, new ManejadorP2PDebugMensaje());
         manejadores.put(TipoMensaje.P2P_S_INFO_RUTA, new ManejadorP2PInfoRuta());
+        manejadores.put(TipoMensaje.P2P_R_INFO_RUTA, new ManejadorP2PRInfoRuta());
     }
 
     private void registrarListener() {

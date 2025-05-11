@@ -2,9 +2,12 @@ package org.p2pnexus.cliente.p2p;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.p2pnexus.comun.JsonHerramientas;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HerramientasFicheros {
 
@@ -24,31 +27,37 @@ public class HerramientasFicheros {
             return null;
         }
 
-        //Creamos el json donde vamos a tener toda la info del directorio con la
+        //Creamos el json donde vamos a tener toda la info del directorio con la lista de ficheros
         JsonObject json = new JsonObject();
-        json.addProperty("directorio", directorio.getAbsolutePath());
 
-        JsonArray archivosArray = new JsonArray();
+        File[] ficheros = directorio.listFiles();
+        List<Fichero> archivosDirectorio = new ArrayList<>();
 
+        if (ficheros != null) {
+            for (File archivo : ficheros) {
 
-        File[] archivos = directorio.listFiles();
-
-        if (archivos != null) {
-            for (File archivo : archivos) {
-                if (archivo.isFile()) {
-                    JsonObject jsonArchivo = new JsonObject();
-                    jsonArchivo.addProperty("nombre", archivo.getName());
-                    jsonArchivo.addProperty("tamaño", archivo.length());
-                    jsonArchivo.addProperty("ruta", archivo.getAbsolutePath());
-                    jsonArchivo.addProperty("extension", obtenerExtension(archivo));
-                    archivosArray.add(jsonArchivo);
+                long bytes = archivo.length();
+                String lengthFormateado;
+                // Si el tamaño es menor de de 1 MB se muestra en KB
+                if (bytes < 1024 * 1024) {
+                    lengthFormateado = String.format("%.2f KB", bytes / 1024.0);
                 } else {
-                    System.out.println("El archivo no es un archivo: " + archivo.getAbsolutePath());
+                    lengthFormateado = String.format("%.2f MB", bytes / (1024.0 * 1024.0));
+                }
+
+                if (archivo.isFile()) {
+                    Fichero fichero = new Fichero(
+                            archivo.getName(),
+                            archivo.getAbsolutePath(),
+                            lengthFormateado,
+                            obtenerExtension(archivo)
+                    );
+                    archivosDirectorio.add(fichero);
                 }
             }
         }
 
-        json.add("archivos", archivosArray);
+        json.add("ficheros", JsonHerramientas.empaquetarListaEnJsonObject(archivosDirectorio));
 
         return json;
     }

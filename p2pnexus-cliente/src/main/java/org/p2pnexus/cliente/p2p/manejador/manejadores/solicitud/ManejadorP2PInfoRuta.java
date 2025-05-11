@@ -1,4 +1,4 @@
-package org.p2pnexus.cliente.p2p.manejador.manejadores;
+package org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud;
 
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;

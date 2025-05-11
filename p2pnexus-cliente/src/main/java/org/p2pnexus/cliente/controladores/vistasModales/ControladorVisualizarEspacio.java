@@ -9,6 +9,9 @@ import org.p2pnexus.cliente.p2p.Fichero;
 import org.p2pnexus.cliente.p2p.FicheroListCell;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
 
+import java.io.File;
+import java.util.List;
+
 
 public class ControladorVisualizarEspacio {
     @FXML
@@ -20,17 +23,12 @@ public class ControladorVisualizarEspacio {
     @FXML
     ListView<Fichero> listaFicheros;
 
-    public void inicializarConEspacio(EspacioCompartido espacioCompartido) {
+    public void inicializarConEspacio(EspacioCompartido espacioCompartido, List<Fichero> ficheros) {
         labelNombreEspacio.textProperty().bind(espacioCompartido.getNombrePropiedadProperty());
         labelRuta.textProperty().bind(espacioCompartido.getRutaPropiedadProperty());
 
-        ObservableList<Fichero> ficheros = FXCollections.observableArrayList();
-        for (int i = 0; i < 20; i++) {
-            Fichero fichero = new Fichero("Fichero " + i, "Ruta del fichero " + i, "100MB", "txt");
-            ficheros.add(fichero);
-        }
         listaFicheros.setCellFactory(fichero -> new FicheroListCell());
-        listaFicheros.itemsProperty().set(ficheros);
+        listaFicheros.itemsProperty().set(FXCollections.observableArrayList(ficheros));
 
     }
 

@@ -27,10 +27,17 @@ public class ControladorTarjetaEspacioRecibida {
     @FXML
     Label labelRutaEspacio;
 
+    public static ControladorTarjetaEspacioRecibida instancia;
+
     boolean puedeAnimar = true;
 
     EspacioCompartido espacioCompartido;
     Conversacion conversacion;
+
+    @FXML
+    public void initialize() {
+        instancia = this;
+    }
 
     public void inicializarTarjetaEspacio(EspacioCompartido espacio, Conversacion conversacion) {
         labelNombreEspacio.textProperty().bind(espacio.getNombrePropiedadProperty());
