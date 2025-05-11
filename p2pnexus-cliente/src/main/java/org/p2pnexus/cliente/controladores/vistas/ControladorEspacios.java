@@ -35,7 +35,7 @@ public class ControladorEspacios {
     public void initialize() {
         JsonObject json = new JsonObject();
         json.addProperty("id_usuario", Sesion.getUsuario().getId_usuario());
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_ESPACIOS_POR_ID,json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_ESPACIOS_POR_ID,json));
         instancia = this;
     }
 

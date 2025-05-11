@@ -108,15 +108,11 @@ public class ControladorSesiones {
         } else {
             estado = sesiones.get(usuario.getId_usuario()).usuario.conectado;
         }
-        System.out.printf("Notificando estado de sesion a contactos de %s, estado: %s", usuario.getNombre(), estado);
         usuario.establecerConectado(estado);
-        System.out.printf("Estado de sesion de %s: %s", usuario.getNombre(), usuario.getConectado());
         UsuarioDAO dao = new UsuarioDAO();
         List<Usuario> contactos = dao.listarContactos(usuario.getId_usuario());
-        System.out.printf("Notificando estado de sesion a %s contactos", contactos.size());
         JsonObject json = new JsonObject();
         json.add("usuario", JsonHerramientas.convertirObjetoAJson(usuario));
-        System.out.printf("Json: %s", json);
 
         enviarMensajeAUsuariosEnLinea(new Mensaje(TipoMensaje.R_ESTADO_SESION_CONTACTO,json),contactos);
     }

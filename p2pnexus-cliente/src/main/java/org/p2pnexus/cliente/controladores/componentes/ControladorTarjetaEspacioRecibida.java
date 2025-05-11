@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
+import org.p2pnexus.cliente.controladores.vistasModales.ControladorCargarEspacio;
 import org.p2pnexus.cliente.controladores.vistasModales.ControladorVisualizarEspacio;
 import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
@@ -62,8 +63,31 @@ public class ControladorTarjetaEspacioRecibida {
     @FXML
     void acceder()
     {
-        GestorP2P gestor = new GestorP2P();
-        gestor.hacerOferta(espacioCompartido.getPropietario());
+        // Sincronizar el espacio compartido con el usuario real (con el que llevamos el control del estado)
+
+        Usuario usuarioReal = ControladorMenuPrincipal.instancia.getControladoresTarjetaContacto().get(espacioCompartido.getPropietario()).getUsuario();
+        espacioCompartido.setPropietario(usuarioReal);
+
+        if (!espacioCompartido.getPropietario().getConectado())
+        {
+            Notificaciones.mostrarNotificacion("No puedes acceder al espacio porque el propietario no está conectado", TipoNotificacion.ERROR,2);
+            return;
+        }
+
+        try {
+            FXMLLoader loader = GestorVentanas.crearFXMLoader(Ventanas.MODAL_CARGAR_ESPACIO);
+            Parent parent = loader.load();
+            ControladorCargarEspacio controlador = loader.getController();
+            controlador.inicializarConEspacio(espacioCompartido);
+            GestorVentanas.abrirModal(parent, espacioCompartido.getNombrePropiedadProperty().get(), false);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+
 
 //        // Sincronizar el espacio compartido con el usuario real (con el que llevamos el control del estado)
 //        Usuario usuarioReal = ControladorMenuPrincipal.instancia.getControladoresTarjetaContacto().get(espacioCompartido.getPropietario()).getUsuario();
@@ -83,7 +107,5 @@ public class ControladorTarjetaEspacioRecibida {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-
-    }
 
 }

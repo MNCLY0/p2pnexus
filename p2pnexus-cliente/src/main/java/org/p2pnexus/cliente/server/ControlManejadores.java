@@ -3,13 +3,10 @@ package org.p2pnexus.cliente.server;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.comunicacion.ManejadorDeMensajes;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
-import javafx.application.Platform;
 import org.p2pnexus.cliente.server.manejadores.*;
 import org.p2pnexus.cliente.server.manejadores.p2p.ManejarRecibirIceP2P;
 import org.p2pnexus.cliente.server.manejadores.p2p.ManejarRecibirOfertaP2P;
 import org.p2pnexus.cliente.server.manejadores.p2p.ManejarRecibirRespuestaP2P;
-import org.p2pnexus.cliente.ventanas.GestorVentanas;
-import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class ControlManejadores extends ManejadorDeMensajes {
 
@@ -21,7 +18,7 @@ public class ControlManejadores extends ManejadorDeMensajes {
     public void inicializarManejadores() {
         manejadoresPeticiones.put(TipoMensaje.NOTIFICACION, new ManejarNotificaciones());
         manejadoresPeticiones.put(TipoMensaje.R_LOGIN_OK, new ManejarLogin());
-        manejadoresPeticiones.put(TipoMensaje.C_CERRAR_SESION_CLIENTE, new ManejarCerrarSesion());
+        manejadoresPeticiones.put(TipoMensaje.S_CERRAR_SESION_CLIENTE, new ManejarCerrarSesion());
         manejadoresPeticiones.put(TipoMensaje.R_BUSCAR_USUARIOS_POR_NOMBRE, new ManejarRespuestaBuscarUsuariosPorNombre());
         manejadoresPeticiones.put(TipoMensaje.R_SOLICITUDES_POR_ID, new ManejarRespuestaSolicitudesPorId());
         manejadoresPeticiones.put(TipoMensaje.R_LISTA_CONTACTOS, new MenejarRespuestaListaContactos());

@@ -57,7 +57,7 @@ public class ControladorRegistro {
                 JsonObject json = new JsonObject();
                 json.addProperty("usuario", txtUsuario.getText().trim());
                 json.addProperty("pass", Hasheador.hashear(passfieldPassword.getText().trim()));
-                Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_REGISTRO,json));
+                Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_REGISTRO,json));
             }
         });
 

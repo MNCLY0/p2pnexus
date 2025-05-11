@@ -23,11 +23,16 @@ public class GestorP2P {
     PeerObserver peerObserver;
     Usuario usuarioRemoto;
     RTCDataChannel canal;
-    ManejadorMensajesP2P manejador;
+    public ManejadorMensajesP2P manejador;
 
     public GestorP2P() {
         peerObserver = new PeerObserver(this);
         peer = crearPeerConection();
+    }
+
+    public boolean canalAbierto()
+    {
+        return canal != null && canal.getState() == RTCDataChannelState.OPEN;
     }
 
     public void hacerOferta(Usuario usuario)

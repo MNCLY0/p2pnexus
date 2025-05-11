@@ -69,7 +69,7 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
         JsonObject json = new JsonObject();
         json.addProperty("id_usuario_busqueda", usuario.getId_usuario());
         json.addProperty("id_usuario_origen", Sesion.getUsuario().getId_usuario());
-        Mensaje mensaje = new Mensaje(TipoMensaje.C_CONVERSACION_CON_USUARIO, json);
+        Mensaje mensaje = new Mensaje(TipoMensaje.S_CONVERSACION_CON_USUARIO, json);
         Conexion.enviarMensaje(mensaje);
     }
 

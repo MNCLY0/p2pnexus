@@ -4,13 +4,10 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2RoundAL;
 import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
@@ -60,13 +57,13 @@ public class ControladorTarjetaSolicitudContacto {
     @FXML
     public void aceptarSolicitud()
     {
-        actualizarSolicitud(TipoMensaje.C_ACEPTAR_SOLICITUD);
+        actualizarSolicitud(TipoMensaje.S_ACEPTAR_SOLICITUD);
     }
 
     @FXML
     public void denegarSolicitud()
     {
-        actualizarSolicitud(TipoMensaje.C_DENEGAR_SOLICITUD);
+        actualizarSolicitud(TipoMensaje.S_DENEGAR_SOLICITUD);
     }
 
     public void actualizarSolicitud(TipoMensaje tipoMensaje)

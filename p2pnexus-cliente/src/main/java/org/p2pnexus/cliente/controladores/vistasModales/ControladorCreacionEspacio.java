@@ -1,12 +1,9 @@
 package org.p2pnexus.cliente.controladores.vistasModales;
 
-import atlantafx.base.util.Animations;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
-import com.p2pnexus.comun.TipoNotificacion;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -16,7 +13,6 @@ import javafx.stage.Stage;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.ventanas.Animaciones;
-import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 import java.io.File;
 
@@ -71,7 +67,7 @@ public class ControladorCreacionEspacio {
         json.addProperty("ruta", ruta);
         json.addProperty("propietario_id", Sesion.getUsuario().getId_usuario());
 
-        Mensaje mensaje = new Mensaje(TipoMensaje.C_CREAR_ESPACIO, json);
+        Mensaje mensaje = new Mensaje(TipoMensaje.S_CREAR_ESPACIO, json);
         Conexion.enviarMensaje(mensaje);
 
         Stage stage = (Stage) stackPanePrincipal.getScene().getWindow();

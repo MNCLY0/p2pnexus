@@ -42,7 +42,7 @@ public class GestorEspacios {
         JsonObject json = new JsonObject();
         json.add("espacio", JsonHerramientas.convertirObjetoAJson(espacioCompartido));
         json.add("conversacion", JsonHerramientas.convertirObjetoAJson(controladorChat.conversacionActual));
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_COMPARTIR_ESPACIO, json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_COMPARTIR_ESPACIO, json));
     }
 
     public void actualizarFiltroComboBox(Conversacion conversacion)

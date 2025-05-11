@@ -6,11 +6,13 @@ import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
+import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import dev.onvoid.webrtc.RTCDataChannel;
 import dev.onvoid.webrtc.RTCDataChannelBuffer;
 import dev.onvoid.webrtc.RTCDataChannelObserver;
 import org.p2pnexus.cliente.p2p.manejador.manejadores.ManejadorP2PDebugMensaje;
+import org.p2pnexus.cliente.p2p.manejador.manejadores.ManejadorP2PInfoRuta;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -27,19 +29,21 @@ public class ManejadorMensajesP2P {
         registrarListener();
     }
 
+    public void inicializarManejadores() {
+        manejadores.put(TipoMensaje.P2P_DEBUG_MENSAJE, new ManejadorP2PDebugMensaje());
+        manejadores.put(TipoMensaje.P2P_S_INFO_RUTA, new ManejadorP2PInfoRuta());
+    }
+
     private void registrarListener() {
         canal.registerObserver(new RTCDataChannelObserver() {
             @Override
             public void onMessage(RTCDataChannelBuffer buffer) {
-                System.out.println("Mensaje recibido en el canal P2P: " + buffer.data.remaining());
+                System.out.println("Datos en el canal P2P: " + buffer.data.remaining());
                 byte[] datos = new byte[buffer.data.remaining()];
                 buffer.data.get(datos);
-                System.out.println("Datos recibidos: " + datos.length);
                 String texto = new String(datos);
-                System.out.println("Texto recibido: " + texto);
                 JsonObject json = JsonParser.parseString(texto).getAsJsonObject();
-                System.out.println("JSON recibido: " + json.toString());
-
+                System.out.println("Mensaje recibido en el canal P2P: " + json);
                 try {
                     Mensaje mensaje = JsonHerramientas.convertirJsonAObjeto(json, Mensaje.class);
                     manejarPeticion(mensaje);
@@ -60,7 +64,10 @@ public class ManejadorMensajesP2P {
             return;
         }
         try {
-            manejador.manejarDatos(mensaje, null);
+            ResultadoMensaje resultado = manejador.manejarDatos(mensaje, null);
+            if (resultado != null) {
+                enviarMensaje(resultado.getMensaje());
+            }
         } catch (ManejarPeticionesExeptionError e) {
             System.err.println("Error en petición P2P: " + e.getMessage());
         }
@@ -81,7 +88,4 @@ public class ManejadorMensajesP2P {
 
     }
 
-    public void inicializarManejadores() {
-        manejadores.put(TipoMensaje.P2P_DEBUG_MENSAJE, new ManejadorP2PDebugMensaje());
-    }
 }

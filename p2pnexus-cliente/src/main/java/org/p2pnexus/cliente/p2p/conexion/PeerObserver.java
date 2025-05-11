@@ -54,8 +54,7 @@ public class PeerObserver implements PeerConnectionObserver {
         System.out.println("Canal de datos recibido: " + dataChannel.getLabel());
         gestorP2P.canal = dataChannel;
 
-        gestorP2P.manejador = new ManejadorMensajesP2P(dataChannel);
-
+        // Este observer solo se encarga de detectar la apertura del canal luego se reemplaza por el manejador que inicializamos dentro
         dataChannel.registerObserver(new RTCDataChannelObserver() {
             @Override
             public void onStateChange() {
@@ -63,6 +62,7 @@ public class PeerObserver implements PeerConnectionObserver {
                 if (dataChannel.getState() == RTCDataChannelState.OPEN) {
                     JsonObject json = new JsonObject();
                     json.addProperty("mensajePrueba", "Hola desde receptor");
+                    gestorP2P.manejador = new ManejadorMensajesP2P(dataChannel);
                     gestorP2P.manejador.enviarMensaje(new Mensaje(TipoMensaje.P2P_DEBUG_MENSAJE, json));
                 }
             }

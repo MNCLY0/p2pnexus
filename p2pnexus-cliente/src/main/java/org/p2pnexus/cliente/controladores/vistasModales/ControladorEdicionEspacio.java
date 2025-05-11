@@ -69,7 +69,7 @@ public class ControladorEdicionEspacio {
         );
 
         if (!confirmacion) {return;}
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_ELIMINAR_ESPACIO, JsonHerramientas.convertirObjetoAJson(espacioCompartidoOriginal)));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_ELIMINAR_ESPACIO, JsonHerramientas.convertirObjetoAJson(espacioCompartidoOriginal)));
         System.out.println("Se va a tratar de eliminar el espacio: " + espacioCompartidoOriginal.getNombrePropiedadProperty().get() + "con id " + espacioCompartidoOriginal.getId_espacio());
         ControladorEspacios.instancia.eliminarTarjetaEspacio(espacioCompartidoOriginal);
         cerrarVentana();
@@ -106,7 +106,7 @@ public class ControladorEdicionEspacio {
         json.add("espacio_original", JsonHerramientas.convertirObjetoAJson(espacioCompartidoOriginal));
         json.add("espacio_modificado", JsonHerramientas.convertirObjetoAJson(espacioCompartidoModificado));
 
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_EDITAR_ESPACIO, json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_EDITAR_ESPACIO, json));
 
         cerrarVentana();
 

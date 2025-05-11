@@ -108,7 +108,7 @@ public class ControladorMenuPrincipal {
     {
         JsonObject json = new JsonObject();
         json.addProperty("id_usuario", Sesion.getUsuario().getId_usuario());
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_LISTA_CONTACTOS, json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_LISTA_CONTACTOS, json));
     }
 
     public void actualizarListaContactos(List<Usuario> usuariosContacto)

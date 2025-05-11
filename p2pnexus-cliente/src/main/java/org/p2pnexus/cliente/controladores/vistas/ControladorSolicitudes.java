@@ -65,7 +65,7 @@ public class ControladorSolicitudes {
         JsonObject json = new JsonObject();
         json.addProperty("nombre", campobuscar.getText());
         json.addProperty("id_usuario_origen", Sesion.getUsuario().getId_usuario());
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_BUSCAR_USUARIOS_POR_NOMBRE, json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_BUSCAR_USUARIOS_POR_NOMBRE, json));
     }
 
     @FXML
@@ -74,7 +74,7 @@ public class ControladorSolicitudes {
         JsonObject json = new JsonObject();
         json.addProperty("id_usuario", Sesion.getUsuario().getId_usuario());
         json.addProperty("notificable", notificable);
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_SOLICITUDES_POR_ID,json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_SOLICITUDES_POR_ID,json));
     }
 
     public void solicitarActualizacionSolicitudes()

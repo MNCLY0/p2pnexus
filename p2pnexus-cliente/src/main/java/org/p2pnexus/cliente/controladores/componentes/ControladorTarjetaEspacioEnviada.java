@@ -46,7 +46,7 @@ public class ControladorTarjetaEspacioEnviada {
         JsonObject json = new JsonObject();
         json.add("conversacion", JsonHerramientas.convertirObjetoAJson(conversacion));
         json.add("espacio", JsonHerramientas.convertirObjetoAJson(espacioCompartido));
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_DEJAR_DE_COMPARTIR_ESPACIO, json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_DEJAR_DE_COMPARTIR_ESPACIO, json));
         ControladorChat.instancia.gestorEspacios.eliminarEspacioEnviado(espacioCompartido);
         ControladorChat.instancia.gestorEspacios.actualizarFiltroComboBox(conversacion);
 

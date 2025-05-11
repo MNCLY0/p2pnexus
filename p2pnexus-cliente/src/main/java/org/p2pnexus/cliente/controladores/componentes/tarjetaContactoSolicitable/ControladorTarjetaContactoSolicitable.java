@@ -34,7 +34,7 @@ public class ControladorTarjetaContactoSolicitable {
         json.addProperty("id_usuario_origen", Sesion.getUsuario().getId_usuario());
         json.addProperty("id_usuario_destino", usuario.getId_usuario());
 
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_CREAR_SOLICITUD,json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_CREAR_SOLICITUD,json));
 
         ControladorSolicitudes.instancia.vboxResultadosUsuarios.getChildren().remove(labelNombre.getParent());
 

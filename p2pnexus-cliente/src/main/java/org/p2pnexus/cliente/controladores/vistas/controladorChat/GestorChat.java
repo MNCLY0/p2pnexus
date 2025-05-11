@@ -36,7 +36,7 @@ public class GestorChat {
         json.addProperty("id_usuario_emisor", Sesion.getUsuario().getId_usuario());
         json.addProperty("id_conversacion", controladorChat.conversacionActual.getIdConversacion());
         json.addProperty("contenido", mensaje);
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_ENVIAR_MENSAJE_CHAT, json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_ENVIAR_MENSAJE_CHAT, json));
         controladorChat.areaContenidoMensaje.clear();
 
     }
@@ -64,7 +64,7 @@ public class GestorChat {
         JsonObject json = new JsonObject();
         json.addProperty("id_usuario_cliente", Sesion.getUsuario().getId_usuario());
         json.addProperty("id_usuario_solicitado", usuario.getId_usuario());
-        Conexion.enviarMensaje(new Mensaje(TipoMensaje.C_ACTUALIZAR_CHAT, json));
+        Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_ACTUALIZAR_CHAT, json));
     }
 
     public void actualizarDatosCoversacion(DatosConversacion cache, Conversacion conversacion) {
