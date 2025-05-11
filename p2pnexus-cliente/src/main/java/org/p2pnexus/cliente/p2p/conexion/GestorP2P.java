@@ -127,4 +127,12 @@ public class GestorP2P {
         return iceServers;
     }
 
+    public static void cerrarConexiones()
+    {
+        for (GestorP2P gestor : conexiones.values()) {
+            gestor.cerrarConexion();
+        }
+        conexiones.clear();
+    }
+
 }

@@ -4,10 +4,12 @@ import atlantafx.base.theme.CupertinoDark;
 import atlantafx.base.theme.CupertinoLight;
 import atlantafx.base.theme.PrimerDark;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
 import java.lang.management.ManagementFactory;
@@ -23,6 +25,14 @@ public class App extends Application {
             primaryStage.setTitle("p2pnexus");
             primaryStage.setScene(new Scene(root));
             primaryStage.setMaximized(true);
+
+            // Nos aseguramos de que al terminar el programa se cierren todas las conexiones p2p que haya abiertas
+            primaryStage.setOnCloseRequest(e -> {
+                GestorP2P.cerrarConexiones();
+                Platform.exit();
+                System.exit(0);
+            });
+
             primaryStage.show();
 
         }catch (Exception e){
