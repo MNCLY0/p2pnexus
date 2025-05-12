@@ -43,21 +43,38 @@ public class FicheroListCell extends ListCell<Fichero> {
         } else {
             nombreLabel.setText(fichero.nombre + " (" + fichero.size + ")");
             botonDescargar.setOnAction(e -> {
+                // Deshabilitar el botón mientras se procesa la descarga
+                botonDescargar.setDisable(true);
+                botonDescargar.setText("Descargando...");
+
                 JsonObject json = new JsonObject();
                 json.addProperty("nombre", fichero.nombre);
                 json.addProperty("ruta", fichero.ruta);
                 json.add("solicitante", JsonHerramientas.convertirObjetoAJson(Sesion.getUsuario()));
 
                 GestorP2P gestor = GestorP2P.conexiones.get(fichero.usuarioOrigen.getId_usuario());
-
                 if (gestor == null) {
-                    Notificaciones.mostrarNotificacion("Se ha perdido la conexión con el usuario: " + fichero.usuarioOrigen.getNombre(), TipoNotificacion.ERROR);
+                    Notificaciones.mostrarNotificacion("No hay conexión con: " +
+                            fichero.usuarioOrigen.getNombre(), TipoNotificacion.ERROR);
+                    botonDescargar.setDisable(false);
+                    botonDescargar.setText("Descargar");
                     return;
                 }
 
-                gestor.manejador.enviarMensaje(new Mensaje(TipoMensaje.P2P_S_DESCARGAR_FICHERO, json));
+                // Verificar que el canal está abierto
+                if (!gestor.canalAbierto()) {
+                    Notificaciones.mostrarNotificacion("Canal no disponible. Reintente.",
+                            TipoNotificacion.ERROR);
+                    botonDescargar.setDisable(false);
+                    botonDescargar.setText("Descargar");
+                    return;
+                }
 
+                // Enviar solicitud
+                gestor.manejador.enviarMensaje(new Mensaje(TipoMensaje.P2P_S_DESCARGAR_FICHERO, json));
+                System.out.println("Solicitud enviada para: " + fichero.nombre);
             });
+
             setGraphic(contenido);
         }
     }

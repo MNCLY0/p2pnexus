@@ -95,6 +95,5 @@ public class ControladorEspacios {
             System.out.println("Error al abrir la ventana de creación de espacio: " + e);
             e.printStackTrace();
         }
-
     }
 }

@@ -30,6 +30,10 @@ public class GestorP2P {
         peer = crearPeerConection();
     }
 
+    public RTCDataChannel getCanal() {
+        return canal;
+    }
+
     public boolean canalAbierto()
     {
         return canal != null && canal.getState() == RTCDataChannelState.OPEN;

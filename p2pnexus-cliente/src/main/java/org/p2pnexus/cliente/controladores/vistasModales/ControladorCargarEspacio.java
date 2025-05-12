@@ -35,6 +35,7 @@ public class ControladorCargarEspacio {
     public static ControladorCargarEspacio instancia;
 
     boolean cargados = false;
+    boolean inaccesible = false;
 
     @FXML
     public void initialize() {
@@ -79,6 +80,13 @@ public class ControladorCargarEspacio {
         }).start();
     }
 
+    public void establecerComoInaccesible()
+    {
+        cargados = true;
+        inaccesible = true;
+        cargarDatos(null);
+    }
+
     public void solicitarInfoEspacio()
     {
         JsonObject json = new JsonObject();
@@ -88,6 +96,15 @@ public class ControladorCargarEspacio {
 
     public void cargarDatos(List<Fichero> ficheros)
     {
+        if (inaccesible)
+        {
+            Platform.runLater(() -> {
+                // Si no es accesible se cierra la ventana de carga de conexion
+                ((Stage)(labelRuta.getScene().getWindow())).close();
+            });
+
+            return;
+        }
         Platform.runLater(() -> {
             System.out.println("Archivos recibidos con exito");
             Stage stage = (Stage) labelRuta.getScene().getWindow();

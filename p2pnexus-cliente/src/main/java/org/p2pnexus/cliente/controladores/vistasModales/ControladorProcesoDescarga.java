@@ -20,7 +20,6 @@ public class ControladorProcesoDescarga {
 
     EstadoDescarga estadoDescarga;
 
-
     public void inicializarValores(EstadoDescarga estadoDescarga)
     {
         this.estadoDescarga = estadoDescarga;

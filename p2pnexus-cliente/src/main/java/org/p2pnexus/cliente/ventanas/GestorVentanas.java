@@ -35,6 +35,7 @@ public class GestorVentanas {
         if (inicializado) {
             return;
         }
+
         contenedorPrincipal = stackPane;
 
         // Crear capas separadas para contenido y notificaciones

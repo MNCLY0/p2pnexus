@@ -17,6 +17,7 @@ import org.p2pnexus.cliente.p2p.manejador.manejadores.respuesta.ManejadorP2PRInf
 import org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud.ManejadorP2PDebugMensaje;
 import org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud.ManejadorP2PInfoRuta;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class ManejadorMensajesP2P {
 
     private final RTCDataChannel canal;
     private final Map<TipoMensaje, IManejadorMensaje> manejadores = new HashMap<>();
+    private final ManejadorP2PDescargaReceptor manejadorDescarga = new ManejadorP2PDescargaReceptor();
 
     public ManejadorMensajesP2P(RTCDataChannel canal) {
         this.canal = canal;
@@ -33,33 +35,38 @@ public class ManejadorMensajesP2P {
     }
 
     public void inicializarManejadores() {
-        // Lo inicializo previamente porque hay dos tipos de mensjaes que deben ser tratados por el mismo manejador: P2P_R_FIN_ARCHIVO y P2P_R_FRAGMENTO_ARCHIVO
-        ManejadorP2PDescargaReceptor manejadorDescarga = new ManejadorP2PDescargaReceptor();
-
         manejadores.put(TipoMensaje.P2P_DEBUG_MENSAJE, new ManejadorP2PDebugMensaje());
         manejadores.put(TipoMensaje.P2P_S_INFO_RUTA, new ManejadorP2PInfoRuta());
         manejadores.put(TipoMensaje.P2P_R_INFO_RUTA, new ManejadorP2PRInfoRuta());
-        manejadores.put(TipoMensaje.P2P_S_DESCARGAR_FICHERO, new ManejadorP2PDescargaSolicitud());
-        manejadores.put(TipoMensaje.P2P_R_FIN_ARCHIVO, manejadorDescarga);
-        manejadores.put(TipoMensaje.P2P_R_FRAGMENTO_ARCHIVO, manejadorDescarga);
 
+        manejadores.put(TipoMensaje.P2P_S_DESCARGAR_FICHERO, new ManejadorP2PDescargaSolicitud());
+
+        manejadores.put(TipoMensaje.P2P_R_DESCARGAR_FICHERO, manejadorDescarga);
     }
 
     private void registrarListener() {
         canal.registerObserver(new RTCDataChannelObserver() {
             @Override
             public void onMessage(RTCDataChannelBuffer buffer) {
-                System.out.println("Datos en el canal P2P: " + buffer.data.remaining());
-                byte[] datos = new byte[buffer.data.remaining()];
-                buffer.data.get(datos);
-                String texto = new String(datos);
-                JsonObject json = JsonParser.parseString(texto).getAsJsonObject();
-                System.out.println("Mensaje recibido en el canal P2P: " + json);
-                try {
-                    Mensaje mensaje = JsonHerramientas.convertirJsonAObjeto(json, Mensaje.class);
-                    manejarPeticion(mensaje);
-                } catch (Exception e) {
-                    System.err.println("Error al procesar mensaje P2P: " + e.getMessage());
+                if (buffer.binary) {
+                    byte[] fragmento = new byte[buffer.data.remaining()];
+                    buffer.data.get(fragmento);
+                    System.out.println("Fragmento binario recibido: " + fragmento.length + " bytes");
+                    manejadorDescarga.recibirFragmentoBinario(fragmento);
+
+                }
+                else
+                {
+                    byte[] datos = new byte[buffer.data.remaining()];
+                    buffer.data.get(datos);
+                    String texto = new String(datos);
+                    JsonObject json = JsonParser.parseString(texto).getAsJsonObject();
+                    try {
+                        Mensaje mensaje = JsonHerramientas.convertirJsonAObjeto(json, Mensaje.class);
+                        manejarPeticion(mensaje);
+                    } catch (Exception e) {
+                        System.err.println("Error al procesar mensaje P2P: " + e.getMessage());
+                    }
                 }
             }
 
@@ -85,15 +92,11 @@ public class ManejadorMensajesP2P {
     }
 
     public void enviarMensaje(Mensaje mensaje) {
-        System.out.println("Enviando mensaje P2P: " + mensaje.getTipo() + " " + mensaje.getData());
         JsonObject json = JsonHerramientas.convertirObjetoAJson(mensaje);
-        System.out.println("JSON a enviar: " + json);
         try {
             String jsonString = json.toString();
-            System.out.println("JSON a enviar como string: " + jsonString);
             canal.send(new RTCDataChannelBuffer(ByteBuffer.wrap(jsonString.getBytes()), false));
         }catch (Exception e) {
-            System.err.println("Error al enviar mensaje P2P: ");
             e.printStackTrace();
         }
 

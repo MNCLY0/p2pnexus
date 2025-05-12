@@ -106,4 +106,8 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
     public Usuario getUsuario() {
         return usuario;
     }
+
+    public Conversacion getConversacion() {
+        return conversacion;
+    }
 }
