@@ -14,7 +14,7 @@ public class Server extends ServerSocket {
     }
 
     public static void main(String[] args) {
-        int port = 5055; // Puerto del servidor
+        int port = 17214; // Puerto del servidor
         try {
             server = new Server(port);
             System.out.println("Servidor iniciado en el puerto " + port);

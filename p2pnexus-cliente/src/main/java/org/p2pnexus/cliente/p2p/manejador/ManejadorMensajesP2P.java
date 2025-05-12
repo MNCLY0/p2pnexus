@@ -11,6 +11,8 @@ import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import dev.onvoid.webrtc.RTCDataChannel;
 import dev.onvoid.webrtc.RTCDataChannelBuffer;
 import dev.onvoid.webrtc.RTCDataChannelObserver;
+import org.p2pnexus.cliente.p2p.manejador.manejadores.descarga.ManejadorP2PDescargaReceptor;
+import org.p2pnexus.cliente.p2p.manejador.manejadores.descarga.ManejadorP2PDescargaSolicitud;
 import org.p2pnexus.cliente.p2p.manejador.manejadores.respuesta.ManejadorP2PRInfoRuta;
 import org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud.ManejadorP2PDebugMensaje;
 import org.p2pnexus.cliente.p2p.manejador.manejadores.solicitud.ManejadorP2PInfoRuta;
@@ -31,9 +33,16 @@ public class ManejadorMensajesP2P {
     }
 
     public void inicializarManejadores() {
+        // Lo inicializo previamente porque hay dos tipos de mensjaes que deben ser tratados por el mismo manejador: P2P_R_FIN_ARCHIVO y P2P_R_FRAGMENTO_ARCHIVO
+        ManejadorP2PDescargaReceptor manejadorDescarga = new ManejadorP2PDescargaReceptor();
+
         manejadores.put(TipoMensaje.P2P_DEBUG_MENSAJE, new ManejadorP2PDebugMensaje());
         manejadores.put(TipoMensaje.P2P_S_INFO_RUTA, new ManejadorP2PInfoRuta());
         manejadores.put(TipoMensaje.P2P_R_INFO_RUTA, new ManejadorP2PRInfoRuta());
+        manejadores.put(TipoMensaje.P2P_S_DESCARGAR_FICHERO, new ManejadorP2PDescargaSolicitud());
+        manejadores.put(TipoMensaje.P2P_R_FIN_ARCHIVO, manejadorDescarga);
+        manejadores.put(TipoMensaje.P2P_R_FRAGMENTO_ARCHIVO, manejadorDescarga);
+
     }
 
     private void registrarListener() {

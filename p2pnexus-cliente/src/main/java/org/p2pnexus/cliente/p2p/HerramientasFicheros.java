@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.JsonHerramientas;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
+import org.p2pnexus.cliente.sesion.Sesion;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,7 +51,8 @@ public class HerramientasFicheros {
                             archivo.getName(),
                             archivo.getAbsolutePath(),
                             lengthFormateado,
-                            obtenerExtension(archivo)
+                            obtenerExtension(archivo),
+                            Sesion.getUsuario()
                     );
                     archivosDirectorio.add(fichero);
                 }

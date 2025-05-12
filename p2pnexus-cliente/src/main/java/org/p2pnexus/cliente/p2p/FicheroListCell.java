@@ -1,5 +1,10 @@
 package org.p2pnexus.cliente.p2p;
 
+import com.google.gson.JsonObject;
+import com.p2pnexus.comun.JsonHerramientas;
+import com.p2pnexus.comun.Mensaje;
+import com.p2pnexus.comun.TipoMensaje;
+import com.p2pnexus.comun.TipoNotificacion;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,6 +14,9 @@ import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
+import org.p2pnexus.cliente.sesion.Sesion;
+import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 public class FicheroListCell extends ListCell<Fichero> {
     private final HBox contenido = new HBox();
@@ -35,7 +43,19 @@ public class FicheroListCell extends ListCell<Fichero> {
         } else {
             nombreLabel.setText(fichero.nombre + " (" + fichero.size + ")");
             botonDescargar.setOnAction(e -> {
-                System.out.println("Descargando: " + fichero.ruta);
+                JsonObject json = new JsonObject();
+                json.addProperty("nombre", fichero.nombre);
+                json.addProperty("ruta", fichero.ruta);
+                json.add("solicitante", JsonHerramientas.convertirObjetoAJson(Sesion.getUsuario()));
+
+                GestorP2P gestor = GestorP2P.conexiones.get(fichero.usuarioOrigen.getId_usuario());
+
+                if (gestor == null) {
+                    Notificaciones.mostrarNotificacion("Se ha perdido la conexión con el usuario: " + fichero.usuarioOrigen.getNombre(), TipoNotificacion.ERROR);
+                    return;
+                }
+
+                gestor.manejador.enviarMensaje(new Mensaje(TipoMensaje.P2P_S_DESCARGAR_FICHERO, json));
 
             });
             setGraphic(contenido);

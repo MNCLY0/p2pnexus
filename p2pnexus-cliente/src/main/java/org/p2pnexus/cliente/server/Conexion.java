@@ -5,6 +5,7 @@ import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ConectarExeption;
 import javafx.application.Platform;
+import org.p2pnexus.cliente.configuracion.Configuracion;
 import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
@@ -15,15 +16,17 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Random;
 
+
 public class Conexion {
 
-    public static int PUERTO = 5055; // Puerto del servidor
-    public static String HOST = "localhost";
-    private static SocketConexion CONEXION = null; // Socket del servidor
+    public static int puerto = 0;
+    public static String host = "";
+
+    private static SocketConexion conexion = null; // Socket del servidor
 
     public static String[] servidores = new String[] {
             "localhost",
-            "sv.mncly.com"
+            ""
     };
 
     public static BufferedOutputStream OUT = null;
@@ -33,6 +36,12 @@ public class Conexion {
     public static String ipGenerada = null;
 
     public static void iniciarConexion(boolean test) throws ConectarExeption {
+
+        Configuracion configuracion = new Configuracion();
+        // establecemos la ruta del servidor según la configuración (localhost siempre se prioriza)
+        servidores[1] = configuracion.getServidor();
+        puerto = configuracion.getPuerto();
+
 
         for (String servidor : servidores) {
             try {
@@ -47,17 +56,17 @@ public class Conexion {
                 }
 
                 socket.bind(new InetSocketAddress(ipGenerada, 0));
-                socket.connect(new InetSocketAddress(servidor, PUERTO), 3000); // timeout 3s por intento
+                socket.connect(new InetSocketAddress(servidor, puerto), 3000); // timeout 3s por intento
 
-                System.out.println("Conectado al servidor en " + servidor + ":" + PUERTO);
+                System.out.println("Conectado al servidor en " + servidor + ":" + puerto);
                 socket.setKeepAlive(true);
 
-                CONEXION = new SocketConexion(socket, "Servidor " + socket.getInetAddress().getHostAddress());
+                conexion = new SocketConexion(socket, "Servidor " + socket.getInetAddress().getHostAddress());
 
-                controlManejadores = new ControlManejadores(CONEXION);
+                controlManejadores = new ControlManejadores(conexion);
                 new Thread(controlManejadores).start();
 
-                HOST = servidor;
+                host = servidor;
                 return;
 
             } catch (Exception e) {
@@ -85,8 +94,8 @@ public class Conexion {
     }
 
     public static void enviarMensaje(Mensaje mensaje) {
-        if (CONEXION != null) {
-            CONEXION.enviarMensaje(mensaje);
+        if (conexion != null) {
+            conexion.enviarMensaje(mensaje);
         } else {
             System.err.println("No hay conexión establecida.");
         }
@@ -94,8 +103,8 @@ public class Conexion {
 
 
     public static Mensaje recibirMensaje() {
-        if (CONEXION != null) {
-            return CONEXION.recibirMensaje();
+        if (conexion != null) {
+            return conexion.recibirMensaje();
         } else {
             System.err.println("No hay conexión establecida.");
             return null;
@@ -106,7 +115,7 @@ public class Conexion {
         Notificaciones.mostrarNotificacion("Se ha perdido la conexión con el servidor", TipoNotificacion.ERROR);
         OUT = null;
         controlManejadores = null;
-        CONEXION = null;
+        conexion = null;
 
         // Cerrar todas las conexiones P2P que puedan estar abiertas
         GestorP2P.conexiones.forEach((integer, gestorP2P) -> {
