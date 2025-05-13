@@ -39,7 +39,7 @@ public class ControladorChat {
 
     Conversacion conversacionActual;
 
-    public static ControladorChat instancia;
+    public static ControladorChat  instancia;
     @FXML
     public VBox contenedorMensajes;
     @FXML

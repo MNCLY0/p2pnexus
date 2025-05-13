@@ -67,10 +67,10 @@ public class ControladorMenuPrincipal {
     public void initialize() {
 
         instancia = this;
-
-        inializarTabs();
-
-        solicitarContactos();
+        Platform.runLater(() -> {
+            inializarTabs();
+            solicitarContactos();
+        });
 
         // Necesitamos crear un listener que actualice el estado de los tabs, para ver cual esta activo
         tabPanePrincipal.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
@@ -81,6 +81,7 @@ public class ControladorMenuPrincipal {
 
     public Parent inicializarTabPane(TabMenu tabMenu) throws IOException
     {
+
         Parent root = null;
 
         try {
@@ -98,6 +99,7 @@ public class ControladorMenuPrincipal {
             }
         }catch (Exception e )
         {
+            e.printStackTrace();
             System.out.println("Error al cargar el tab menu: " + e.getMessage());
         }
 
@@ -149,33 +151,46 @@ public class ControladorMenuPrincipal {
         }
 
         controladorChat.abrirChat(usuario,conversacion);
-        tabPanePrincipal.getSelectionModel().select(tabChat);
+        // solo si el usuario ha seleccionado la tarjeta se abre visualmente, lo he hecho de esta manera porque a veces queremos que el servidor
+        // mande los datos de un chat pero que no se abra la ventana de este. De esta manera solo se abre si el usuario lo ha seleccionado en la interfaz
+        if (controladoresTarjetaContacto.get(usuario).seleccionado())
+        {
+            tabPanePrincipal.getSelectionModel().select(tabChat);
+        }
     }
 
     public void inializarTabs()
     {
-        tabsMenu = new ArrayList<>(
-                List.of(
-                        new TabMenu("Solicitudes", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_SOLICITUDES),
-                        new TabMenu("Espacios", new FontIcon(Material2RoundAL.CREATE_NEW_FOLDER), Ventanas.ESPACIOS)
-                )
-        );
+        Platform.runLater(() -> {
 
-        boolean primero = true;
+            tabsMenu = new ArrayList<>(
+                    List.of(
+                            new TabMenu("Solicitudes", new FontIcon(Material2MZ.PERSON), Ventanas.TAB_SOLICITUDES),
+                            new TabMenu("Espacios", new FontIcon(Material2RoundAL.CREATE_NEW_FOLDER), Ventanas.ESPACIOS)
+                    )
+            );
 
-        for (TabMenu tab : tabsMenu) {
-            try {
-                Parent root = inicializarTabPane(tab);
-                vboxSecciones.getChildren().add(root);
-                // Si es el primero, lo seleccionamos
-                if (primero) {
-                    tab.getControladorTabMenu().setSeleccionado(true);
-                    primero = false;
+            System.out.println("Ruta de los tabs inicializados: " + tabsMenu.get(0).getVentana().getRuta());
+            System.out.println("Ruta de los tabs inicializados: " + tabsMenu.get(1).getVentana().getRuta());
+
+            Platform.runLater(() -> {
+                boolean primero = true;
+                for (TabMenu tab : tabsMenu) {
+                    try {
+                        Parent root = inicializarTabPane(tab);
+                        vboxSecciones.getChildren().add(root);
+                        // Si es el primero, lo seleccionamos
+                        if (primero) {
+                            tab.getControladorTabMenu().setSeleccionado(true);
+                            primero = false;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+            });
+        });
     }
 
     // Por como está montado merece la pena no inicializar el chat hasta que se necesite, luego podemos reutilizarlo para todos los usuarios
@@ -188,6 +203,7 @@ public class ControladorMenuPrincipal {
             controladorChat = loader.getController();
             chat.setContent(root);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         tabChat = chat;

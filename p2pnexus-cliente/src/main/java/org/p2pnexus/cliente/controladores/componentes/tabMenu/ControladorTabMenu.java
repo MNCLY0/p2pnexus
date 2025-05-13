@@ -26,16 +26,18 @@ public class ControladorTabMenu extends ControladorComponenteMenuBase {
 
 
     public void establecerDatos(TabMenu tabMenu) {
-        nombreTitulo.setText(tabMenu.getNombre());
-        tabMenu.getIcono().getStyleClass().remove("ikonli-font-icon");
-        tabMenu.getIcono().getStyleClass().add("icono-menu");
-        contenedorIcono.getChildren().add(tabMenu.getIcono());
+        Platform.runLater(() -> {
+            System.out.println("TABMENU: " + tabMenu.getNombre());
+            nombreTitulo.setText(tabMenu.getNombre());
+            tabMenu.getIcono().getStyleClass().remove("ikonli-font-icon");
+            tabMenu.getIcono().getStyleClass().add("icono-menu");
+            contenedorIcono.getChildren().add(tabMenu.getIcono());
 
-        // Inicializar eventos de hover desde la clase base
-        inicializarEventosHover();
-
-        // Evento de clic para cambiar de tab
-        contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> tabMenu.getAccion().moverTab());
+            // Inicializar eventos de hover desde la clase base
+            inicializarEventosHover();
+            // Evento de clic para cambiar de tab
+            contenedorPrincipal.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> tabMenu.getAccion().moverTab());
+        });
     }
 
     @Override

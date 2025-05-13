@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="contenedorPrincipal" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../estilos/estilos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu">
+<HBox fx:id="contenedorPrincipal" alignment="CENTER_LEFT" maxHeight="-Infinity" stylesheets="@../../estilos/estilos.css" maxWidth="1.7976931348623157E308" minHeight="-Infinity"  minWidth="-Infinity"  xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu">
    <children>
       <VBox fx:id="contenedorIcono" alignment="CENTER" maxHeight="-Infinity" prefHeight="70.0" prefWidth="70.0">
       </VBox>

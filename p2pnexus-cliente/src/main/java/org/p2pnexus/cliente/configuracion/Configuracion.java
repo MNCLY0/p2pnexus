@@ -1,9 +1,6 @@
 package org.p2pnexus.cliente.configuracion;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 public class Configuracion {
@@ -38,6 +35,8 @@ public class Configuracion {
     public void crearPorDefecto()
     {
         try {
+            // nos aseguramos de crear la carpeta de configuracion si no existe
+            new File("configuracion").mkdirs();
             configuracion.setProperty("servidor", "sv.mncly.com");
             configuracion.setProperty("puerto", "17214"); // He elegido este puerto por defecto porque P -> 17 2 -> 2 N -> 14 asi tiene un poco de sentido la elección
             configuracion.store(new FileOutputStream(ruta), "Configuración por defecto de p2pnexus \nservidor = sv.mncly.com\npuerto : 17214");

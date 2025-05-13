@@ -31,6 +31,10 @@ public abstract class ControladorComponenteMenuBase {
         }
     }
 
+    public boolean seleccionado() {
+        return seleccionado;
+    }
+
     public void setSeleccionado(boolean seleccionado) {
         // Si ya está en el estado solicitado, no hacemos nada
         if (this.seleccionado == seleccionado) return;

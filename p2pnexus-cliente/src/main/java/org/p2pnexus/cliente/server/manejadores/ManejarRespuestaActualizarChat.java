@@ -42,10 +42,6 @@ public class ManejarRespuestaActualizarChat implements IManejadorMensaje {
         datosConversacion.setMensajes(mensajes);
         datosConversacion.setDatosPaqueteEspaciosCompartidos(datosPaqueteEspaciosCompartidos);
 
-        System.out.printf("Espacios compartidos enviados: %s\n", datosPaqueteEspaciosCompartidos.getEnviados());
-        System.out.printf("Espacios compartidos recibidos: %s\n", datosPaqueteEspaciosCompartidos.getRecibidos());
-
-
 
         ControladorChat.instancia.gestorChat.actualizarDatosCoversacion(datosConversacion, conversacion);
         return null;

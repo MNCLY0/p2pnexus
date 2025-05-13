@@ -74,6 +74,7 @@ public class GestorVentanas {
 
         } catch (IOException e) {
             System.err.println("Error al cargar la ventana: " + e);
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -89,12 +90,18 @@ public class GestorVentanas {
     }
 
     public static Parent crearVentana(Ventanas ventanaDestino) throws IOException {
-            FXMLLoader fxmlLoader = new FXMLLoader(ventanaDestino.ruta);
+            FXMLLoader fxmlLoader = new FXMLLoader(ventanaDestino.getRuta());
             return fxmlLoader.load();
     }
 
-    public static FXMLLoader crearFXMLoader(IEnumVistaCargable ventanaDestino) throws IOException {
-        return new FXMLLoader(ventanaDestino.getRuta());
+    public static FXMLLoader crearFXMLoader(IEnumVistaCargable vista) {
+        URL url = vista.getRuta();
+        System.out.println("Creando FXMLLoader para: " + vista);
+        System.out.println("Ruta: " + url);
+        if (url == null) {
+            throw new IllegalArgumentException("No se ha podido encontrar la ruta del FXML: " + vista);
+        }
+        return new FXMLLoader(url);
     }
 
 

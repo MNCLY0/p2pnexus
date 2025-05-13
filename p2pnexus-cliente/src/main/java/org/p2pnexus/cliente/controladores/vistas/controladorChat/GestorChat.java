@@ -54,7 +54,7 @@ public class GestorChat {
         });
     }
 
-    void solicitarActualizarConversacion(Usuario usuario, Conversacion conversacion) {
+    public void solicitarActualizarConversacion(Usuario usuario, Conversacion conversacion) {
         // Si ya tenemos los mensajes de la conversacion no necesitamos solicitarlos nuevo y los cargamos desde la cache
 
         if (controladorChat.cacheDatosConversacion.get(conversacion.getIdConversacion()).getMensajes() != null) {

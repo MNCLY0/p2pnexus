@@ -1,5 +1,7 @@
 package org.p2pnexus.cliente.ventanas;
 
+import org.p2pnexus.cliente.Main;
+
 import java.net.URL;
 
 public enum Ventanas implements IEnumVistaCargable{
@@ -19,15 +21,15 @@ public enum Ventanas implements IEnumVistaCargable{
 
     Ventanas(String ruta) {
         try {
-            this.ruta = getClass().getClassLoader().getResource(ruta);
+            this.ruta = ruta;
         } catch (NullPointerException e) {
             System.out.println("Error al cargar la ventana: " + ruta + e);
             e.printStackTrace();
         }
     }
-    URL ruta;
+    String ruta;
 
     public URL getRuta() {
-        return ruta;
+        return Thread.currentThread().getContextClassLoader().getResource(ruta);
     }
 }

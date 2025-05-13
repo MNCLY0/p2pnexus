@@ -17,6 +17,10 @@ import java.lang.management.PlatformLoggingMXBean;
 
 public class App extends Application {
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
@@ -26,7 +30,6 @@ public class App extends Application {
             primaryStage.setScene(new Scene(root));
             primaryStage.setMaximized(true);
 
-            // Nos aseguramos de que al terminar el programa se cierren todas las conexiones p2p que haya abiertas
             primaryStage.setOnCloseRequest(e -> {
                 GestorP2P.cerrarConexiones();
                 Platform.exit();

@@ -14,15 +14,17 @@ public enum Componentes implements IEnumVistaCargable  {
     COMPONENTE_TARJETA_ESPACIO_COMPARTIDO_RECIBIDO("org/p2pnexus/cliente/fxml/componentes/TarjetaEspacioRecibida.fxml"),;
     Componentes(String ruta) {
         try {
-            this.ruta = getClass().getClassLoader().getResource(ruta);
+            this.ruta = ruta;
         } catch (NullPointerException e) {
-            System.out.println("Error al cargar el componente: " + ruta + e);
+            System.out.println("Error al cargar la ventana: " + ruta + e);
             e.printStackTrace();
         }
     }
-    URL ruta;
+    String ruta;
 
     public URL getRuta() {
-        return ruta;
+        System.out.println("Ruta: " + ruta);
+        System.out.println("Ruta resouerce : " + Thread.currentThread().getContextClassLoader().getResource(ruta));
+        return Thread.currentThread().getContextClassLoader().getResource(ruta);
     }
 }

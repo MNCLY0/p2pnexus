@@ -186,6 +186,13 @@ public class ManejadorP2PDescargaSolicitud implements IManejadorMensaje {
                 .getCacheDatosConversacion().get(id)
                 .getDatosPaqueteEspaciosCompartidos().getEnviados();
 
-        return espacios.stream().anyMatch(e -> ruta.startsWith(e.getRutaPropiedadProperty().get()));
+        for (EspacioCompartido espacio : espacios) {
+            System.out.println("Comprobando espacio compartido: " + espacio.getRutaPropiedadProperty().get() + " contra " + ruta + " resultado:" + espacio.getRutaPropiedadProperty().get().startsWith(ruta));
+            if (ruta.startsWith(espacio.getRutaPropiedadProperty().get())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
