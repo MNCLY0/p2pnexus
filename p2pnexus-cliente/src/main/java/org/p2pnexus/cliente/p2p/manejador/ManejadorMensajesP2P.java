@@ -2,6 +2,7 @@ package org.p2pnexus.cliente.p2p.manejador;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
@@ -27,6 +28,7 @@ public class ManejadorMensajesP2P {
     private final RTCDataChannel canal;
     private final Map<TipoMensaje, IManejadorMensaje> manejadores = new HashMap<>();
     private final ManejadorP2PDescargaReceptor manejadorDescarga = new ManejadorP2PDescargaReceptor();
+    private final ManejadorP2PDescargaSolicitud manejadorDescargaSolicitud = new ManejadorP2PDescargaSolicitud();
 
     public ManejadorMensajesP2P(RTCDataChannel canal) {
         this.canal = canal;
@@ -39,7 +41,8 @@ public class ManejadorMensajesP2P {
         manejadores.put(TipoMensaje.P2P_S_INFO_RUTA, new ManejadorP2PInfoRuta());
         manejadores.put(TipoMensaje.P2P_R_INFO_RUTA, new ManejadorP2PRInfoRuta());
 
-        manejadores.put(TipoMensaje.P2P_S_DESCARGAR_FICHERO, new ManejadorP2PDescargaSolicitud());
+        manejadores.put(TipoMensaje.P2P_S_DESCARGAR_FICHERO, manejadorDescargaSolicitud);
+        manejadores.put(TipoMensaje.P2P_R_CONFIRMAR_FRAGMENTO, manejadorDescargaSolicitud);
 
         manejadores.put(TipoMensaje.P2P_R_DESCARGAR_FICHERO, manejadorDescarga);
     }
@@ -48,25 +51,32 @@ public class ManejadorMensajesP2P {
         canal.registerObserver(new RTCDataChannelObserver() {
             @Override
             public void onMessage(RTCDataChannelBuffer buffer) {
-                if (buffer.binary) {
-                    byte[] fragmento = new byte[buffer.data.remaining()];
-                    buffer.data.get(fragmento);
-                    System.out.println("Fragmento binario recibido: " + fragmento.length + " bytes");
-                    manejadorDescarga.recibirFragmentoBinario(fragmento);
+                try {
+                    if (buffer.binary) {
+                        byte[] datos = new byte[buffer.data.remaining()];
+                        buffer.data.get(datos);
 
-                }
-                else
-                {
-                    byte[] datos = new byte[buffer.data.remaining()];
-                    buffer.data.get(datos);
-                    String texto = new String(datos);
-                    JsonObject json = JsonParser.parseString(texto).getAsJsonObject();
-                    try {
-                        Mensaje mensaje = JsonHerramientas.convertirJsonAObjeto(json, Mensaje.class);
-                        manejarPeticion(mensaje);
-                    } catch (Exception e) {
-                        System.err.println("Error al procesar mensaje P2P: " + e.getMessage());
+                        if (datos.length == 1 && datos[0] == ManejadorP2PDescargaSolicitud.CONFIRMACION) {
+                            manejadorDescargaSolicitud.manejarConfirmacionBinaria();
+                        } else {
+                            manejadorDescarga.recibirFragmentoBinario(datos);
+                        }
+                    } else {
+                        byte[] datos = new byte[buffer.data.remaining()];
+                        buffer.data.get(datos);
+                        String mensaje = new String(datos);
+
+                        try {
+                            JsonObject json = JsonParser.parseString(mensaje).getAsJsonObject();
+                            Mensaje mensajeObjeto = JsonHerramientas.convertirJsonAObjeto(json, Mensaje.class);
+                            manejarPeticion(mensajeObjeto);
+                        } catch (JsonSyntaxException e) {
+                            System.err.println("Error de sintaxis JSON: " + e.getMessage());
+                        }
                     }
+                } catch (Exception e) {
+                    System.err.println("Error procesando mensaje: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 

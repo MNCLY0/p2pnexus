@@ -16,28 +16,72 @@ import org.p2pnexus.cliente.sesion.Sesion;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ManejadorP2PDescargaSolicitud implements IManejadorMensaje {
 
-    // Tamaño del fragmento: 128KB
-    private static final int TAMANO_FRAGMENTO = 128 * 1024;
-    // Fragmentos a enviar antes de una pausa
-    private static final int FRAGMENTOS_POR_PAUSA = 30;
+    public static final int TAMANO_FRAGMENTO = 60 * 1024; // 60 KB
+    public static final int TAMANO_VENTANA = 30; // vetnana de tranferencia de 30 fragmentos
+    public static final byte CONFIRMACION = 1; // byte que indica recepcion
+
+    private final Map<String, EstadoTransferencia> transferencias = new ConcurrentHashMap<>();
+
+    private static class EstadoTransferencia {
+        final File archivo;
+        final String nombre;
+        final FileInputStream fileInputStream;
+        final GestorP2P gestor;
+        final AtomicInteger fragmentosEnVuelo = new AtomicInteger(0);
+        boolean finalizado = false;
+
+        public EstadoTransferencia(File archivo, String nombre, FileInputStream fis, GestorP2P gestor) {
+            this.archivo = archivo;
+            this.nombre = nombre;
+            this.fileInputStream = fis;
+            this.gestor = gestor;
+        }
+    }
 
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) {
-        System.out.println("Recibida solicitud de descarga. Tipo: " + mensaje.getTipo());
+        if (mensaje.getTipo() == TipoMensaje.P2P_S_DESCARGAR_FICHERO) {
+            return manejarSolicitudDescarga(mensaje);
+        }
+        return null;
+    }
 
-        // Verificar datos necesarios
+    public void manejarConfirmacionBinaria() {
+
+        for (EstadoTransferencia estado : transferencias.values()) {
+            if (!estado.finalizado) {
+                estado.fragmentosEnVuelo.decrementAndGet();
+
+                try {
+                    // Intentar enviar más fragmentos hasta llenar la ventana
+                    while (estado.fragmentosEnVuelo.get() < TAMANO_VENTANA) {
+                        if (!enviarSiguienteFragmento(estado)) {
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error enviando fragmentos: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    private ResultadoMensaje manejarSolicitudDescarga(Mensaje mensaje) {
+        System.out.println("Recibida solicitud de descarga");
+
         if (!mensaje.getData().has("ruta") || !mensaje.getData().has("nombre") || !mensaje.getData().has("solicitante")) {
-            System.err.println("Error: Faltan datos en solicitud de descarga");
+            System.err.println("Error: Faltan datos en la solicitud");
             return null;
         }
 
-        // Extraer datos
         String ruta = mensaje.getData().get("ruta").getAsString();
         String nombre = mensaje.getData().get("nombre").getAsString();
         Usuario solicitante = JsonHerramientas.convertirJsonAObjeto(
@@ -45,104 +89,95 @@ public class ManejadorP2PDescargaSolicitud implements IManejadorMensaje {
 
         System.out.println("Solicitud de descarga para archivo: " + nombre + " por usuario: " + solicitante.getNombre());
 
-        // Verificar conexión
+
         GestorP2P gestor = GestorP2P.conexiones.get(solicitante.getId_usuario());
         if (gestor == null) {
-            System.err.println("Error: No existe conexión con el usuario " + solicitante.getNombre());
+            System.err.println("Error: No existe conexión con el usuario");
             return null;
         }
 
-        // Verificar ruta
         if (!comprobarValidezRuta(ruta, solicitante)) {
-            System.err.println("Error: Ruta inválida para el archivo " + nombre);
+            System.err.println("Error: Ruta inválida para el archivo");
             return null;
         }
 
-        // Verificar archivo
         File archivo = new File(ruta);
         if (!archivo.exists() || !archivo.isFile()) {
-            System.err.println("Error: Archivo no encontrado en ruta " + ruta);
+            System.err.println("Error: Archivo no encontrado");
             return null;
         }
 
-        // Iniciar envío en un hilo separado
         new Thread(() -> {
             try {
                 System.out.println("Iniciando envío de archivo: " + nombre + " (" + archivo.length() + " bytes)");
-                enviarArchivo(gestor, archivo, nombre);
+                iniciarTransferenciaArchivo(gestor, archivo, nombre);
             } catch (Exception e) {
                 System.err.println("Error al enviar archivo: " + e.getMessage());
                 e.printStackTrace();
             }
-        }, "EnviadorArchivo-" + nombre).start();
+        }).start();
 
         return null;
     }
 
-    private void enviarArchivo(GestorP2P gestor, File archivo, String nombre) throws Exception {
-        // 1. Enviar mensaje inicial con metadatos
+    private void iniciarTransferenciaArchivo(GestorP2P gestor, File archivo, String nombre) throws Exception {
         JsonObject dataInicio = new JsonObject();
         dataInicio.addProperty("nombre", nombre);
         dataInicio.addProperty("pesoTotal", archivo.length());
+        dataInicio.addProperty("idSolicitante", Sesion.getUsuario().getId_usuario());
 
         gestor.manejador.enviarMensaje(new Mensaje(TipoMensaje.P2P_R_DESCARGAR_FICHERO, dataInicio));
-        System.out.println("Enviando mensaje de inicio de descarga para: " + nombre);
 
-        // Pequeña pausa para que el receptor prepare sus recursos
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        Thread.sleep(200);
 
-        // 2. Enviar fragmentos del archivo
-        try (FileInputStream in = new FileInputStream(archivo)) {
-            byte[] buffer = new byte[TAMANO_FRAGMENTO];
-            int leidos;
-            int fragmentosEnviados = 0;
-            long totalEnviado = 0;
-            long tiempoInicio = System.currentTimeMillis();
+        FileInputStream fileInputStream = new FileInputStream(archivo);
+        EstadoTransferencia estado = new EstadoTransferencia(archivo, nombre, fileInputStream, gestor);
+        transferencias.put(nombre, estado);
 
-            while ((leidos = in.read(buffer)) != -1) {
-                byte[] fragmento;
-                if (leidos < buffer.length) {
-                    // Último fragmento parcial
-                    fragmento = new byte[leidos];
-                    System.arraycopy(buffer, 0, fragmento, 0, leidos);
-                } else {
-                    fragmento = buffer;
-                }
-
-                // Enviar fragmento
-                ByteBuffer byteBuffer = ByteBuffer.wrap(fragmento);
-                gestor.getCanal().send(new RTCDataChannelBuffer(byteBuffer, true));
-
-                totalEnviado += leidos;
-                fragmentosEnviados++;
-
-                // Pausa breve cada cierto número de fragmentos para no saturar el canal
-                if (fragmentosEnviados % FRAGMENTOS_POR_PAUSA == 0) {
-                    Thread.sleep(50);
-                }
+        for (int i = 0; i < TAMANO_VENTANA; i++) {
+            if (!enviarSiguienteFragmento(estado)) {
+                break;
             }
+        }
+    }
 
-            // Mostrar estadísticas finales
-            long tiempoFinal = System.currentTimeMillis();
-            double tiempoTotalSeg = (tiempoFinal - tiempoInicio) / 1000.0;
-            double velocidadKBps = (totalEnviado / 1024.0) / tiempoTotalSeg;
-
-            System.out.println(String.format("Envío completado: %d bytes en %.2f segundos (%.2f KB/s)",
-                    totalEnviado, tiempoTotalSeg, velocidadKBps));
-
-        } catch (Exception e) {
-            System.err.println("Error durante envío de archivo: " + e.getMessage());
-            e.printStackTrace();
-            return;
+    private boolean enviarSiguienteFragmento(EstadoTransferencia estado) throws Exception {
+        if (estado.fragmentosEnVuelo.get() >= TAMANO_VENTANA) {
+            return false;
         }
 
-        // 3. Enviar fragmento vacío como señal de finalización
-        gestor.getCanal().send(new RTCDataChannelBuffer(ByteBuffer.wrap(new byte[0]), true));
-        System.out.println("Señal de fin enviada para: " + nombre);
+        byte[] buffer = new byte[TAMANO_FRAGMENTO];
+        int leidos = estado.fileInputStream.read(buffer);
+
+        if (leidos == -1) {
+            if (estado.fragmentosEnVuelo.get() == 0 && !estado.finalizado) {
+                finalizarTransferencia(estado);
+                estado.finalizado = true;
+            }
+            return false;
+        }
+
+        byte[] fragmento;
+        if (leidos < buffer.length) {
+            fragmento = new byte[leidos];
+            System.arraycopy(buffer, 0, fragmento, 0, leidos);
+        } else {
+            fragmento = buffer;
+        }
+
+        estado.gestor.getCanal().send(new RTCDataChannelBuffer(ByteBuffer.wrap(fragmento), true));
+        estado.fragmentosEnVuelo.incrementAndGet();
+
+        return true;
+    }
+
+    private void finalizarTransferencia(EstadoTransferencia estado) throws Exception {
+        estado.gestor.getCanal().send(new RTCDataChannelBuffer(ByteBuffer.wrap(new byte[0]), true));
+
+        estado.fileInputStream.close();
+        transferencias.remove(estado.nombre);
+
+        System.out.println("Transferencia completada para: " + estado.nombre);
     }
 
     public boolean comprobarValidezRuta(String ruta, Usuario usuario) {

@@ -2,6 +2,7 @@ package org.p2pnexus.cliente.server.entitades;
 
 import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
+import org.p2pnexus.cliente.server.entitades.Usuario;
 
 import java.time.LocalDateTime;
 

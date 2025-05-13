@@ -3,7 +3,7 @@ package com.p2pnexus.comun;
 public enum TipoMensaje {
 
     NOTIFICACION,
-    
+
     // Mensajes de consulta
     S_TEST,
     S_LOGIN,
@@ -62,7 +62,7 @@ public enum TipoMensaje {
     P2P_S_DESCARGAR_FICHERO,
     P2P_R_DESCARGAR_FICHERO,
     P2P_R_FRAGMENTO_ARCHIVO,
+    P2P_R_CONFIRMAR_FRAGMENTO,
     P2P_R_FIN_ARCHIVO
 
 }
-

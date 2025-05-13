@@ -6,68 +6,69 @@ import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
+import dev.onvoid.webrtc.RTCDataChannelBuffer;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.FileChooser;
 import org.p2pnexus.cliente.controladores.vistasModales.ControladorProcesoDescarga;
+import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.*;
 
 public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
 
+    // Byte simple para confirmación
+    private static final byte CONFIRMACION = 1;
+
     private final Map<String, FileOutputStream> flujos = new HashMap<>();
     private final Map<String, File> temporales = new HashMap<>();
     private final Map<String, EstadoDescarga> estados = new HashMap<>();
     private final Map<String, ControladorProcesoDescarga> controladores = new HashMap<>();
+    private final Map<String, GestorP2P> gestoresConexion = new HashMap<>();
     private final Set<String> ventanasAbiertas = new HashSet<>();
 
     private String archivoActual = null;
 
-    private int contadorFragmentos = 0;
-    private long ultimaActualizacion = 0;
-
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) {
-        System.out.println("Receptor: Mensaje recibido tipo: " + mensaje.getTipo());
+        if (mensaje.getTipo() == TipoMensaje.P2P_R_DESCARGAR_FICHERO) {
+            try {
+                JsonObject data = mensaje.getData();
+                String nombre = data.get("nombre").getAsString();
+                int idSolicitante = data.get("idSolicitante").getAsInt();
+                long pesoTotal = data.get("pesoTotal").getAsLong();
 
-        JsonObject data = mensaje.getData();
-        if (!data.has("nombre")) {
-            System.err.println("Error: El mensaje no contiene la clave 'nombre'");
-            return null;
-        }
-
-        String nombre = data.get("nombre").getAsString();
-
-        try {
-            if (mensaje.getTipo() == TipoMensaje.P2P_R_DESCARGAR_FICHERO) {
-                iniciarDescarga(nombre, data.get("pesoTotal").getAsLong());
+                GestorP2P gestor = GestorP2P.conexiones.get(idSolicitante);
+                if (gestor != null) {
+                    iniciarDescarga(nombre, pesoTotal, gestor);
+                }
+            } catch (Exception e) {
+                System.err.println("Error al iniciar descarga: " + e.getMessage());
             }
-        } catch (Exception e) {
-            System.err.println("Error en receptor: " + e.getMessage());
-            e.printStackTrace();
         }
         return null;
     }
 
-    private void iniciarDescarga(String nombre, long pesoTotal) throws IOException {
-        System.out.println("Iniciando descarga para: " + nombre + " (" + pesoTotal + " bytes)");
+    private void iniciarDescarga(String nombre, long pesoTotal, GestorP2P gestor) throws IOException {
+        System.out.println("Iniciando descarga: " + nombre + " (" + pesoTotal + " bytes)");
 
         // Crear archivo temporal
         File tempFile = File.createTempFile("descarga_" + nombre, ".tmp");
         tempFile.deleteOnExit();
-        System.out.println("Receptor: Archivo temporal creado en: " + tempFile.getAbsolutePath());
 
         FileOutputStream salida = new FileOutputStream(tempFile);
 
         flujos.put(nombre, salida);
         temporales.put(nombre, tempFile);
+        gestoresConexion.put(nombre, gestor);
 
         EstadoDescarga estado = new EstadoDescarga(pesoTotal, nombre);
         estados.put(nombre, estado);
@@ -75,49 +76,55 @@ public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
         archivoActual = nombre;
 
         abrirVentanaProgreso(estado);
-        System.out.println("Receptor: Tamaño total del archivo: " + pesoTotal + " bytes");
     }
 
-    // Método para recibir fragmentos binarios
     public void recibirFragmentoBinario(byte[] fragmento) {
         if (archivoActual == null) {
-            System.err.println("Error: Recibido fragmento pero no hay archivo actual");
             return;
         }
 
-        // Si recibimos un fragmento vacío, es la señal de finalización
         if (fragmento.length == 0) {
-            System.out.println("Fragmento vacío recibido - finalizando descarga de: " + archivoActual);
             finalizarDescarga(archivoActual);
             return;
         }
 
         try {
-            FileOutputStream salida = flujos.get(archivoActual);
-            if (salida == null) {
-                System.err.println("Error: FileOutputStream es null para " + archivoActual);
-                return;
-            }
 
-            salida.write(fragmento);
+            flujos.get(archivoActual).write(fragmento);
 
             EstadoDescarga estado = estados.get(archivoActual);
-            if (estado == null) {
-                return;
-            }
-
             estado.sumarPeso(fragmento.length);
             estado.aumentarFragmentosRecibidos();
-            contadorFragmentos++;
 
-            long ahora = System.currentTimeMillis();
-            if (contadorFragmentos >= 20) {
-                contadorFragmentos = 0;
-                ultimaActualizacion = ahora;
+
+            if (estado.getFragmentosRecibidos() % 50 == 0) {
+                flujos.get(archivoActual).flush();
+            }
+
+            if (estado.getFragmentosRecibidos() % 20 == 0) {
                 actualizarUI(archivoActual);
             }
+
+            enviarConfirmacionDirecta(archivoActual);
+
         } catch (IOException e) {
-            System.err.println("Error al escribir fragmento: " + e.getMessage());
+            System.err.println("Error al procesar fragmento: " + e.getMessage());
+        }
+    }
+
+    // Método simplificado para enviar confirmación
+    private void enviarConfirmacionDirecta(String nombre) {
+        try {
+            GestorP2P gestor = gestoresConexion.get(nombre);
+            if (gestor != null) {
+                ByteBuffer byteBuffer = ByteBuffer.allocate(1);
+                byteBuffer.put(CONFIRMACION);
+                byteBuffer.flip();
+
+                gestor.getCanal().send(new RTCDataChannelBuffer(byteBuffer, true));
+            }
+        } catch (Exception e) {
+            System.err.println("Error al enviar confirmación: " + e.getMessage());
         }
     }
 
@@ -133,8 +140,6 @@ public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
     }
 
     private void finalizarDescarga(String nombre) {
-        System.out.println("Finalizando descarga para: " + nombre);
-
         try {
             if (flujos.containsKey(nombre)) {
                 flujos.get(nombre).close();
@@ -152,13 +157,9 @@ public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
         }
     }
 
-    // Método para guardar archivo final
     private void guardarArchivo(String nombre) {
-        System.out.println("Guardando archivo: " + nombre);
-
         File temp = temporales.get(nombre);
         if (temp == null || !temp.exists()) {
-            System.err.println("Error: Archivo temporal no encontrado para " + nombre);
             return;
         }
 
@@ -170,11 +171,9 @@ public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
             File destino = chooser.showSaveDialog(null);
             if (destino != null) {
                 try {
-                    // Copiar archivo temporal al destino
                     Files.copy(temp.toPath(), destino.toPath());
-                    System.out.println("Archivo guardado como: " + destino.getAbsolutePath());
                 } catch (IOException e) {
-                    System.err.println("Error al guardar archivo: " + e.getMessage());
+                    System.err.println("Error al guardar: " + e.getMessage());
                 }
             }
 
@@ -186,9 +185,9 @@ public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
         });
     }
 
-    // Método para limpiar recursos
     private void limpiar(String nombre) {
         flujos.remove(nombre);
+        gestoresConexion.remove(nombre);
 
         File temp = temporales.get(nombre);
         if (temp != null && temp.exists()) {
@@ -203,11 +202,8 @@ public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
         if (archivoActual != null && archivoActual.equals(nombre)) {
             archivoActual = null;
         }
-
-        System.out.println("Recursos liberados para: " + nombre);
     }
 
-    // Método para abrir ventana de progreso
     private void abrirVentanaProgreso(EstadoDescarga estado) {
         if (ventanasAbiertas.contains(estado.nombre)) {
             return;
@@ -225,10 +221,8 @@ public class ManejadorP2PDescargaReceptor implements IManejadorMensaje {
                 GestorVentanas.abrirModal(root, "Descargando " + estado.nombre, false);
 
                 ventanasAbiertas.add(estado.nombre);
-                System.out.println("Ventana de progreso abierta para: " + estado.nombre);
             } catch (IOException e) {
-                System.err.println("Error al abrir ventana de progreso: " + e.getMessage());
-                e.printStackTrace();
+                System.err.println("Error en ventana: " + e.getMessage());
             }
         });
     }
