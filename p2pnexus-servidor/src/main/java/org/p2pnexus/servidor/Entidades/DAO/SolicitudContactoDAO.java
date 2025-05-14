@@ -4,6 +4,7 @@ import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import org.hibernate.Session;
+import org.p2pnexus.servidor.ControladorHibernate;
 import org.p2pnexus.servidor.Entidades.EstadoSolicitud;
 import org.p2pnexus.servidor.Entidades.SolicitudContacto;
 import org.p2pnexus.servidor.Entidades.Usuario;
@@ -17,7 +18,7 @@ public class SolicitudContactoDAO extends DAO{
 
     // Entendemos como pendientes las solicitudes que no han sido aceptadas ni rechazadas
     public ArrayList<SolicitudContacto> obtenerSolicitudesPendientesDeUsuario(int id_usuario) {
-        try(Session session = getSessionFactory().openSession()) {
+        try(Session session = getSession()) {
             return (ArrayList<SolicitudContacto>) session.createQuery("FROM SolicitudContacto WHERE usuarioDestino.id_usuario = :id_usuario AND estado NOT IN :estado", SolicitudContacto.class)
                     .setParameter("id_usuario", id_usuario)
                     .setParameterList("estado", new EstadoSolicitud[]{EstadoSolicitud.ACEPTADA, EstadoSolicitud.RECHAZADA})
@@ -27,7 +28,7 @@ public class SolicitudContactoDAO extends DAO{
 
     public boolean crearSolicitud(int idUsuarioOrigen, int idUsuarioDestino)
     {
-        try (Session session = getSessionFactory().openSession()) {
+        try(Session session = getSession()) {
             session.beginTransaction();
 
             if (!puedeMandarSolicitud(idUsuarioOrigen, idUsuarioDestino))
@@ -45,8 +46,6 @@ public class SolicitudContactoDAO extends DAO{
             session.persist(solicitud);
             session.getTransaction().commit();
             return true;
-        } catch (Exception e) {
-            throw new RuntimeException("Error al crear la solicitud: " + e.getMessage(), e);
         }
     }
 
@@ -66,7 +65,7 @@ public class SolicitudContactoDAO extends DAO{
 
     // Solo devuelve true si la solicitud se ha aceptado
     public boolean actualizarEstadoSolicitud(int idSolicitud, EstadoSolicitud estado) {
-        try (Session session = getSessionFactory().openSession()) {
+        try(Session session = getSession()) {
             session.beginTransaction();
             SolicitudContacto solicitud = session.get(SolicitudContacto.class, idSolicitud);
             if (solicitud != null) {
@@ -94,16 +93,13 @@ public class SolicitudContactoDAO extends DAO{
                 }
             }
             return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al aceptar la solicitud");
         }
     }
 
 
     // Entendemos que una solicitud se puede mandar si no hay una solicitud pendiente o aceptada entre los dos usuarios y estos siguen siendo contcatos
     public boolean puedeMandarSolicitud(int idUsuarioOrigen, int idUsuarioDestino) {
-        try (Session session = getSessionFactory().openSession()) {
+        try(Session session = getSession()) {
             session.beginTransaction();
 
             // Buscar si hay una solicitud pendiente o aceptada entre los dos usuarios
@@ -127,9 +123,6 @@ public class SolicitudContactoDAO extends DAO{
             // Si la solicitud ha sido aceptada comprobar si siguen siendo contactos
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             return !usuarioDAO.sonContactos(idUsuarioOrigen, idUsuarioDestino);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error al verificar la posibilidad de enviar solicitud: " + e.getMessage(), e);
         }
     }
 

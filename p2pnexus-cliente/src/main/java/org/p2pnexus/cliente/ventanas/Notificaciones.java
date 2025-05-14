@@ -146,6 +146,10 @@ public class Notificaciones {
                 icono = new FontIcon(Material2RoundAL.ESCALATOR_WARNING);
                 estilo = Styles.WARNING;
             }
+            case MENSAJE -> {
+                icono = new FontIcon(Material2RoundAL.CHAT);
+                estilo = Styles.ACCENT;
+            }
             default -> estilo = "";
         }
 

@@ -49,6 +49,14 @@ public class ControladorLogin {
             GestorVentanas.transicionarVentana(Ventanas.REGISTRO);
         });
 
+        // si el usuario acaba de crear una cuenta, se le autocompleta el campo de usuario al mostrar la ventana de login
+        if (!ControladorRegistro.ultimoUsuarioCreado.isEmpty())
+        {
+            txtUsuario.setText(ControladorRegistro.ultimoUsuarioCreado);
+            ControladorRegistro.ultimoUsuarioCreado = "";
+            txtPassword.requestFocus();
+        }
+
     }
 
     @FXML

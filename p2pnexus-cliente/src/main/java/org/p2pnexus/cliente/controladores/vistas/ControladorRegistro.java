@@ -17,6 +17,7 @@ import org.p2pnexus.cliente.configuracion.Configuracion;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
+import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class ControladorRegistro {
 
@@ -43,6 +44,8 @@ public class ControladorRegistro {
 
     public ImageView imagenLogo;
 
+    public static String ultimoUsuarioCreado = "";
+
     @FXML
     public void initialize() {
 
@@ -57,17 +60,7 @@ public class ControladorRegistro {
         btnCrearCuenta.setOnAction(event -> {
             System.out.println("Botón de creacion de cuenta presionado");
             // Lógica para el botón de inicio de sesión
-
-            if (!validarUsuario(txtUsuario.getText().trim())) {
-                return;
-            }
-
-            if (validarPass(passfieldPassword.getText().trim())) {
-                JsonObject json = new JsonObject();
-                json.addProperty("usuario", txtUsuario.getText().trim());
-                json.addProperty("pass", Hasheador.hashear(passfieldPassword.getText().trim()));
-                Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_REGISTRO,json));
-            }
+            crearCuenta();
         });
 
 
@@ -96,6 +89,23 @@ public class ControladorRegistro {
 
 
 
+    }
+
+    @FXML
+    public void crearCuenta() {
+        if (!validarUsuario(txtUsuario.getText().trim())) {
+            return;
+        }
+
+        if (validarPass(passfieldPassword.getText().trim())) {
+            JsonObject json = new JsonObject();
+            json.addProperty("usuario", txtUsuario.getText().trim());
+            json.addProperty("pass", Hasheador.hashear(passfieldPassword.getText().trim()));
+            Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_REGISTRO,json));
+            // Guardar el último usuario creado
+            ultimoUsuarioCreado = txtUsuario.getText().trim();
+            GestorVentanas.retrocederVentana();
+        }
     }
 
     public void crearInfo()

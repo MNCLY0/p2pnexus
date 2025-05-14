@@ -1,84 +1,91 @@
 package org.p2pnexus.servidor;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.p2pnexus.servidor.Configuracion.Configuracion;
 
 public class ControladorHibernate {
 
-    // Variable de sesión de Hibernate, al ser estática se comparte en toda la aplicación
-    static Session session = null;
 
-
-
-    public static void hiloAbrirSesion(Double tiempoIntento) {
-
-        Thread hiloConexion = new Thread(() -> {
-            while (true)
-            {
-//                Log.i("Intentando abrir sesión...");
-                boolean estado = abrirSesion();
-                if (estado)
-                {
-                    break;
-                }
-                try {
-                    System.out.println("Esperando " + tiempoIntento  + " milisegundos para intentar abrir sesión de nuevo.");
-//                    Log.e("Error al abrir sesión. Intentando de nuevo...");
-//                    Log.i("Esperando " + tiempoIntento + " milisegundos para intentar abrir sesión de nuevo.");
-                    Thread.sleep(tiempoIntento.longValue() * 1000);
-                } catch (InterruptedException e) {
-//                    Log.e("Error en hilo de apertura de sesión: " + e.getMessage());
-                }
-            }
-        });
-
-        // hacemos que el hilo sea un daemon para que se cierre cuando se cierra la aplicacion
-        hiloConexion.setDaemon(true);
-        hiloConexion.start();
-    }
+    private static SessionFactory sessionFactory;
 
     public static boolean abrirSesion() {
         try {
-            Configuration config = new Configuration().configure();
-            System.out.println("Intentando conectar a: " + config.getProperty("connection.url"));
-            System.out.println("Con usuario: " + config.getProperty("connection.username"));
 
-            session = config.buildSessionFactory().openSession();
-
-            if (session != null) {
-                System.out.println("Sesión abierta con éxito");
+            if (sessionFactory != null && !sessionFactory.isClosed())
+            {
+                System.out.println("La sesión ya está abierta");
                 return true;
             }
+
+            Configuration config = establecerCFGdesdeConfiguracion();
+
+            // Cargar la configuración desde el archivo de propiedades, en caso de que el nombre o la contraseña estén vacios
+            // se avisará por consola que hay que configurarlo desde el archivo de propiedades
+
+            if (config == null) {
+                System.err.println("Asegurate de que el archivo de configuración existe y contiene los valores necesarios.");
+                return false;
+            }
+
+            sessionFactory = config.buildSessionFactory();
+            System.out.println("SessionFactory creada correctamente.");
+            return true;
+
         } catch (Exception e) {
-            System.out.println("Error al abrir sesión: " + e.getMessage());
+            System.out.println("Error al abrir SessionFactory: " + e.getMessage());
             e.printStackTrace();
-        }
-        return false;
-    }
-
-    public static void cerrarSesion() {
-        if (session != null && session.isOpen()) {
-            session.close();
-//            Log.i("Sesión cerrada.");
+            return false;
         }
     }
 
-    //Con este metodo verificamos si la sesion esta abierta y si la conexion funciona correctamente
+    public static void cerrarSesionFactory() {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
+            sessionFactory.close();
+        }
+    }
+
+    public static Session getSession() {
+        if (sessionFactory == null || sessionFactory.isClosed()) {
+            throw new IllegalStateException("SessionFactory no inicializada. Llama a abrirSesion() primero.");
+        }
+        return sessionFactory.openSession(); // creamos una sesion cada vez que se solicita
+    }
+
+
+
+    static Configuration establecerCFGdesdeConfiguracion()
+    {
+        // Cargar la configuración desde el archivo de propiedades
+
+        Configuracion configuracion = new Configuracion();
+
+        String servidor = configuracion.getServidor();
+        String puerto = String.valueOf(configuracion.getPuerto());
+        String usuario = configuracion.getUsuario().trim();
+        String password = configuracion.getPassword().trim();
+
+        if (usuario.isEmpty() || password.isEmpty())
+        {
+            System.err.println("Error: Usuario o contraseña vacíos. Por favor, configúralos en el archivo de propiedades.");
+            return null;
+        }
+        // Establecer la configuración de Hibernate desde el archivo de propiedades
+
+        Configuration config = new Configuration().configure();
+        config.setProperty("hibernate.connection.url",  "jdbc:mysql://" + servidor + ":" + puerto + "/p2pnexus");
+        config.setProperty("hibernate.connection.username", usuario);
+        config.setProperty("hibernate.connection.password", password);
+        return config;
+
+    }
+
+    // Verificamos si las sesiones se crean correctamente y la conexión funciona
     public static boolean verificarSesion() {
-        if (session == null) {
-            System.out.println("La sesión no existe");
-            return false;
-        }
-
-        if (!session.isOpen()) {
-            System.out.println("La sesión está cerrada");
-            return false;
-        }
-
-        try {
-            // Ejecutar una consulta simple para verificar la conexión
+        try (Session session = getSession()) {
             session.createNativeQuery("SELECT 1", Integer.class).getSingleResult();
-            System.out.println("La sesión está activa y la conexión funciona correctamente");
+            System.out.println("La sesión está activa y la conexión funciona correctamente.");
             return true;
         } catch (Exception e) {
             System.out.println("Error al verificar la sesión: " + e.getMessage());
@@ -86,10 +93,5 @@ public class ControladorHibernate {
         }
     }
 
-
-    public static Session getSession()
-    {
-        return session;
-    }
 
 }

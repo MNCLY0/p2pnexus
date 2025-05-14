@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class Configuracion {
     Properties configuracion = new Properties();
-    String ruta = "configuracion/config.properties";
+    String ruta = "configuracion/cliente.properties";
 
     public Configuracion() {
         configurar();

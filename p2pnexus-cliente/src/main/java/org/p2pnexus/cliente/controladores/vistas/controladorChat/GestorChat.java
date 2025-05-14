@@ -3,6 +3,7 @@ package org.p2pnexus.cliente.controladores.vistas.controladorChat;
 import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import com.p2pnexus.comun.TipoNotificacion;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import org.p2pnexus.cliente.sesion.datos.datosEspecificos.DatosConversacion;
 import org.p2pnexus.cliente.ventanas.Animaciones;
 import org.p2pnexus.cliente.ventanas.Componentes;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
+import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,8 +46,11 @@ public class GestorChat {
 
     public void nuevoMensaje(MensajeChat mensaje) {
         System.out.println("Nuevo mensaje recibido  " + mensaje);
+
         List<MensajeChat> mensajes = controladorChat.datosConversacionActual.getMensajes();
         System.out.println("Mensajes: " + mensajes);
+
+
         if (mensajes == null) return;
         mensajes.add(mensaje);
         System.out.println("Mensaje añadido a la cache");

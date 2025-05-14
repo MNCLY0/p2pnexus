@@ -47,11 +47,16 @@ public class JsonHerramientas {
     }
 
     public static <T> T convertirJsonAObjeto(JsonObject json, Class<T> clase) {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdaptador())
-                .create();
-        JsonElement jsonElement = json.get("objeto");
-        return gson.fromJson(jsonElement, clase);
+        try {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdaptador())
+                    .create();
+            JsonElement jsonElement = json.get("objeto");
+            return gson.fromJson(jsonElement, clase);
+        }catch (JsonSyntaxException e) {
+            throw new RuntimeException("Error al convertir el Json a objeto: " + e.getMessage());
+        }
+
     }
 
 }

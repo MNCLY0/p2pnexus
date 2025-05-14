@@ -35,6 +35,7 @@ public class ManejarRegistro implements IManejadorMensaje {
         }catch (Exception e) {
             throw new ManejarPeticionesExeptionError(e.getMessage());
         }
+
         return new ResultadoMensaje("¡Cuenta creada con éxito!", TipoNotificacion.EXITO);
     }
 
