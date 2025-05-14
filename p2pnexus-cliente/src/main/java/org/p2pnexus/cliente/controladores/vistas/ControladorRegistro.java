@@ -6,11 +6,14 @@ import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
 import com.p2pnexus.comun.exepciones.GestorDeVentanasExeption;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
+import org.p2pnexus.cliente.configuracion.Configuracion;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
@@ -38,9 +41,15 @@ public class ControladorRegistro {
 
     public VBox iconoInfoPassword;
 
+    public ImageView imagenLogo;
 
     @FXML
     public void initialize() {
+
+        Platform.runLater(()->
+        {
+            imagenLogo.setImage(new Configuracion().logoTema());
+        });
 
         crearInfo();
 

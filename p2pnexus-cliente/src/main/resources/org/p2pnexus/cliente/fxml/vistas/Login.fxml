@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,13 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="476.0" prefWidth="278.0" spacing="15.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorLogin">
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="476.0" prefWidth="278.0" spacing="15.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorLogin">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../imagenes/logop2pnexus-invertido.png" />
-         </image>
-      </ImageView>
+      <ImageView fx:id="imagenLogo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <Label styleClass="title-2" text="Inicio de sesión" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold" size="16.0" />

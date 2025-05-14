@@ -4,20 +4,28 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 import org.kordamp.ikonli.material2.Material2RoundAL;
+import org.p2pnexus.cliente.configuracion.Configuracion;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.ControladorTabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tabMenu.TabMenu;
 import org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContacto;
@@ -26,16 +34,11 @@ import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
-import org.p2pnexus.cliente.ventanas.Componentes;
-import org.p2pnexus.cliente.ventanas.GestorVentanas;
-import org.p2pnexus.cliente.ventanas.Notificaciones;
-import org.p2pnexus.cliente.ventanas.Ventanas;
+import org.p2pnexus.cliente.ventanas.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ControladorMenuPrincipal {
     @FXML
@@ -52,6 +55,12 @@ public class ControladorMenuPrincipal {
 
     @FXML
     Tab tabChat = null;
+
+    @FXML
+    VBox menuPerfil;
+
+    @FXML
+    HBox perfilBar;
 
     ControladorChat controladorChat = null;
 
@@ -256,4 +265,65 @@ public class ControladorMenuPrincipal {
         });
 
     }
+
+    @FXML
+    public void cerrarSesion()
+    {
+        Sesion.cerrarSesion();
+    }
+
+    @FXML
+    public void alternarTema()
+    {
+        Configuracion configuracion = new Configuracion();
+        configuracion.alternarModoTema();
+    }
+
+    @FXML
+    public void alternarMenuPerfil() {
+        Platform.runLater(() -> {
+            double alturaInicial = menuPerfil.getPrefHeight();
+            double alturaFinal = menuPerfil.isVisible() ? 0 : 50 * menuPerfil.getChildren().size(); //50 por cada elemento
+            Duration duracion = Duration.millis(80);
+
+            if (!menuPerfil.isVisible()) {
+                menuPerfil.setVisible(true);
+                menuPerfil.setManaged(true);
+            }else
+            {
+                menuPerfil.getChildren().forEach(tabmenu -> {;
+                    tabmenu.setVisible(false);
+                    tabmenu.setManaged(false);
+                });
+            }
+            // creamos la linea de tiempo para animar el menu
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(menuPerfil.prefHeightProperty(), alturaInicial),
+                            new KeyValue(menuPerfil.minHeightProperty(), alturaInicial),
+                            new KeyValue(menuPerfil.maxHeightProperty(), alturaInicial)
+                    ),
+                    new KeyFrame(duracion,
+                            new KeyValue(menuPerfil.prefHeightProperty(), alturaFinal),
+                            new KeyValue(menuPerfil.minHeightProperty(), alturaFinal),
+                            new KeyValue(menuPerfil.maxHeightProperty(), alturaFinal)
+                    )
+            );
+
+            timeline.setOnFinished(e -> {
+                if (alturaFinal == 0) {
+                    menuPerfil.setVisible(false);
+                    menuPerfil.setManaged(false);
+                }
+                if (menuPerfil.isVisible()) {
+                    // le damos una animacion de entrada a cada uno de los hijos para que de la sensacion de que se despliegan
+                    // desde la izquierda, queda más dinamico
+                    Animaciones.animarEntradaListaNodosIzqda(menuPerfil.getChildren(), 200, 20);
+                }
+            });
+
+            timeline.play();
+        });
+    }
+
 }

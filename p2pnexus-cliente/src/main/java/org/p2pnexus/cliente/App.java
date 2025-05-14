@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.p2pnexus.cliente.configuracion.Configuracion;
 import org.p2pnexus.cliente.p2p.conexion.GestorP2P;
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
@@ -24,7 +25,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
+            Configuracion configuracion = new Configuracion();
+            configuracion.aplicarModoTemaAcual();
             Parent root = FXMLLoader.load(Ventanas.MAIN.getRuta());
             primaryStage.setTitle("p2pnexus");
             primaryStage.setScene(new Scene(root));

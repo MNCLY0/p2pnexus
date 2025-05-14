@@ -4,10 +4,13 @@ import com.google.gson.JsonObject;
 import com.p2pnexus.comun.Hasheador;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import org.p2pnexus.cliente.configuracion.Configuracion;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
@@ -24,10 +27,17 @@ public class ControladorLogin {
     public TextField txtUsuario;
     @FXML
     public PasswordField txtPassword;
+    @FXML
+    public ImageView imagenLogo;
 
 
     @FXML
     public void initialize() {
+
+        Platform.runLater(()->
+        {
+            imagenLogo.setImage(new Configuracion().logoTema());
+        });
 
         // Inicializar el controlador
         btnLogin.setOnAction(event -> {

@@ -14,6 +14,7 @@ import org.p2pnexus.cliente.server.entitades.MensajeChat;
 import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.sesion.datos.datosEspecificos.DatosConversacion;
+import org.p2pnexus.cliente.ventanas.Animaciones;
 import org.p2pnexus.cliente.ventanas.Componentes;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 
@@ -89,6 +90,10 @@ public class GestorChat {
                 crearVistaMensaje(mensaje);
             }
             bajarChat();
+            Platform.runLater(()->
+            {
+                Animaciones.animarEntradaListaNodosDesdeAbajo(controladorChat.contenedorMensajes.getChildren(), 250,50);
+            });
         });
     }
 
@@ -96,9 +101,11 @@ public class GestorChat {
         try {
             FXMLLoader loader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TARJETA_MENSAJE);
             Parent parent = loader.load();
+            parent.setVisible(false);
             ControladorTarjetaMensaje controladorTarjetaMensaje = loader.getController();
             controladorTarjetaMensaje.establecerMensaje(mensaje);
             controladorChat.contenedorMensajes.getChildren().add(parent);
+
         } catch (IOException e) {
             System.out.println("Error al cargar la vista de mensaje");
         }
