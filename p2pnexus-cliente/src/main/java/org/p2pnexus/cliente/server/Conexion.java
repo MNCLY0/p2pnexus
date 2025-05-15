@@ -83,7 +83,6 @@ public class Conexion {
     }
 
 
-
     public static void main(String[] args) {
 
         try {
@@ -110,6 +109,7 @@ public class Conexion {
             return null;
         }
     }
+
 
     public static void cerrarConexion() {
         Notificaciones.mostrarNotificacion("Se ha perdido la conexión con el servidor", TipoNotificacion.ERROR);

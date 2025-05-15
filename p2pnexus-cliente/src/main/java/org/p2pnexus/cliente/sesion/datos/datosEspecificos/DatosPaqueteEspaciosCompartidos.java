@@ -28,6 +28,9 @@ public class DatosPaqueteEspaciosCompartidos {
     void inicializarPropiedades() {
         for (EspacioCompartido espacioCompartido : enviados) {
             espacioCompartido.inializarPropiedades();
+            EspacioCompartido espacioCompartidoSesion = Sesion.getDatosSesionUsuario().getEspacios().get(espacioCompartido.getId_espacio());
+            espacioCompartido.getNombrePropiedadProperty().bind(espacioCompartidoSesion.getNombrePropiedadProperty());
+            espacioCompartido.getRutaPropiedadProperty().bind(espacioCompartidoSesion.getRutaPropiedadProperty());
         }
         for (EspacioCompartido espacioCompartido : recibidos) {
             espacioCompartido.inializarPropiedades();

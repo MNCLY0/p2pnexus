@@ -9,7 +9,7 @@ public enum TipoMensaje {
     S_LOGIN,
     S_REGISTRO,
     S_SOLICITAR_CLAVE_PUBLICA,
-    S_CERRAR_SESION_CLIENTE,
+    S_CERRAR_SESION,
     S_BUSCAR_USUARIOS_POR_NOMBRE,
     S_SOLICITUDES_POR_ID,
     S_CREAR_SOLICITUD,
@@ -28,6 +28,7 @@ public enum TipoMensaje {
     S_GUARDAR_IMAGEN_PERFIL,
 
     // Mensajes de respuesta
+    R_CERRAR_SESION_CLIENTE,
     R_LOGIN_OK,
     R_TEST,
     R_CONFIRMACION,

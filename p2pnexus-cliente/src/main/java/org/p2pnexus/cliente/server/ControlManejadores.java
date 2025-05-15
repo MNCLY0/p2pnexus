@@ -18,7 +18,7 @@ public class ControlManejadores extends ManejadorDeMensajes {
     public void inicializarManejadores() {
         manejadoresPeticiones.put(TipoMensaje.NOTIFICACION, new ManejarNotificaciones());
         manejadoresPeticiones.put(TipoMensaje.R_LOGIN_OK, new ManejarLogin());
-        manejadoresPeticiones.put(TipoMensaje.S_CERRAR_SESION_CLIENTE, new ManejarCerrarSesion());
+        manejadoresPeticiones.put(TipoMensaje.R_CERRAR_SESION_CLIENTE, new ManejarCerrarSesion());
         manejadoresPeticiones.put(TipoMensaje.R_BUSCAR_USUARIOS_POR_NOMBRE, new ManejarRespuestaBuscarUsuariosPorNombre());
         manejadoresPeticiones.put(TipoMensaje.R_SOLICITUDES_POR_ID, new ManejarRespuestaSolicitudesPorId());
         manejadoresPeticiones.put(TipoMensaje.R_LISTA_CONTACTOS, new MenejarRespuestaListaContactos());

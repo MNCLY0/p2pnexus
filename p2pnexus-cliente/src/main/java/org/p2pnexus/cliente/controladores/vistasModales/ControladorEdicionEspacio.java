@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import org.p2pnexus.cliente.controladores.vistas.ControladorEspacios;
 import org.p2pnexus.cliente.server.Conexion;
 import org.p2pnexus.cliente.server.entitades.EspacioCompartido;
+import org.p2pnexus.cliente.sesion.Sesion;
+import org.p2pnexus.cliente.sesion.datos.datosEspecificos.DatosConversacion;
 import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
@@ -100,6 +102,10 @@ public class ControladorEdicionEspacio {
 
         EspacioCompartido espacioCompartidoModificado = new EspacioCompartido(nombreNuevo, rutaNueva, espacioCompartidoOriginal.getPropietario());
         espacioCompartidoModificado.setId_espacio(espacioCompartidoOriginal.getId_espacio());
+
+        EspacioCompartido espacioSesion = Sesion.getDatosSesionUsuario().getEspacios().get(espacioCompartidoOriginal.getId_espacio());
+        espacioSesion.setNombre(espacioCompartidoModificado.getNombrePropiedadProperty().get());
+        espacioSesion.setRuta_directorio(espacioCompartidoModificado.getRutaPropiedadProperty().get());
 
         JsonObject json = new JsonObject();
         //Envaiamos los dos espacios por si ocurre un error devolver el original

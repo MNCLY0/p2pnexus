@@ -33,6 +33,9 @@ public class Usuario {
     }
 
     public Image getImagen() {
+        if (imagen_perfil == null) {
+            imagen_perfil = "";
+        }
         if (imagen_perfil.isEmpty()) {
             return Sesion.gestionImagenes.cacheImagenes.get("default");
         }
