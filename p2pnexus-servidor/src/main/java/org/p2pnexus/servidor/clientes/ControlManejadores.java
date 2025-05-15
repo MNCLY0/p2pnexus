@@ -39,6 +39,7 @@ public class ControlManejadores extends ManejadorDeMensajes implements Runnable 
         manejadoresPeticiones.put(TipoMensaje.S_P2P_SDP_OFERTA, new ManejarOfertaSDPp2p());
         manejadoresPeticiones.put(TipoMensaje.S_P2P_SDP_RESPUESTA, new ManejarRespuestaSDPp2p());
         manejadoresPeticiones.put(TipoMensaje.S_P2P_ICE, new ManejarEnviarICEp2p());
+        manejadoresPeticiones.put(TipoMensaje.S_GUARDAR_IMAGEN_PERFIL, new ManejarConsultaGuardarImagen());
     }
 
     @Override

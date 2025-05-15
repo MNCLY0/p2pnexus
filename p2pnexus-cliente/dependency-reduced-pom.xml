@@ -16,6 +16,7 @@
           <include>**/*.fxml</include>
           <include>**/*.css</include>
           <include>**/*.png</include>
+          <include>**/*.mp4</include>
         </includes>
       </resource>
     </resources>

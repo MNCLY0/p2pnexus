@@ -131,6 +131,11 @@ public class ControladorRegistro {
             Notificaciones.mostrarNotificacion("El usuario debe tener al menos 5 caracteres", TipoNotificacion.AVISO);
             return false;
         }
+
+        if (usuario.trim().contains(" ")) {
+            Notificaciones.mostrarNotificacion("El usuario no puede contener espacios", TipoNotificacion.AVISO);
+            return false;
+        }
         return true;
     }
 

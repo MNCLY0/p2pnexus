@@ -21,6 +21,9 @@ import org.p2pnexus.cliente.ventanas.GestorVentanas;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class GestorChat {
@@ -91,13 +94,14 @@ public class GestorChat {
 
         Platform.runLater(() -> {
             controladorChat.contenedorMensajes.getChildren().clear();
-            for (MensajeChat mensaje : controladorChat.cacheDatosConversacion.get(conversacion.getIdConversacion()).getMensajes()) {
+            List<MensajeChat> listaMensajes = controladorChat.cacheDatosConversacion.get(conversacion.getIdConversacion()).getMensajes();
+            for (MensajeChat mensaje : listaMensajes) {
                 crearVistaMensaje(mensaje);
             }
             bajarChat();
             Platform.runLater(()->
             {
-                Animaciones.animarEntradaListaNodosDesdeAbajo(controladorChat.contenedorMensajes.getChildren(), 250,50);
+                Animaciones.animarEntradaListaNodosDesdeAbajo(controladorChat.contenedorMensajes.getChildren(), 200,50);
             });
         });
     }
@@ -108,7 +112,7 @@ public class GestorChat {
             Parent parent = loader.load();
             parent.setVisible(false);
             ControladorTarjetaMensaje controladorTarjetaMensaje = loader.getController();
-            controladorTarjetaMensaje.establecerMensaje(mensaje);
+            controladorTarjetaMensaje.establecerMensaje(mensaje,mensaje.getEmisor().getImagen());
             controladorChat.contenedorMensajes.getChildren().add(parent);
 
         } catch (IOException e) {

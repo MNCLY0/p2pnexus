@@ -69,6 +69,7 @@ public class ControladorHibernate {
         if (usuario.isEmpty() || password.isEmpty())
         {
             System.err.println("Error: Usuario o contraseña vacíos. Por favor, configúralos en el archivo de propiedades.");
+            System.exit(0);
             return null;
         }
         // Establecer la configuración de Hibernate desde el archivo de propiedades
@@ -85,10 +86,11 @@ public class ControladorHibernate {
     public static boolean verificarSesion() {
         try (Session session = getSession()) {
             session.createNativeQuery("SELECT 1", Integer.class).getSingleResult();
-            System.out.println("La sesión está activa y la conexión funciona correctamente.");
+            System.out.println("Las sesiones están funcionando correctamente.");
             return true;
         } catch (Exception e) {
             System.out.println("Error al verificar la sesión: " + e.getMessage());
+            System.exit(0);
             return false;
         }
     }

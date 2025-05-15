@@ -1,6 +1,7 @@
 package org.p2pnexus.servidor.clientes.manejadores;
 
 import com.google.gson.JsonObject;
+import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.TipoMensaje;
 import com.p2pnexus.comun.TipoNotificacion;
@@ -46,8 +47,7 @@ public class ManejarLogin implements IManejadorMensaje {
     {
         mensaje.setTipo(TipoMensaje.R_LOGIN_OK);
         JsonObject data = new JsonObject();
-        data.addProperty("nombre", usuario.getNombre());
-        data.addProperty("id", usuario.getId_usuario());
+        data.add("usuario", JsonHerramientas.convertirObjetoAJson(usuario));
         mensaje.setData(data);
         return mensaje;
     }

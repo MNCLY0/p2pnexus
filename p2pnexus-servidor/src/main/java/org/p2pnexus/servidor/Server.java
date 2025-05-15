@@ -17,9 +17,9 @@ public class Server extends ServerSocket {
         int port = 17214; // Puerto del servidor
         try {
             server = new Server(port);
-            System.out.println("Servidor iniciado en el puerto " + port);
             ControladorHibernate.abrirSesion();
             ControladorHibernate.verificarSesion();
+            System.out.println("Servidor iniciado en el puerto " + port);
         }catch (Exception e) {
             System.err.println("Error al iniciar el servidor: " + e.getMessage());
             return;

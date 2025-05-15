@@ -6,6 +6,8 @@ import com.p2pnexus.comun.TipoMensaje;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -30,6 +32,9 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
     private Conversacion conversacion;
 
     @FXML
+    public ImageView imageViewPerfil;
+
+    @FXML
     VBox vboxImagen;
 
 
@@ -41,6 +46,8 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
     public void inicializarConUsuario(Usuario usuario) {
         labelNombre.setText(usuario.getNombre());
         this.usuario = usuario;
+
+        actualizarImagen();
 
         anchorPane.getProperties().put("controller", this);
 
@@ -71,6 +78,12 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
         json.addProperty("id_usuario_origen", Sesion.getUsuario().getId_usuario());
         Mensaje mensaje = new Mensaje(TipoMensaje.S_CONVERSACION_CON_USUARIO, json);
         Conexion.enviarMensaje(mensaje);
+    }
+
+    public void actualizarImagen()
+    {
+        Image image = usuario.getImagen();
+        if (image != null) {imageViewPerfil.setImage(image);}
     }
 
     @Override
@@ -105,6 +118,10 @@ public class ControladorTarjetaContacto extends ControladorComponenteMenuBase {
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Conversacion getConversacion() {

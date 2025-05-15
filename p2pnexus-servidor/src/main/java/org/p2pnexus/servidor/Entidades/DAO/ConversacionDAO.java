@@ -80,7 +80,7 @@ public class ConversacionDAO extends DAO{
             return session.createQuery("""
                                 FROM Mensaje m
                                 WHERE m.conversacion.id_conversacion = :idConversacion
-                                ORDER BY m.fecha_envio ASC
+                                ORDER BY m.fecha_envio DESC
                             """, Mensaje.class)
                     .setParameter("idConversacion", idConversacion)
                     .setMaxResults(50)

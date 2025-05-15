@@ -13,6 +13,7 @@ import org.p2pnexus.servidor.Entidades.DAO.ConversacionDAO;
 import org.p2pnexus.servidor.Entidades.DAO.EspacioCompartidoDAO;
 import org.p2pnexus.servidor.Entidades.EspacioCompartido;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ManejarConsultaActualizarChat implements IManejadorMensaje {
@@ -27,6 +28,7 @@ public class ManejarConsultaActualizarChat implements IManejadorMensaje {
         Conversacion conversacion = conversacionDAO.obtenerConversacionEntreDos(idUsuarioCliente, idUsuarioSolicitado);
 
         List<org.p2pnexus.servidor.Entidades.Mensaje> mensajes = conversacionDAO.obtenerUltimosMensajesDeConversacion(conversacion.getId_conversacion());
+        Collections.reverse(mensajes);
         JsonObject json = new JsonObject();
         json.add("mensajes", JsonHerramientas.empaquetarListaEnJsonObject(mensajes));
         json.addProperty("id_conversacion", conversacion.getId_conversacion());

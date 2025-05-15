@@ -8,6 +8,8 @@ import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
 import com.p2pnexus.comun.comunicacion.SocketConexion;
 import com.p2pnexus.comun.exepciones.ManejarPeticionesExeptionError;
 import javafx.application.Platform;
+import org.p2pnexus.cliente.controladores.componentes.tarjetaContactoSolicitable.ControladorTarjetaContacto;
+import org.p2pnexus.cliente.controladores.vistas.ControladorMenuPrincipal;
 import org.p2pnexus.cliente.controladores.vistas.controladorChat.ControladorChat;
 import org.p2pnexus.cliente.server.entitades.Conversacion;
 import org.p2pnexus.cliente.server.entitades.MensajeChat;
@@ -15,7 +17,8 @@ import org.p2pnexus.cliente.server.entitades.Usuario;
 import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.ventanas.Notificaciones;
 
-import javax.naming.ldap.Control;
+import java.awt.*;
+
 
 public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
     @Override
@@ -23,9 +26,7 @@ public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
         MensajeChat nuevoMensaje = JsonHerramientas.convertirJsonAObjeto(mensaje.getData(), MensajeChat.class);
         intentarNotificar(nuevoMensaje);
         Platform.runLater(() ->{
-            if (ControladorChat.instancia == null) {
-                return;
-            }
+            if (ControladorChat.instancia == null) return;
             ControladorChat.instancia.gestorChat.nuevoMensaje(nuevoMensaje);
         });
 
@@ -36,16 +37,22 @@ public class ManejarRespuestaNuevoMensajeChat implements IManejadorMensaje {
     {
         ControladorChat controladorChat = ControladorChat.instancia;
         Usuario emisor = mensaje.getEmisor();
+
         if (controladorChat == null)
         {
             notificarNuevoMensaje(emisor);
+            return;
         }
-        Conversacion conversacion = mensaje.getConversacion();
         Usuario usuarioCliente = Sesion.getUsuario();
-        Conversacion conversacionActual = ControladorChat.instancia.getConversacionActual();
-
-        if (emisor.getId_usuario() != usuarioCliente.getId_usuario() && conversacion != conversacionActual)
+        if (emisor.getId_usuario() != usuarioCliente.getId_usuario())
         {
+            // aprovechamos que el mensaje trae informacion actualizada del usuario para actualizar la imagen del usuario, esto
+            // habria que hacerlo de otra manera pero por ahora es suficiente
+
+            ControladorTarjetaContacto controladorTarjetaContacto = ControladorMenuPrincipal.instancia.getControladoresTarjetaContacto().get(emisor);
+            controladorTarjetaContacto.getUsuario().setImagen_perfil(emisor.getImagen_perfil());
+            controladorTarjetaContacto.actualizarImagen();
+
             notificarNuevoMensaje(emisor);
         }
 

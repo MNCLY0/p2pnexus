@@ -17,6 +17,8 @@ public class Usuario {
     private String nombre;
 
     private String contrasena;
+    @Expose
+    private String imagen_perfil;
 
     public Integer getId_usuario() {
         return id_usuario;
@@ -41,6 +43,10 @@ public class Usuario {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
+
+    public String getImagen_perfil() {return imagen_perfil;}
+
+    public void setImagen_perfil(String imagen_perfil) {this.imagen_perfil = imagen_perfil;}
 
     @Expose
     @Transient

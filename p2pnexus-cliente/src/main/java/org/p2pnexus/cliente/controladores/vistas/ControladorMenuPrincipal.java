@@ -13,13 +13,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
@@ -37,30 +42,29 @@ import org.p2pnexus.cliente.sesion.Sesion;
 import org.p2pnexus.cliente.ventanas.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ControladorMenuPrincipal {
     @FXML
     public VBox vboxSecciones;
-
     @FXML
     public VBox vboxContactos;
-
     @FXML
     ArrayList<TabMenu> tabsMenu;
-
     @FXML
     ImageView imagenTest;
-
     @FXML
     Tab tabChat = null;
-
     @FXML
     VBox menuPerfil;
-
     @FXML
     HBox perfilBar;
+    @FXML
+    MediaView mediaViewtTransicion;
+    @FXML
+    VBox vboxMedia;
 
     ControladorChat controladorChat = null;
 
@@ -71,6 +75,13 @@ public class ControladorMenuPrincipal {
 
     Map<Usuario, ControladorTarjetaContacto> controladoresTarjetaContacto = new HashMap<>();
 
+    boolean transicionando = false;
+
+    @FXML
+    ImageView imageViewFotoUsuario;
+
+    @FXML
+    Label lblNombreUsuario;
 
     @FXML
     public void initialize() {
@@ -86,7 +97,14 @@ public class ControladorMenuPrincipal {
             actualizarEstadoTabs(newTab);
         });
 
+        lblNombreUsuario.setText(Sesion.getUsuario().getNombre());
+        actualizarImagenMenuPerfil();
+
+        mediaViewtTransicion.fitHeightProperty().bind(vboxMedia.heightProperty());
+        mediaViewtTransicion.fitWidthProperty().bind(vboxMedia.widthProperty());
     }
+
+
 
     public Parent inicializarTabPane(TabMenu tabMenu) throws IOException
     {
@@ -135,11 +153,13 @@ public class ControladorMenuPrincipal {
                     ControladorTarjetaContacto controladorTarjetaContacto = loader.getController();
                     controladorTarjetaContacto.inicializarConUsuario(usuario);
                     controladoresTarjetaContacto.put(usuario, controladorTarjetaContacto);
+//                    Sesion.gestionImagenes.cacheImagenes.put(usuario.getImagen_perfil(), usuario.getImagen());
                     vboxContactos.getChildren().add(parent);
                 }catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
+//            Sesion.gestionImagenes.cargarImagenes();
         });
     }
 
@@ -223,34 +243,6 @@ public class ControladorMenuPrincipal {
         return controladoresTarjetaContacto;
     }
 
-    @FXML
-    void solicitarEstablecerImagenTest()
-    {
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Establece la ruta de la imagen");
-            dialog.setHeaderText("Introduce un enlace directo a la imagen");
-            dialog.setContentText("Ruta de la imagen:");
-            dialog.setGraphic(new FontIcon(Material2AL.FILE_UPLOAD));
-            dialog.showAndWait().ifPresent(ruta ->
-                {
-                    if (ruta.isEmpty()) return;
-                    Platform.runLater(() -> {
-                        Image imagen = new Image(GestorVentanas.transformarDriveURL(ruta));
-                        imagenTest.setImage(imagen);
-                        if (imagenTest.getImage() != null) {
-                            System.out.printf("Imagen establecida: %s%n", ruta);
-                            System.out.print("Dimensiones de la imagen: " + imagen.getWidth() + ":" + imagen.getHeight());
-                            if (imagen.getWidth() == 0 || imagen.getHeight() == 0) {
-                                Notificaciones.mostrarNotificacion("Error al cargar la imagen", TipoNotificacion.ERROR);
-                            }
-                        } else {
-                            System.out.println("No se ha podido establecer la imagen");
-                        }
-                    });
-                }
-            );
-    }
-
     public void actualizarEstadoTarjetaContacto(Usuario usuario)
     {
         Platform.runLater(()->{
@@ -273,11 +265,50 @@ public class ControladorMenuPrincipal {
     }
 
     @FXML
-    public void alternarTema()
-    {
+    public void alternarTema() {
+        if (transicionando) return;
+        transicionando = true;
         Configuracion configuracion = new Configuracion();
-        configuracion.alternarModoTema();
+        String modoActual = configuracion.getModoTema();
+        vboxMedia.setVisible(true);
+        vboxMedia.setManaged(true);
+
+        Platform.runLater(() -> {
+            URL rutavideo;
+            if (modoActual.equals("nocturno")) {
+                rutavideo = getClass().getResource("/org/p2pnexus/cliente/videos/transicion_tema.mp4");
+                System.out.println("Mostrando video de oscuro a diurno");
+            } else {
+                rutavideo = getClass().getResource("/org/p2pnexus/cliente/videos/transicion_tema_reversa.mp4");
+                System.out.println("Mostrando video de diurno a oscuro");
+            }
+
+            System.out.printf("Ruta del video: %s%n", rutavideo);
+
+            System.out.printf("Intentando cargar el video de transicion: %s%n", rutavideo);
+            MediaPlayer player = new MediaPlayer(new Media(rutavideo.toExternalForm()));
+            System.out.printf("Video cargado: %s%n", player.getMedia().getSource());
+            mediaViewtTransicion.setMediaPlayer(player);
+            System.out.printf("Player asignado: %s%n", player);
+            mediaViewtTransicion.setPreserveRatio(false);
+            player.play();
+            System.out.printf("Video iniciado: %s%n", player.getMedia().getSource());
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1800);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                configuracion.alternarModoTema();
+                vboxMedia.setVisible(false);
+                vboxMedia.setManaged(false);
+                player.dispose();
+                mediaViewtTransicion.setMediaPlayer(null);
+                transicionando = false;
+            }).start();
+        });
     }
+
 
     @FXML
     public void alternarMenuPerfil() {
@@ -324,6 +355,25 @@ public class ControladorMenuPrincipal {
 
             timeline.play();
         });
+    }
+    @FXML
+    public void abrirCambioImagen()
+    {
+        try {
+            Parent root = GestorVentanas.crearFXMLoader(Ventanas.MODAL_ESTABLECER_IMAGEN_PERFIL).load();
+            GestorVentanas.abrirModal(root, "Establecer imagen de perfil", false);
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la ventana de establecer imagen de perfil: " + e.getMessage());
+        }
+    }
+
+    public void actualizarImagenMenuPerfil()
+    {
+        Platform.runLater(() -> {
+            imageViewFotoUsuario.setImage(Sesion.getUsuario().getImagen());
+        });
+
     }
 
 }

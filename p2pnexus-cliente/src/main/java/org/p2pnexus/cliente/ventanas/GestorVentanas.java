@@ -124,15 +124,7 @@ public class GestorVentanas {
         if (ventanaAnterior == null) throw new GestorDeVentanasExeption("No hay ventana a la que volver");
         transicionarVentana(ventanaAnterior);
     }
-
-    public static String transformarDriveURL(String enlace) {
-        if (enlace.contains("drive.google.com/file/d/")) {
-            String id = enlace.split("/d/")[1].split("/")[0];
-            return "https://drive.google.com/uc?export=view&id=" + id;
-        }
-        return enlace;
-    }
-
+    
     public static boolean pedirConfirmacion(String titulo, String mensaje, Alert.AlertType tipo, Scene owner) {
         Alert ventanaConfirmacion = new Alert(tipo);
         ventanaConfirmacion.setTitle("Confirmación");
@@ -151,19 +143,6 @@ public class GestorVentanas {
         ventanaConfirmacion.showAndWait();
 
         return ventanaConfirmacion.getResult() == si;
-    }
-
-    public static Image rutaAImagen(String ruta) {
-        try {
-            URL url = new URL(ruta);
-            HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
-            conexion.setRequestProperty("User-Agent", "Mozilla/5.0");
-            InputStream inputStream = conexion.getInputStream();
-            return new Image(inputStream);
-        } catch (IOException e) {
-            System.err.println("No se pudo cargar la imagen: " + e.getMessage());
-            return null;
-        }
     }
 
 }

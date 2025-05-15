@@ -2,6 +2,7 @@ package org.p2pnexus.cliente.ventanas;
 
 import atlantafx.base.util.Animations;
 import javafx.animation.Interpolator;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
@@ -47,18 +48,24 @@ public class Animaciones {
         for (int i = nodos.size() - 1; i >= 0; i--) {
             Node nodo = nodos.get(i);
 
-            var animacion = Animations.slideInUp(nodo, new Duration(duracion));
+            double delayFinal = delay;
+            // antes usaba animacion.setDelay pero no funcionaba bien dentro de un bucle porque
+            // el nodo se hacia visible antes de que se ejecutara la animacion (feisimo)
+            PauseTransition espera = new PauseTransition(Duration.millis(delayFinal));
+            espera.setOnFinished(e -> {
 
-            animacion.setDelay(new Duration(delay));
-            animacion.playFrom(new Duration(30));
+                var animacion = Animations.slideInUp(nodo, new Duration(duracion));
+                animacion.playFrom(new Duration(30));
 
-            var animacionFade = Animations.fadeIn(nodo, new Duration(duracion * 3));
+                var animacionFade = Animations.fadeIn(nodo, new Duration(duracion * 2));
+                animacionFade.playFrom(new Duration(30));
 
-            animacionFade.playFromStart();
+                nodo.setVisible(true);
+                nodo.setManaged(true);
 
-            nodo.setVisible(true);
-            nodo.setManaged(true);
+            });
 
+            espera.play();
             delay += delayEntreNodo;
         }
     }

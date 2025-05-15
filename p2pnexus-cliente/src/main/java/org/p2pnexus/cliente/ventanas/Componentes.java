@@ -23,8 +23,6 @@ public enum Componentes implements IEnumVistaCargable  {
     String ruta;
 
     public URL getRuta() {
-        System.out.println("Ruta: " + ruta);
-        System.out.println("Ruta resouerce : " + Thread.currentThread().getContextClassLoader().getResource(ruta));
         return Thread.currentThread().getContextClassLoader().getResource(ruta);
     }
 }

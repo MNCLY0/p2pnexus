@@ -2,7 +2,6 @@ package org.p2pnexus.servidor.Entidades.DAO;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.p2pnexus.servidor.ControladorHibernate;
 import org.p2pnexus.servidor.Entidades.Usuario;
 import org.p2pnexus.servidor.clientes.ControladorSesiones;
 
@@ -110,6 +109,15 @@ public class UsuarioDAO extends DAO{
                     .uniqueResult() > 0;
         }
 
+    }
+
+    public void actualizar(Usuario usuario) {
+        try(Session session = getSession()) {
+            Transaction transaction = null;
+            transaction = session.beginTransaction();
+            session.merge(usuario);
+            transaction.commit();
+        }
     }
 
     public Usuario buscarPorId(int id_usuario) {

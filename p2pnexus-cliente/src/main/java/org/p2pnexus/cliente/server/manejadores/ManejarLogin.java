@@ -1,5 +1,6 @@
 package org.p2pnexus.cliente.server.manejadores;
 
+import com.p2pnexus.comun.JsonHerramientas;
 import com.p2pnexus.comun.Mensaje;
 import com.p2pnexus.comun.comunicacion.IManejadorMensaje;
 import com.p2pnexus.comun.comunicacion.ResultadoMensaje;
@@ -13,10 +14,7 @@ import org.p2pnexus.cliente.ventanas.Ventanas;
 public class ManejarLogin implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        String nombre = mensaje.getData().get("nombre").getAsString();
-        int id = mensaje.getData().get("id").getAsInt();
-
-        Usuario usuario = new Usuario(nombre,id);
+        Usuario usuario = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("usuario").getAsJsonObject(), Usuario.class);
 
         // Guardar el nombre y el id en la sesión del cliente
         Sesion.iniciarSesion(usuario);

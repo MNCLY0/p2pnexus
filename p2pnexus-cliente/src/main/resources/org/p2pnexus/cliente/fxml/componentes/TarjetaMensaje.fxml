@@ -2,19 +2,23 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox styleClass="context-menu" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaMensaje">
+<VBox styleClass="context-menu" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.componentes.ControladorTarjetaMensaje">
    <children>
       <HBox spacing="10.0">
          <children>
-            <VBox fillWidth="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" prefHeight="75.0" prefWidth="75.0" styleClass="bg-subtle">
+            <VBox alignment="CENTER" fillWidth="false" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" prefHeight="75.0" prefWidth="75.0" styleClass="bg-subtle">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <children>
+                  <ImageView fx:id="imageViewUsuario" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" />
+               </children>
             </VBox>
             <VBox>
                <children>

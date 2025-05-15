@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="394.0" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistasModales.ControladorEstablecerImagenPerfil">
+   <children>
+      <Label styleClass="title-1" text="Imagen de perfil" />
+      <VBox fillWidth="false" styleClass="icono-desconectado" stylesheets="@../../estilos/estilos.css">
+         <children>
+            <StackPane>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <ImageView fx:id="imageViewImagenPerfil" fitHeight="230.0" fitWidth="230.0" pickOnBounds="true" />
+                  <ProgressIndicator fx:id="progressCargandoImagen" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" StackPane.alignment="CENTER">
+                     <StackPane.margin>
+                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                     </StackPane.margin>
+                  </ProgressIndicator>
+               </children>
+            </StackPane>
+         </children>
+         <VBox.margin>
+            <Insets left="50.0" right="50.0" />
+         </VBox.margin>
+      </VBox>
+      <HBox alignment="CENTER" spacing="10.0">
+         <children>
+            <TextField fx:id="textLink" style="-fx-prompt-text-fill: -color-danger-5;" stylesheets="@../../estilos/estilos.css" />
+            <Button fx:id="btnCargar" mnemonicParsing="false" onAction="#cargarImagen" text="Cargar" />
+         </children>
+      </HBox>
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="300.0" text="Introduce un enlace público de google drive y pulsa en &quot;Cargar&quot;, una vez la imagen se haya cargado pulsa en &quot;Guardar&quot;." textAlignment="CENTER" wrapText="true">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Label>
+      <Button fx:id="bntGuardar" disable="true" mnemonicParsing="false" onAction="#guardarImagenPerfil" text="Guardar" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+   </padding>
+</VBox>

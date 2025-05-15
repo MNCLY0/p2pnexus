@@ -25,6 +25,7 @@ public enum TipoMensaje {
     S_EDITAR_ESPACIO,
     S_COMPARTIR_ESPACIO,
     S_DEJAR_DE_COMPARTIR_ESPACIO,
+    S_GUARDAR_IMAGEN_PERFIL,
 
     // Mensajes de respuesta
     R_LOGIN_OK,
@@ -44,6 +45,7 @@ public enum TipoMensaje {
     R_ACTUALIZAR_ESPACIO_RECIBIDO,
     R_ELIMINAR_ESPACIO_RECIBIDO,
     R_ESTADO_SESION_CONTACTO,
+
 
     // Mensajes de P2P Cliente - Servidor
     S_P2P_SDP_OFERTA,

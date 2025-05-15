@@ -62,8 +62,11 @@
     -fx-border-width: 3;
 }
 .menu-perfil{
-    -fx-border-color: transparent -color-bg-default transparent transparent;
-    -fx-border-width: 0 1 0 0;
+    -fx-background-color:  -color-neutral-subtle;
+}
+
+.menu-perfil:hover{
+    -fx-background-color:  -color-neutral-muted;
 }
 
 .item-menu-perfil{
