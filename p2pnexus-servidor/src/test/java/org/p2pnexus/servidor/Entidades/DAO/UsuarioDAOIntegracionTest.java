@@ -4,11 +4,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.p2pnexus.servidor.ControladorHibernate;
 import org.p2pnexus.servidor.Entidades.Usuario;
-import org.p2pnexus.servidor.Server;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class UsuarioDAOIntegrationTest {
+class UsuarioDAOIntegracionTest {
 
     @BeforeAll
     static void abrirSesion()
