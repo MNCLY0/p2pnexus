@@ -7,6 +7,7 @@ import com.p2pnexus.comun.TipoMensaje;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -28,7 +29,11 @@ public class ControladorLogin {
     @FXML
     public PasswordField txtPassword;
     @FXML
+    public TextField txtPasswordVisible;
+    @FXML
     public ImageView imagenLogo;
+    @FXML
+    public CheckBox chkVisibilidad;
 
 
     @FXML
@@ -57,6 +62,14 @@ public class ControladorLogin {
             txtPassword.requestFocus();
         }
 
+        txtPassword.visibleProperty().bind(chkVisibilidad.selectedProperty().not());
+        txtPassword.managedProperty().bind(chkVisibilidad.selectedProperty().not());
+
+        txtPasswordVisible.visibleProperty().bind(chkVisibilidad.selectedProperty());
+        txtPasswordVisible.managedProperty().bind(chkVisibilidad.selectedProperty());
+
+        txtPassword.textProperty().bindBidirectional(txtPasswordVisible.textProperty());
+
     }
 
     @FXML
@@ -66,15 +79,18 @@ public class ControladorLogin {
             Notificaciones.mostrarNotificacion("Usuario o contraseña vacíos.", TipoNotificacion.ERROR);
             return;
         }
-
         System.out.println("Intenti de nicio de sesión");
 
         // Lógica para el botón de inicio de sesión
         JsonObject json = new JsonObject();
         json.addProperty("usuario",txtUsuario.getText().trim());
         json.addProperty("pass", Hasheador.hashear(txtPassword.getText().trim()));
+        Mensaje mensaje = new Mensaje(TipoMensaje.S_LOGIN,json);
+        mensaje.getData();
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_LOGIN,json));
     }
+
+
 
 
 

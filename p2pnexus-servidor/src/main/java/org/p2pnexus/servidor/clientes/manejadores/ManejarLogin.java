@@ -25,7 +25,7 @@ public class ManejarLogin implements IManejadorMensaje {
 
         Usuario usuarioO;
 
-        System.out.println("El usuario intenta iniciar sesión con el usuario: " + usuario + " y la contraseña: " + contrasena);
+        System.out.println("El usuario intenta iniciar sesión con el usuario: " + usuario + " y contraseña hasheada");
 
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();

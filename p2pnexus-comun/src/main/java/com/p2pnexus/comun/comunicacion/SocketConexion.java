@@ -9,10 +9,10 @@ import java.nio.charset.StandardCharsets;
 
 
 public class SocketConexion {
-    private BufferedReader input;
-    private PrintWriter output;
-    private Socket socket;
-    private String nombre;
+    private final BufferedReader input;
+    private final PrintWriter output;
+    private final Socket socket;
+    private final String nombre;
     private int idUsuario;
     private boolean errorConexion = false;
 

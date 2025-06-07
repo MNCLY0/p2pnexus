@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="476.0" prefWidth="278.0" spacing="15.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorLogin">
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="476.0" prefWidth="278.0" spacing="15.0" styleClass="context-menu" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.p2pnexus.cliente.controladores.vistas.ControladorLogin">
    <children>
       <ImageView fx:id="imagenLogo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <Label styleClass="title-2" text="Inicio de sesión" textAlignment="CENTER" textFill="WHITE" wrapText="true">
@@ -32,7 +33,13 @@
          </rowConstraints>
          <children>
             <TextField fx:id="txtUsuario" onAction="#intentarLogin" promptText="introduce tu usuario" GridPane.columnIndex="1" />
-            <PasswordField fx:id="txtPassword" onAction="#intentarLogin" promptText="introduce tu contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <PasswordField fx:id="txtPassword" onAction="#intentarLogin" promptText="introduce tu contraseña" />
+                  <TextField fx:id="txtPasswordVisible" />
+               </children>
+            </VBox>
+            <CheckBox fx:id="chkVisibilidad" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
       <HBox spacing="10.0">

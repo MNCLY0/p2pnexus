@@ -102,12 +102,11 @@ public class ControladorMenuPrincipal {
 
         mediaViewtTransicion.fitHeightProperty().bind(vboxMedia.heightProperty());
         mediaViewtTransicion.fitWidthProperty().bind(vboxMedia.widthProperty());
+
     }
 
 
-
-    public Parent inicializarTabPane(TabMenu tabMenu) throws IOException
-    {
+    public Parent inicializarTabPane(TabMenu tabMenu) throws IOException {
 
         Parent root = null;
 
@@ -117,15 +116,13 @@ public class ControladorMenuPrincipal {
             ControladorTabMenu controladorTabMenu = loader.getController();
             controladorTabMenu.establecerDatos(tabMenu);
 
-            if (tabMenu.getVentana() != null)
-            {
+            if (tabMenu.getVentana() != null) {
                 Tab tab = new Tab(tabMenu.getNombre(), GestorVentanas.crearVentana(tabMenu.getVentana()));
                 tabPanePrincipal.getTabs().add(tab);
                 tabMenu.setAccion(tab, tabPanePrincipal, tabMenu);
                 tabMenu.setControladorTabMenu(controladorTabMenu);
             }
-        }catch (Exception e )
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error al cargar el tab menu: " + e.getMessage());
         }
@@ -133,20 +130,17 @@ public class ControladorMenuPrincipal {
         return root;
     }
 
-    public void solicitarContactos()
-    {
+    public void solicitarContactos() {
         JsonObject json = new JsonObject();
         json.addProperty("id_usuario", Sesion.getUsuario().getId_usuario());
         Conexion.enviarMensaje(new Mensaje(TipoMensaje.S_LISTA_CONTACTOS, json));
     }
 
-    public void actualizarListaContactos(List<Usuario> usuariosContacto)
-    {
+    public void actualizarListaContactos(List<Usuario> usuariosContacto) {
         System.out.println("se procede a actualizar la lista de contactos con " + usuariosContacto.size() + " contactos");
         Platform.runLater(() -> {
             vboxContactos.getChildren().clear();
-            for (Usuario usuario : usuariosContacto)
-            {
+            for (Usuario usuario : usuariosContacto) {
                 try {
                     FXMLLoader loader = GestorVentanas.crearFXMLoader(Componentes.COMPONENTE_TARJETA_CONTACTO);
                     Parent parent = loader.load();
@@ -155,7 +149,7 @@ public class ControladorMenuPrincipal {
                     controladoresTarjetaContacto.put(usuario, controladorTarjetaContacto);
 //                    Sesion.gestionImagenes.cacheImagenes.put(usuario.getImagen_perfil(), usuario.getImagen());
                     vboxContactos.getChildren().add(parent);
-                }catch (IOException e) {
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -179,17 +173,15 @@ public class ControladorMenuPrincipal {
             inicializarTabChat();
         }
 
-        controladorChat.abrirChat(usuario,conversacion);
+        controladorChat.abrirChat(usuario, conversacion);
         // solo si el usuario ha seleccionado la tarjeta se abre visualmente, lo he hecho de esta manera porque a veces queremos que el servidor
         // mande los datos de un chat pero que no se abra la ventana de este. De esta manera solo se abre si el usuario lo ha seleccionado en la interfaz
-        if (controladoresTarjetaContacto.get(usuario).seleccionado())
-        {
+        if (controladoresTarjetaContacto.get(usuario).seleccionado()) {
             tabPanePrincipal.getSelectionModel().select(tabChat);
         }
     }
 
-    public void inializarTabs()
-    {
+    public void inializarTabs() {
         Platform.runLater(() -> {
 
             tabsMenu = new ArrayList<>(
@@ -223,8 +215,7 @@ public class ControladorMenuPrincipal {
     }
 
     // Por como está montado merece la pena no inicializar el chat hasta que se necesite, luego podemos reutilizarlo para todos los usuarios
-    public void inicializarTabChat()
-    {
+    public void inicializarTabChat() {
         Tab chat = new Tab("Chat");
         try {
             FXMLLoader loader = GestorVentanas.crearFXMLoader(Ventanas.TAB_CHAT);
@@ -243,14 +234,12 @@ public class ControladorMenuPrincipal {
         return controladoresTarjetaContacto;
     }
 
-    public void actualizarEstadoTarjetaContacto(Usuario usuario)
-    {
-        Platform.runLater(()->{
+    public void actualizarEstadoTarjetaContacto(Usuario usuario) {
+        Platform.runLater(() -> {
             ControladorTarjetaContacto controladorTarjetaContacto = controladoresTarjetaContacto.get(usuario);
             System.out.printf("Estableciendo el estado de la tarjeta de contacto del usuario %s a %s%n", usuario.getNombre(), usuario.getConectado());
             System.out.printf("Existe la tarjeta? %s%n", controladorTarjetaContacto != null);
-            if (controladorTarjetaContacto != null)
-            {
+            if (controladorTarjetaContacto != null) {
                 controladorTarjetaContacto.getUsuario().establecerConectado(usuario.getConectado());
                 controladorTarjetaContacto.actualizarEstado();
             }
@@ -259,8 +248,7 @@ public class ControladorMenuPrincipal {
     }
 
     @FXML
-    public void cerrarSesion()
-    {
+    public void cerrarSesion() {
         Sesion.cerrarSesion();
     }
 
@@ -320,9 +308,8 @@ public class ControladorMenuPrincipal {
             if (!menuPerfil.isVisible()) {
                 menuPerfil.setVisible(true);
                 menuPerfil.setManaged(true);
-            }else
-            {
-                menuPerfil.getChildren().forEach(tabmenu -> {;
+            } else {
+                menuPerfil.getChildren().forEach(tabmenu -> {
                     tabmenu.setVisible(false);
                     tabmenu.setManaged(false);
                 });
@@ -356,20 +343,19 @@ public class ControladorMenuPrincipal {
             timeline.play();
         });
     }
+
     @FXML
-    public void abrirCambioImagen()
-    {
+    public void abrirCambioImagen() {
         try {
             Parent root = GestorVentanas.crearFXMLoader(Ventanas.MODAL_ESTABLECER_IMAGEN_PERFIL).load();
             GestorVentanas.abrirModal(root, "Establecer imagen de perfil", false);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error al cargar la ventana de establecer imagen de perfil: " + e.getMessage());
         }
     }
 
-    public void actualizarImagenMenuPerfil()
-    {
+    public void actualizarImagenMenuPerfil() {
         Platform.runLater(() -> {
             imageViewFotoUsuario.setImage(Sesion.getUsuario().getImagen());
         });

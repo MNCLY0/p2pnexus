@@ -12,7 +12,7 @@ import org.p2pnexus.cliente.server.entitades.Usuario;
 public class ManejarRespuestaEstadoSesionContacto implements IManejadorMensaje {
     @Override
     public ResultadoMensaje manejarDatos(Mensaje mensaje, SocketConexion socketConexion) throws ManejarPeticionesExeptionError {
-        System.out.printf("Actualizando estado de contacto");
+        System.out.print("Actualizando estado de contacto");
         Usuario usuario = JsonHerramientas.convertirJsonAObjeto(mensaje.getData().get("usuario").getAsJsonObject(), Usuario.class);
         System.out.printf("Usuario: %s", usuario.getNombre());
         System.out.printf("Estado de contacto: %s", usuario.getConectado());

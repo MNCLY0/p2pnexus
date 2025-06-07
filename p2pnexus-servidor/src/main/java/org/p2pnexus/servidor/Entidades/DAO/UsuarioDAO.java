@@ -120,6 +120,24 @@ public class UsuarioDAO extends DAO{
         }
     }
 
+    public void guardar(Usuario usuario) {
+        try(Session session = getSession()) {
+            Transaction transaction = null;
+            transaction = session.beginTransaction();
+            session.persist(usuario);
+            transaction.commit();
+        }
+    }
+
+    public void eliminar(Usuario usuario) {
+        try(Session session = getSession()) {
+            Transaction transaction = null;
+            transaction = session.beginTransaction();
+            session.remove(usuario);
+            transaction.commit();
+        }
+    }
+
     public Usuario buscarPorId(int id_usuario) {
         try(Session session = getSession()) {
             return session.get(Usuario.class, id_usuario);

@@ -35,7 +35,7 @@ public class GestorChat {
 
     @FXML
     public void enviarMensaje() {
-        String mensaje = controladorChat.areaContenidoMensaje.getText();
+        String mensaje = controladorChat.areaContenidoMensaje.getText().trim(); // eliminar espacios en blanco al principio y al final
         if (mensaje.isEmpty())
             return;
         JsonObject json = new JsonObject();

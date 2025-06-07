@@ -7,10 +7,10 @@ import org.p2pnexus.cliente.controladores.componentes.tabMenu.tabAcciones.Accion
 import org.p2pnexus.cliente.ventanas.Ventanas;
 
 public class TabMenu {
-    private String nombre;
-    private FontIcon icono;
-    private AccionTab accion;
-    private Ventanas ventana;
+    private final String nombre;
+    private final FontIcon icono;
+    private final AccionTab accion;
+    private final Ventanas ventana;
     private ControladorTabMenu controladorTabMenu;
 
     public TabMenu(String nombre, FontIcon icono, Ventanas ventana) {

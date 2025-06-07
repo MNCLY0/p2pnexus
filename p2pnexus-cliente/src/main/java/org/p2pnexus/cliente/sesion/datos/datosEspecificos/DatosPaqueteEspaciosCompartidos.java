@@ -55,7 +55,7 @@ public class DatosPaqueteEspaciosCompartidos {
             if (this.espaciosNoEnviados == null)
             {
                 this.espaciosNoEnviados = new FilteredList<>(Sesion.datosSesionUsuario.getObservableListEspacios());
-            };
+            }
             espaciosNoEnviados.setPredicate(espacioCompartido -> !enviados.contains(espacioCompartido));
         });
 

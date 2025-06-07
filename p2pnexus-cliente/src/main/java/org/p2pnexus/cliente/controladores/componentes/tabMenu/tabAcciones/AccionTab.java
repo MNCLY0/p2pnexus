@@ -33,7 +33,7 @@ public class AccionTab {
         }
         tabMenu.getControladorTabMenu().setSeleccionado(true);
         tabPane.getSelectionModel().select(tab);
-    };
+    }
 
     public TabPane getTabPane() {
         return tabPane;

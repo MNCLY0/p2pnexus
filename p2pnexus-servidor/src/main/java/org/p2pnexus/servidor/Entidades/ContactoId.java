@@ -26,8 +26,7 @@ public class ContactoId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ContactoId)) return false;
-        ContactoId contactoidOtro = (ContactoId) o;
+        if (!(o instanceof ContactoId contactoidOtro)) return false;
         return Objects.equals(usuario1, contactoidOtro.usuario1) &&
                 Objects.equals(usuario2, contactoidOtro.usuario2);
     }

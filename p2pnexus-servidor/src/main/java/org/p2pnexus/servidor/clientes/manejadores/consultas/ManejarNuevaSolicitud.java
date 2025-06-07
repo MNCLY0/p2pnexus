@@ -29,7 +29,7 @@ public class ManejarNuevaSolicitud implements IManejadorMensaje {
             if (!dao.crearSolicitud(idUsuarioOrigen, idUsuarioDestino))
             {
                 return new ResultadoMensaje("No se puede enviar la solicitud ¿Ya has enviado una?", TipoNotificacion.AVISO);
-            };
+            }
         }catch (Exception e) {
             throw new ManejarPeticionesExeptionError("Error al enviar la solicitud");
         }

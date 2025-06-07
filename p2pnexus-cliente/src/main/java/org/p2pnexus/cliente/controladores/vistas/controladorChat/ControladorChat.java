@@ -80,11 +80,17 @@ public class ControladorChat {
         gestorChat = new GestorChat(this);
         gestorEspacios = new GestorEspacios(this);
 
+        // cuando se hace enter se envia el mensaje, para hacer un salto de linea se hace control + enter
         areaContenidoMensaje.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
-                gestorChat.enviarMensaje();
-                // Event cosume evita que se agregue un salto de linea al hacer control + enter
-                event.consume();
+            if (event.getCode() == KeyCode.ENTER) {
+                if (event.isControlDown()) {
+                    // Control + Enter → añadir salto de linea
+                    areaContenidoMensaje.appendText("\n");
+                } else {
+                    // Solo Enter → enviar mensaje
+                    gestorChat.enviarMensaje();
+                    event.consume(); // evita que se inserte el salto de línea
+                }
             }
         });
 

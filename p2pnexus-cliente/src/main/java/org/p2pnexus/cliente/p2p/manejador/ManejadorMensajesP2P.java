@@ -42,7 +42,6 @@ public class ManejadorMensajesP2P {
         manejadores.put(TipoMensaje.P2P_R_INFO_RUTA, new ManejadorP2PRInfoRuta());
 
         manejadores.put(TipoMensaje.P2P_S_DESCARGAR_FICHERO, manejadorDescargaSolicitud);
-        manejadores.put(TipoMensaje.P2P_R_CONFIRMAR_FRAGMENTO, manejadorDescargaSolicitud);
 
         manejadores.put(TipoMensaje.P2P_R_DESCARGAR_FICHERO, manejadorDescarga);
     }

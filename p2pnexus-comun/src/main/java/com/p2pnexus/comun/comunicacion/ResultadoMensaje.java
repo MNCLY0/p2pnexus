@@ -11,8 +11,8 @@ public class ResultadoMensaje {
     Mensaje mensaje;
 
     // Notificacion
-    private String mensajeNotificacion;
-    private TipoNotificacion tipoNotificacion;
+    private final String mensajeNotificacion;
+    private final TipoNotificacion tipoNotificacion;
 
     public ResultadoMensaje(String mensajeNotificacion, TipoNotificacion tipoNotificacion, Mensaje mensaje) {
         this.mensajeNotificacion = mensajeNotificacion;

@@ -20,9 +20,9 @@ public class EspacioCompartido {
     private Usuario propietario;
 
 
-    private transient SimpleStringProperty nombrePropiedad = new SimpleStringProperty();;
+    private final transient SimpleStringProperty nombrePropiedad = new SimpleStringProperty();
 
-    private transient SimpleStringProperty rutaPropiedad = new SimpleStringProperty();;
+    private final transient SimpleStringProperty rutaPropiedad = new SimpleStringProperty();
 
 
     public EspacioCompartido() {

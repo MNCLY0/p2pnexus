@@ -68,7 +68,7 @@ public class GestorP2P {
         RTCSessionDescription respuesta = new RTCSessionDescription(RTCSdpType.ANSWER, sdp);
         peer.setRemoteDescription(respuesta, new ReceptorDeRespuestaObserver());
     }
-
+    // cuando se recibe un ICE candidate, se añade a la conexión, esto se llama desde un manerjador
     public void recibirIce(JsonObject json) {
         RTCIceCandidate candidate = new RTCIceCandidate(
                 json.get("sdpMid").getAsString(),
@@ -79,9 +79,9 @@ public class GestorP2P {
         peer.addIceCandidate(candidate);
         System.out.println("ICE candidate recibido y añadido");
     }
-
     RTCPeerConnection crearPeerConection()
     {
+        // la conexion se hace con los servidores STUN de google, para que funcione en la mayoria de las redes
         String[] servidoreStun = {
                 "stun:stun.l.google.com:19302",
                 "stun:stun.l.google.com:5349",
@@ -129,6 +129,7 @@ public class GestorP2P {
     public List<RTCIceServer> crearListaIceServer(String[] urls)
     {
         List<RTCIceServer> iceServers = new ArrayList<>();
+        // para cada url, creamos un servidor y lo añadimos a la lista
         for (String url : urls) {
             RTCIceServer iceServer = crearIceServer(url);
             iceServers.add(iceServer);

@@ -14,7 +14,7 @@ public class DatosSesionUsuario {
 
     // Lista de espacios creados por el usuario
     ObservableMap<Integer, EspacioCompartido> espacios = FXCollections.observableHashMap();
-    private ObservableList<EspacioCompartido> espaciosList = FXCollections.observableArrayList();
+    private final ObservableList<EspacioCompartido> espaciosList = FXCollections.observableArrayList();
 
     public ObservableMap<Integer,EspacioCompartido> getEspacios() {return espacios;}
     public void setEspacios(ObservableMap<Integer,EspacioCompartido> espaciosUsuario) {this.espacios = espaciosUsuario;}

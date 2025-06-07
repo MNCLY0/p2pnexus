@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class ControladorComponenteMenuBase {
     protected boolean seleccionado = false;
-    private static List<ControladorComponenteMenuBase> componentesRegistrados = new ArrayList<>();
+    private static final List<ControladorComponenteMenuBase> componentesRegistrados = new ArrayList<>();
 
     public ControladorComponenteMenuBase() {
         componentesRegistrados.add(this);
